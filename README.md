@@ -4,19 +4,13 @@ This repository contains the coursework project for students enrolled in the **P
 
 ## Project Overview
 
-The Union Shop is a Flutter reimplementation of the existing University of Portsmouth Students' Union shop website ([https://shop.upsu.net](https://shop.upsu.net)). Students will recreate the key features and functionality of this e-commerce platform using Flutter, focusing on both web and mobile responsive design.
+The Student Union has an e-commerce website, which you can access via this link: [https://shop.upsu.net](https://shop.upsu.net)
 
-**Important Note:** You should NOT implement the external UPSU website ([https://www.upsu.net/](https://www.upsu.net/)) that is linked in the navigation bar of the shop. Focus only on reimplementing the shop functionality from [https://shop.upsu.net](https://shop.upsu.net).
+In short, your task is to recreate the same website using Flutter. You must not start from scratch, as this repository provides an incomplete Flutter implementation of the Student Union site that you must build upon. [The getting started section of this document](#getting-started) will explain more.
+
+⚠️ The UPSU.net link on the navbar of the union website is a link to an external site. This is not part of the application that you need to develop. So ignore the link highlighted below:
 
 ![Union Shop Header](https://raw.githubusercontent.com/manighahrmani/sandwich_shop/refs/heads/main/images/screenshot_union_site_header.png)
-
-## Current Features
-
-This starter repository provides a minimal skeletal structure with:
-
-- **Homepage** (`lib/main.dart`): A basic homepage
-- **Product Page** (`lib/product_page.dart`): A single product page
-- **Widget Tests**: Basic tests for both of the above pages (`test/home_test.dart` and `test/product_test.dart`)
 
 ## Getting Started
 
@@ -187,6 +181,14 @@ This document outlines the specification for your coursework, the breakdown of m
 
 ## Project Structure
 
+This starter repository provides a minimal skeletal structure with:
+
+- **Homepage** (`lib/main.dart`): A basic homepage
+- **Product Page** (`lib/product_page.dart`): A single product page
+- **Widget Tests**: Basic tests for both of the above pages (`test/home_test.dart` and `test/product_test.dart`)
+
+Here is an overview of the project structure:
+
 ```plaintext
 union_shop/
 ├── lib/
@@ -199,7 +201,7 @@ union_shop/
 └── README.md               # This file
 ```
 
-Note that this is the initial structure. You are of course expected to create additional files and directories as needed to complete the coursework.
+Note that this is the initial structure. You are of course expected to create additional files and directories as needed to complete the coursework. You can also reorganize the project structure as you see fit.
 
 ## Support and Resources
 

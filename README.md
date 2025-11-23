@@ -246,7 +246,7 @@ During the demo, you will have **up to 10 minutes** to demonstrate your applicat
 This starter repository that you will fork provides a minimal skeletal structure with:
 
 - **Homepage** (`lib/main.dart`): A basic homepage
-- **Product Page** (`lib/product_page.dart`): A single product page
+ - **Product Page** (`lib/screens/product_page.dart`): A single product page
 - **Widget Tests**: Basic tests for both of the above pages (`test/home_test.dart` and `test/product_test.dart`)
 
 Here is an overview of the project structure after forking:
@@ -254,13 +254,14 @@ Here is an overview of the project structure after forking:
 ```plaintext
 union_shop/
 ├── lib/
-│   ├── main.dart           # Main application and homepage
-│   └── product_page.dart   # Product detail page
+│   ├── main.dart                 # Main application and homepage
+│   └── screens/
+│       └── product_page.dart     # Product detail page
 ├── test/
-│   ├── home_test.dart      # Homepage widget tests
-│   └── product_test.dart   # Product page widget tests
-├── pubspec.yaml            # Project dependencies
-└── README.md               # This file
+│   ├── home_test.dart            # Homepage widget tests
+  └── product_test.dart         # Product page widget tests
+├── pubspec.yaml                  # Project dependencies
+└── README.md                     # This file
 ```
 
 Note that this is the initial structure. You are expected to create additional files and directories as needed to complete the coursework. You can also reorganize the project structure as you see fit.

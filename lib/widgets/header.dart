@@ -18,10 +18,15 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      color: Colors.white,
-      child: Column(
+    final screenHeight = MediaQuery.of(context).size.height;
+    final calculated = screenHeight * 0.12;
+    final height = (calculated.clamp(56.0, 100.0) as double);
+
+    return SizedBox(
+      height: height,
+      child: Container(
+        color: Colors.white,
+        child: Column(
         children: [
           // Top banner
           Container(

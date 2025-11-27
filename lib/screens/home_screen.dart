@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/product_card.dart';
 import 'package:union_shop/widgets/header.dart';
@@ -33,10 +34,12 @@ class HomeScreen extends StatelessWidget {
             ),
 
             // Hero Section
-            SizedBox(
-              height: 400,
-              width: double.infinity,
-              child: Stack(
+            Builder(builder: (context) {
+              final heroHeight = math.min(400, MediaQuery.of(context).size.height * 0.45).toDouble();
+              return SizedBox(
+                height: heroHeight,
+                width: double.infinity,
+                child: Stack(
                 children: [
                   // Background image
                   Positioned.fill(
@@ -103,7 +106,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
+            );
+            }),
 
             // Products Section
             Container(

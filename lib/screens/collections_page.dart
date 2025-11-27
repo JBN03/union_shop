@@ -32,46 +32,49 @@ class CollectionsPage extends StatelessWidget {
                 children: [
                   const Text('Collections', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 12),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 3 / 2,
-                    ),
-                    itemCount: collections.length,
-                    itemBuilder: (context, index) {
-                      final c = collections[index];
-                      return GestureDetector(
-                        onTap: () {
-                          // placeholder: navigate to collection page in future
-                        },
-                        child: Card(
-                          clipBehavior: Clip.hardEdge,
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Image.network(c['image']!, fit: BoxFit.cover),
-                              Container(
-                                alignment: Alignment.bottomLeft,
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [Colors.transparent, Colors.black.withOpacity(0.5)],
+                  LayoutBuilder(builder: (context, constraints) {
+                    final columns = constraints.maxWidth > 600 ? 2 : 1;
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: columns,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 3 / 2,
+                      ),
+                      itemCount: collections.length,
+                      itemBuilder: (context, index) {
+                        final c = collections[index];
+                        return GestureDetector(
+                          onTap: () {
+                            // placeholder: navigate to collection page in future
+                          },
+                          child: Card(
+                            clipBehavior: Clip.hardEdge,
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Image.network(c['image']!, fit: BoxFit.cover),
+                                Container(
+                                  alignment: Alignment.bottomLeft,
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [Colors.transparent, Colors.black.withOpacity(0.5)],
+                                    ),
                                   ),
+                                  child: Text(c['title']!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
                                 ),
-                                child: Text(c['title']!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    );
+                  }),
                 ],
               ),
             ),

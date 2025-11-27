@@ -20,13 +20,12 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final calculated = screenHeight * 0.12;
-    final height = (calculated.clamp(56.0, 100.0) as double);
+    final height = calculated.clamp(56.0, 100.0).toDouble();
 
-    return SizedBox(
+    return Container(
       height: height,
-      child: Container(
-        color: Colors.white,
-        child: Column(
+      color: Colors.white,
+      child: Column(
         children: [
           // Top banner
           Container(
@@ -41,7 +40,7 @@ class Header extends StatelessWidget {
           ),
           // Main header
           Expanded(
-            child: Container(
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 children: [
@@ -49,13 +48,13 @@ class Header extends StatelessWidget {
                     onTap: onLogoTap,
                     child: Image.network(
                       'https://shop.upsu.net/cdn/shop/files/upsu_300x300.png?v=1614735854',
-                      height: 18,
-                      fit: BoxFit.cover,
+                      height: 24,
+                      fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
                           color: Colors.grey[300],
-                          width: 18,
-                          height: 18,
+                          width: 24,
+                          height: 24,
                           child: const Center(
                             child: Icon(Icons.image_not_supported, color: Colors.grey),
                           ),
@@ -70,27 +69,19 @@ class Header extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.search, size: 18, color: Colors.grey),
-                          padding: const EdgeInsets.all(8),
-                          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                          icon: const Icon(Icons.search, size: 20, color: Colors.grey),
                           onPressed: onSearch,
                         ),
                         IconButton(
-                          icon: const Icon(Icons.person_outline, size: 18, color: Colors.grey),
-                          padding: const EdgeInsets.all(8),
-                          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                          icon: const Icon(Icons.person_outline, size: 20, color: Colors.grey),
                           onPressed: onAccount,
                         ),
                         IconButton(
-                          icon: const Icon(Icons.shopping_bag_outlined, size: 18, color: Colors.grey),
-                          padding: const EdgeInsets.all(8),
-                          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                          icon: const Icon(Icons.shopping_bag_outlined, size: 20, color: Colors.grey),
                           onPressed: onCart,
                         ),
                         IconButton(
-                          icon: const Icon(Icons.menu, size: 18, color: Colors.grey),
-                          padding: const EdgeInsets.all(8),
-                          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                          icon: const Icon(Icons.menu, size: 20, color: Colors.grey),
                           onPressed: onMenu,
                         ),
                       ],
@@ -105,3 +96,4 @@ class Header extends StatelessWidget {
     );
   }
 }
+

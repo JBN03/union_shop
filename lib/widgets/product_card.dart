@@ -19,8 +19,10 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap ?? () {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap ?? () {
         final product = Product(
           title: title,
           price: price,
@@ -32,7 +34,7 @@ class ProductCard extends StatelessWidget {
           MaterialPageRoute(builder: (ctx) => ProductPage(product: product)),
         );
       },
-      child: Column(
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Square image (aspect ratio 1)
@@ -67,6 +69,7 @@ class ProductCard extends StatelessWidget {
             style: const TextStyle(fontSize: 13, color: Colors.grey),
           ),
         ],
+        ),
       ),
     );
   }

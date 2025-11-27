@@ -28,7 +28,7 @@ class Footer extends StatelessWidget {
 
           final quickLinks = [
             TextButton(onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false), child: const Text('Home')),
-            TextButton(onPressed: () {}, child: const Text('Collections')),
+            TextButton(onPressed: () => Navigator.pushNamed(context, '/collections'), child: const Text('Collections')),
             TextButton(onPressed: () => Navigator.pushNamed(context, '/about'), child: const Text('About Us')),
           ];
 

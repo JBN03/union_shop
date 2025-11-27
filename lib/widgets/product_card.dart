@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:union_shop/models/product.dart';
+import 'package:union_shop/screens/product_page.dart';
 
 class ProductCard extends StatelessWidget {
   final String title;
@@ -10,13 +12,26 @@ class ProductCard extends StatelessWidget {
     required this.title,
     required this.price,
     required this.imageUrl,
+    this.onTap,
   });
+
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/product');
+      onTap: onTap ?? () {
+        // Default navigation: build a Product object from the card data
+        final product = Product(
+          title: title,
+          price: price,
+          imageUrl: imageUrl,
+          description: '',
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (ctx) => ProductPage(product: product)),
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

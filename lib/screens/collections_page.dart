@@ -7,12 +7,19 @@ class CollectionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final collections = [
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final query = (args != null && args['query'] is String) ? (args['query'] as String) : null;
+
+    final allCollections = [
       {'title': 'New Arrivals', 'image': 'https://via.placeholder.com/300x200?text=New+Arrivals'},
       {'title': 'Summer Collection', 'image': 'https://via.placeholder.com/300x200?text=Summer'},
       {'title': 'Print Shack', 'image': 'https://via.placeholder.com/300x200?text=Print+Shack'},
       {'title': 'Sale', 'image': 'https://via.placeholder.com/300x200?text=Sale'},
     ];
+
+    final collections = query == null || query.isEmpty
+        ? allCollections
+        : allCollections.where((c) => c['title']!.toLowerCase().contains(query.toLowerCase())).toList();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -20,7 +27,7 @@ class CollectionsPage extends StatelessWidget {
           children: [
             Header(
               onLogoTap: () => Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false),
-              onSearch: () {},
+              // omit onSearch so default header search modal is used
               onAccount: () {},
               onCart: () {},
               onMenu: () {},

@@ -70,7 +70,56 @@ class Header extends StatelessWidget {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.search, size: 20, color: Colors.grey),
-                          onPressed: onSearch,
+                          onPressed: onSearch ?? () {
+                            // Default behaviour: open a search modal and navigate to /collections with the query
+                            showModalBottomSheet<void>(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (ctx) {
+                                final controller = TextEditingController();
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(ctx).viewInsets.bottom,
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        const Text('Search products', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                                        const SizedBox(height: 8),
+                                        TextField(
+                                          controller: controller,
+                                          decoration: const InputDecoration(
+                                            hintText: 'Search...',
+                                            border: OutlineInputBorder(),
+                                          ),
+                                          autofocus: true,
+                                          onSubmitted: (value) {
+                                            Navigator.of(ctx).pop();
+                                            if (value.trim().isNotEmpty) {
+                                              Navigator.of(context).pushNamed('/collections', arguments: {'query': value.trim()});
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(height: 12),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            final q = controller.text.trim();
+                                            Navigator.of(ctx).pop();
+                                            if (q.isNotEmpty) Navigator.of(context).pushNamed('/collections', arguments: {'query': q});
+                                          },
+                                          style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF4d2963)),
+                                          child: const Text('Search'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
                         IconButton(
                           icon: const Icon(Icons.person_outline, size: 20, color: Colors.grey),

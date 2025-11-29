@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:union_shop/services/cart_service.dart';
 
 class Header extends StatelessWidget {
   final VoidCallback? onLogoTap;
@@ -81,7 +82,44 @@ class Header extends StatelessWidget {
                       children: [
                         IconButton(icon: const Icon(Icons.search, size: 20, color: Colors.grey), onPressed: onSearch),
                         IconButton(icon: const Icon(Icons.person_outline, size: 20, color: Colors.grey), onPressed: onAccount),
-                        IconButton(icon: const Icon(Icons.shopping_bag_outlined, size: 20, color: Colors.grey), onPressed: onCart),
+                        // Cart icon with badge that listens to CartService
+                        AnimatedBuilder(
+                          animation: CartService.instance,
+                          builder: (context, _) {
+                            final count = CartService.instance.totalItems;
+                            return Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.shopping_bag_outlined, size: 20, color: Colors.grey),
+                                  onPressed: () {
+                                    if (onCart != null) {
+                                      onCart!();
+                                    } else {
+                                      Navigator.pushNamed(context, '/cart');
+                                    }
+                                  },
+                                ),
+                                if (count > 0)
+                                  Positioned(
+                                    right: 4,
+                                    top: 4,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
+                                      constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+                                      child: Center(
+                                        child: Text(
+                                          '$count',
+                                          style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ] else ...[

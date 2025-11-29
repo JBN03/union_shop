@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/services/product_service.dart';
+import 'package:union_shop/models/collection.dart';
 
-class CollectionsPage extends StatelessWidget {
-  const CollectionsPage({super.key});
+class CollectionsPage extends StatefulWidget {
+  const CollectionsPage({Key? key}) : super(key: key);
+
+  @override
+  _CollectionsPageState createState() => _CollectionsPageState();
+}
+
+class _CollectionsPageState extends State<CollectionsPage> {
+  late Future<List<Collection>> _collectionsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _collectionsFuture = ProductService.instance.getCollections();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-    final query = (args != null && args['query'] is String) ? (args['query'] as String) : null;
-
-    final allCollections = [
-      {'title': 'New Arrivals', 'image': 'https://via.placeholder.com/300x200?text=New+Arrivals'},
-      {'title': 'Summer Collection', 'image': 'https://via.placeholder.com/300x200?text=Summer'},
-      {'title': 'Print Shack', 'image': 'https://via.placeholder.com/300x200?text=Print+Shack'},
-      {'title': 'Sale', 'image': 'https://via.placeholder.com/300x200?text=Sale'},
-    ];
-
-    final collections = query == null || query.isEmpty
-        ? allCollections
-        : allCollections.where((c) => c['title']!.toLowerCase().contains(query.toLowerCase())).toList();
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             Header(
               onLogoTap: () => Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false),
-              // omit onSearch so default header search modal is used
               onAccount: () {},
               onCart: () {},
               onMenu: () {},
@@ -39,49 +39,58 @@ class CollectionsPage extends StatelessWidget {
                 children: [
                   const Text('Collections', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 12),
-                  LayoutBuilder(builder: (context, constraints) {
-                    final columns = constraints.maxWidth > 600 ? 2 : 1;
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: columns,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 3 / 2,
-                      ),
-                      itemCount: collections.length,
-                      itemBuilder: (context, index) {
-                        final c = collections[index];
-                        return GestureDetector(
-                          onTap: () {
-                            // placeholder: navigate to collection page in future
-                          },
-                          child: Card(
-                            clipBehavior: Clip.hardEdge,
-                            child: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                Image.network(c['image']!, fit: BoxFit.cover),
-                                Container(
-                                  alignment: Alignment.bottomLeft,
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [Colors.transparent, Colors.black.withOpacity(0.5)],
+                  FutureBuilder<List<Collection>>(
+                    future: _collectionsFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const SizedBox(height: 240, child: Center(child: CircularProgressIndicator()));
+                      }
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      final collections = snapshot.data ?? [];
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 3 / 2,
+                        ),
+                        itemCount: collections.length,
+                        itemBuilder: (context, index) {
+                          final c = collections[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/collection', arguments: {'id': c.id, 'title': c.title});
+                            },
+                            child: Card(
+                              clipBehavior: Clip.hardEdge,
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  Image.network(c.imageUrl, fit: BoxFit.cover),
+                                  Container(
+                                    alignment: Alignment.bottomLeft,
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [Colors.transparent, Colors.black.withOpacity(0.5)],
+                                      ),
                                     ),
+                                    child: Text(c.title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
                                   ),
-                                  child: Text(c['title']!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  }),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

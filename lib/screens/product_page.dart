@@ -74,7 +74,41 @@ class ProductPage extends StatelessWidget {
           style: const TextStyle(
               fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF4d2963)),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 18),
+
+        // Options (non-functional dropdowns)
+        Row(
+          children: [
+            Expanded(
+              child: DropdownButtonFormField<String>(
+                decoration: const InputDecoration(labelText: 'Size', border: OutlineInputBorder()),
+                value: 'M',
+                items: const [
+                  DropdownMenuItem(value: 'S', child: Text('S')),
+                  DropdownMenuItem(value: 'M', child: Text('M')),
+                  DropdownMenuItem(value: 'L', child: Text('L')),
+                  DropdownMenuItem(value: 'XL', child: Text('XL')),
+                ],
+                onChanged: (_) {},
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: DropdownButtonFormField<String>(
+                decoration: const InputDecoration(labelText: 'Color', border: OutlineInputBorder()),
+                value: 'Red',
+                items: const [
+                  DropdownMenuItem(value: 'Red', child: Text('Red')),
+                  DropdownMenuItem(value: 'Blue', child: Text('Blue')),
+                  DropdownMenuItem(value: 'Green', child: Text('Green')),
+                ],
+                onChanged: (_) {},
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 16),
         const Text(
           'Description',
           style: TextStyle(
@@ -85,6 +119,32 @@ class ProductPage extends StatelessWidget {
           product?.description ??
               'This is a placeholder description for the product. Students should replace this with real product information and implement proper data management.',
           style: const TextStyle(fontSize: 16, color: Colors.grey, height: 1.5),
+        ),
+
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF4d2963)),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 14.0),
+                  child: Text('Add to cart'),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () {},
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 14.0),
+                  child: Text('Buy now'),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );

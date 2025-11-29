@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/models/product.dart';
+import 'package:union_shop/services/cart_service.dart';
 
 class ProductPage extends StatelessWidget {
   final Product? product;
@@ -126,7 +127,12 @@ class ProductPage extends StatelessWidget {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  final prod = product;
+                  if (prod == null) return;
+                  CartService.instance.addItem(prod, qty: 1);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added 1 × ${prod.title} to cart')));
+                },
                 style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF4d2963)),
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 14.0),

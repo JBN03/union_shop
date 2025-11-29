@@ -104,14 +104,26 @@ class Header extends StatelessWidget {
                                   Positioned(
                                     right: 4,
                                     top: 4,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
-                                      constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
-                                      child: Center(
-                                        child: Text(
-                                          '$count',
-                                          style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
+                                    child: MouseRegion(
+                                      cursor: SystemMouseCursors.click,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (onCart != null) {
+                                            onCart!();
+                                          } else {
+                                            Navigator.pushNamed(context, '/cart');
+                                          }
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
+                                          constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+                                          child: Center(
+                                            child: Text(
+                                              '$count',
+                                              style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),

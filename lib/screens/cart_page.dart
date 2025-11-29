@@ -137,9 +137,9 @@ class CartPage extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         final orderId = DateTime.now().millisecondsSinceEpoch.toString();
+                        final total = cart.totalPrice;
                         cart.clear();
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Order placed — ID: $orderId')));
-                        Navigator.pushNamed(context, '/');
+                        Navigator.pushNamed(context, '/checkout-success', arguments: {'orderId': orderId, 'total': total});
                       },
                       child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 12.0),

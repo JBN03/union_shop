@@ -162,23 +162,52 @@ class ProductPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(24),
-              child: isDesktop
-                  ? Row(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final isWide = constraints.maxWidth >= 800;
+                  if (isWide) {
+                    const double imageMaxWidth = 480.0;
+                    return Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(flex: 1, child: productImage),
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: imageMaxWidth,
+                            maxHeight: constraints.maxHeight * 0.8,
+                          ),
+                          child: AspectRatio(
+                            aspectRatio: 4 / 3,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                product?.imageUrl ??
+                                    'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+                                fit: BoxFit.contain,
+                                errorBuilder: (c, e, s) => Container(color: Colors.grey[300]),
+                              ),
+                            ),
+                          ),
+                        ),
                         const SizedBox(width: 24),
-                        Expanded(flex: 1, child: productDetails),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: productDetails,
+                          ),
+                        ),
                       ],
-                    )
-                  : Column(
+                    );
+                  } else {
+                    return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         productImage,
                         const SizedBox(height: 24),
                         productDetails,
                       ],
-                    ),
+                    );
+                  }
+                },
+              ),
             ),
             const Footer(),
           ],

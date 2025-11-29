@@ -166,35 +166,56 @@ class ProductPage extends StatelessWidget {
                 builder: (context, constraints) {
                   final isWide = constraints.maxWidth >= 800;
                   if (isWide) {
+                    // layout parameters for desktop
                     const double imageMaxWidth = 480.0;
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: imageMaxWidth,
-                            maxHeight: constraints.maxHeight * 0.8,
-                          ),
-                          child: AspectRatio(
-                            aspectRatio: 4 / 3,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                product?.imageUrl ??
-                                    'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
-                                fit: BoxFit.contain,
-                                errorBuilder: (c, e, s) => Container(color: Colors.grey[300]),
+                    const double detailsMaxWidth = 520.0;
+                    const double spacing = 24.0;
+
+                    // compute shift so the CENTER of the gap aligns with the screen center
+                    final double shift = (detailsMaxWidth - imageMaxWidth) / 2.0;
+                    final double groupMaxWidth = imageMaxWidth + spacing + detailsMaxWidth;
+
+                    return Center(
+                      child: Transform.translate(
+                        offset: Offset(shift, 0),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(maxWidth: groupMaxWidth),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // image on the left (constrained)
+                              ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: imageMaxWidth,
+                                  maxHeight: constraints.maxHeight * 0.8,
+                                ),
+                                child: AspectRatio(
+                                  aspectRatio: 4 / 3,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.network(
+                                      product?.imageUrl ??
+                                          'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+                                      fit: BoxFit.contain,
+                                      errorBuilder: (c, e, s) => Container(color: Colors.grey[300]),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+
+                              const SizedBox(width: spacing),
+
+                              // details on the right with a max width
+                              ConstrainedBox(
+                                constraints: BoxConstraints(maxWidth: detailsMaxWidth),
+                                child: SingleChildScrollView(
+                                  child: productDetails,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(width: 24),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: productDetails,
-                          ),
-                        ),
-                      ],
+                      ),
                     );
                   } else {
                     return Column(

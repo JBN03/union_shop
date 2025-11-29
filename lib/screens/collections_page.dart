@@ -13,6 +13,11 @@ class CollectionsPage extends StatefulWidget {
 
 class _CollectionsPageState extends State<CollectionsPage> {
   late Future<List<Collection>> _collectionsFuture;
+  List<Collection> _allCollections = [];
+  String _search = '';
+  String _sort = 'Title A→Z';
+  int _page = 0;
+  int _pageSize = 4;
 
   @override
   void initState() {
@@ -48,46 +53,125 @@ class _CollectionsPageState extends State<CollectionsPage> {
                       if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       }
-                      final collections = snapshot.data ?? [];
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          childAspectRatio: 3 / 2,
-                        ),
-                        itemCount: collections.length,
-                        itemBuilder: (context, index) {
-                          final c = collections[index];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/collection', arguments: {'id': c.id, 'title': c.title});
-                            },
-                            child: Card(
-                              clipBehavior: Clip.hardEdge,
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  Image.network(c.imageUrl, fit: BoxFit.cover),
-                                  Container(
-                                    alignment: Alignment.bottomLeft,
-                                    padding: const EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [Colors.transparent, Colors.black.withOpacity(0.5)],
-                                      ),
-                                    ),
-                                    child: Text(c.title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                      _allCollections = snapshot.data ?? [];
+
+                      // apply search filter
+                      final filtered = _allCollections.where((c) => c.title.toLowerCase().contains(_search.toLowerCase())).toList();
+
+                      // apply sort
+                      if (_sort == 'Title A→Z') {
+                        filtered.sort((a, b) => a.title.compareTo(b.title));
+                      } else if (_sort == 'Title Z→A') {
+                        filtered.sort((a, b) => b.title.compareTo(a.title));
+                      }
+
+                      final total = filtered.length;
+                      final pageCount = (total / _pageSize).ceil();
+                      if (_page >= pageCount) _page = (pageCount - 1).clamp(0, pageCount);
+
+                      final start = _page * _pageSize;
+                      final end = (start + _pageSize).clamp(0, total);
+                      final pageItems = (start < end) ? filtered.sublist(start, end) : <Collection>[];
+
+                      // only keep the sort control on the collections overview page
+                      final controls = Row(
+                        children: [
+                          const Expanded(child: SizedBox()),
+                          DropdownButton<String>(
+                            value: _sort,
+                            items: const [
+                              DropdownMenuItem(value: 'Title A→Z', child: Text('Title A→Z')),
+                              DropdownMenuItem(value: 'Title Z→A', child: Text('Title Z→A')),
+                            ],
+                            onChanged: (v) => setState(() { _sort = v ?? _sort; }),
+                          ),
+                        ],
+                      );
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          controls,
+                          const SizedBox(height: 12),
+                          LayoutBuilder(builder: (context, constraints) {
+                            final width = constraints.maxWidth;
+                            final spacing = 16.0;
+
+                            // follow home_screen sizing: compute a target card width to keep cards similar
+                            final desiredFourColWidth = (width - spacing * 3) / 4;
+                            final targetCardWidth = (desiredFourColWidth.clamp(140.0, 360.0));
+
+                            final cross = width >= 1000 ? 3 : (width >= 600 ? 2 : 1);
+
+                            return Center(
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(maxWidth: targetCardWidth * cross + spacing * (cross - 1)),
+                                child: GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: pageItems.length,
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: cross,
+                                    crossAxisSpacing: spacing,
+                                    mainAxisSpacing: spacing,
+                                    childAspectRatio: 0.85,
                                   ),
-                                ],
+                                  itemBuilder: (context, index) {
+                                    final c = pageItems[index];
+                                    return Center(
+                                      child: SizedBox(
+                                        width: targetCardWidth,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.pushNamed(context, '/collection', arguments: {'id': c.id, 'title': c.title});
+                                          },
+                                          child: Card(
+                                            clipBehavior: Clip.hardEdge,
+                                            child: Stack(
+                                              children: [
+                                                AspectRatio(
+                                                  aspectRatio: 1,
+                                                  child: c.imageUrl.isNotEmpty
+                                                      ? Image.network(c.imageUrl, fit: BoxFit.cover)
+                                                      : Container(color: Colors.grey[200]),
+                                                ),
+                                                Positioned(
+                                                  left: 12,
+                                                  right: 12,
+                                                  bottom: 12,
+                                                  child: Text(c.title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            );
+                          }),
+
+                          const SizedBox(height: 12),
+                          // numeric pagination buttons
+                          if (pageCount > 1)
+                            Center(
+                              child: Wrap(
+                                spacing: 8,
+                                children: List.generate(pageCount, (i) {
+                                  final pageIndex = i;
+                                  return OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      backgroundColor: _page == pageIndex ? Colors.grey[200] : null,
+                                    ),
+                                    onPressed: () => setState(() => _page = pageIndex),
+                                    child: Text('${pageIndex + 1}'),
+                                  );
+                                }),
                               ),
                             ),
-                          );
-                        },
+                        ],
                       );
                     },
                   ),

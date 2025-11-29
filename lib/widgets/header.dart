@@ -54,13 +54,13 @@ class Header extends StatelessWidget {
               if (showLinks) ...[
                 Row(
                   children: [
-                    TextButton(onPressed: () {}, child: const Text('Home', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600))),
+                    TextButton(onPressed: () => Navigator.pushNamed(context, '/'), child: const Text('Home', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600))),
                     const SizedBox(width: 8),
-                    TextButton(onPressed: () {}, child: const Text('Collections', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600))),
+                    TextButton(onPressed: () => Navigator.pushNamed(context, '/collections'), child: const Text('Collections', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600))),
                     const SizedBox(width: 8),
-                    TextButton(onPressed: () {}, child: const Text('Sale', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600))),
+                    TextButton(onPressed: () => Navigator.pushNamed(context, '/sale'), child: const Text('Sale', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600))),
                     const SizedBox(width: 8),
-                    TextButton(onPressed: () {}, child: const Text('About', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600))),
+                    TextButton(onPressed: () => Navigator.pushNamed(context, '/about'), child: const Text('About', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600))),
                   ],
                 ),
                 const Spacer(),

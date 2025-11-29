@@ -50,20 +50,38 @@ class Header extends StatelessWidget {
 
               const SizedBox(width: 16),
 
-              // Desktop: show nav links; Mobile: hide and use menu button
+              // Desktop: center nav links; Mobile: hide links and use menu button
               if (showLinks) ...[
-                Row(
-                  children: [
-                    TextButton(onPressed: () => Navigator.pushNamed(context, '/'), child: const Text('Home', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600))),
-                    const SizedBox(width: 8),
-                    TextButton(onPressed: () => Navigator.pushNamed(context, '/collections'), child: const Text('Collections', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600))),
-                    const SizedBox(width: 8),
-                    TextButton(onPressed: () => Navigator.pushNamed(context, '/sale'), child: const Text('Sale', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600))),
-                    const SizedBox(width: 8),
-                    TextButton(onPressed: () => Navigator.pushNamed(context, '/about'), child: const Text('About', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600))),
-                  ],
+                // center the nav links between logo and the icons
+                Expanded(
+                  child: Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextButton(
+                          onPressed: () => Navigator.pushNamed(context, '/'),
+                          child: const Text('Home', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                        ),
+                        const SizedBox(width: 12),
+                        TextButton(
+                          onPressed: () => Navigator.pushNamed(context, '/collections'),
+                          child: const Text('Collections', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                        ),
+                        const SizedBox(width: 12),
+                        TextButton(
+                          onPressed: () => Navigator.pushNamed(context, '/sale'),
+                          child: const Text('Sale', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                        ),
+                        const SizedBox(width: 12),
+                        TextButton(
+                          onPressed: () => Navigator.pushNamed(context, '/about'),
+                          child: const Text('About', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                const Spacer(),
+                // icons remain aligned to the right
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

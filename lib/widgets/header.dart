@@ -99,11 +99,7 @@ class Header extends StatelessWidget {
                             IconButton(
                               icon: const Icon(Icons.shopping_bag_outlined, size: 20, color: Colors.grey),
                               onPressed: () {
-                                // call provided callback if any, then always navigate to /cart
                                 if (onCart != null) onCart!();
-                                // debug log to help tracing taps during development
-                                // ignore: avoid_print
-                                print('Header: cart icon pressed, total=${CartService.instance.totalItems}');
                                 Navigator.pushNamed(context, '/cart');
                               },
                             ),
@@ -116,8 +112,6 @@ class Header extends StatelessWidget {
                                   child: GestureDetector(
                                     onTap: () {
                                       if (onCart != null) onCart!();
-                                      // ignore: avoid_print
-                                      print('Header: cart badge tapped, total=${CartService.instance.totalItems}');
                                       Navigator.pushNamed(context, '/cart');
                                     },
                                     child: Container(

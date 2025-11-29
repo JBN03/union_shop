@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:union_shop/widgets/header.dart';
+import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/services/cart_service.dart';
 
-import '../widgets/header.dart';
-import '../widgets/footer.dart';
-import '../services/cart_service.dart';
-
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
 
   @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  @override
   Widget build(BuildContext context) {
     final cart = CartService.instance;
-
-    return Scaffold(
+    return Focus(
+      autofocus: true,
+      onKey: (FocusNode node, RawKeyEvent event) {
+        if (event is RawKeyDownEvent && event.logicalKey == LogicalKeyboardKey.backspace) {
+          if (Navigator.canPop(context)) Navigator.pop(context);
+          return KeyEventResult.handled;
+        }
+        return KeyEventResult.ignored;
+      },
+      child: Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(72),
         child: Header(
@@ -26,6 +39,7 @@ class CartPage extends StatelessWidget {
         animation: cart,
         builder: (context, _) {
           final items = cart.items;
+
           if (items.isEmpty) {
             return Center(
               child: Padding(
@@ -71,6 +85,22 @@ class CartPage extends StatelessWidget {
                             children: [
                               Text(it.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                               const SizedBox(height: 6),
+                              Row(
+                                children: [
+                                  Text('SKU: ${it.id}', style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                                  const SizedBox(width: 12),
+                                  Text('Product: ${it.productId}', style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              if (it.attributes != null && it.attributes!.isNotEmpty) ...[
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 4,
+                                  children: it.attributes!.entries.map((e) => Chip(label: Text('${e.key}: ${e.value}'))).toList(),
+                                ),
+                                const SizedBox(height: 6),
+                              ],
                               Text('£${it.price.toStringAsFixed(2)}', style: const TextStyle(color: Colors.black87)),
                               const SizedBox(height: 6),
                               Row(
@@ -149,11 +179,14 @@ class CartPage extends StatelessWidget {
                   ],
                 ),
               ),
+              // Footer flows with the page content
+              const Footer(),
             ],
           );
         },
       ),
-      bottomNavigationBar: const Footer(),
+      // Footer intentionally placed in body; keep bottomNavigationBar empty.
+      ),
     );
   }
 }

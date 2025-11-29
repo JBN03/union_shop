@@ -9,46 +9,50 @@ class ProductService {
   static final ProductService instance = ProductService._internal();
 
   final List<Collection> _collections = [
-    Collection(id: 'new', title: 'New Arrivals', imageUrl: 'https://via.placeholder.com/300x200?text=New+Arrivals'),
-    Collection(id: 'summer', title: 'Summer Collection', imageUrl: 'https://via.placeholder.com/300x200?text=Summer'),
-    Collection(id: 'print', title: 'Print Shack', imageUrl: 'https://via.placeholder.com/300x200?text=Print+Shack'),
-    Collection(id: 'sale', title: 'Sale', imageUrl: 'https://via.placeholder.com/300x200?text=Sale'),
+    Collection(id: 'new', title: 'New Arrivals', imageUrl: ''),
+    Collection(id: 'summer', title: 'Summer Collection', imageUrl: ''),
+    Collection(id: 'print', title: 'Print Shack', imageUrl: ''),
+    Collection(id: 'sale', title: 'Sale', imageUrl: ''),
   ];
 
   final Map<String, List<Product>> _productsByCollection = {
     'new': List.generate(
       6,
       (i) => Product(
+        id: 'new-${i + 1}',
         title: 'New Product ${i + 1}',
         price: '£${12 + i}',
-        imageUrl: 'https://via.placeholder.com/400x400?text=New+${i + 1}',
+        imageUrl: '',
         description: 'Description for new product ${i + 1}',
       ),
     ),
     'summer': List.generate(
       6,
       (i) => Product(
+        id: 'summer-${i + 1}',
         title: 'Summer Product ${i + 1}',
         price: '£${10 + i}',
-        imageUrl: 'https://via.placeholder.com/400x400?text=Summer+${i + 1}',
+        imageUrl: '',
         description: 'Description for summer product ${i + 1}',
       ),
     ),
     'print': List.generate(
       4,
       (i) => Product(
+        id: 'print-${i + 1}',
         title: 'Print Product ${i + 1}',
         price: '£${8 + i}',
-        imageUrl: 'https://via.placeholder.com/400x400?text=Print+${i + 1}',
+        imageUrl: '',
         description: 'Description for print product ${i + 1}',
       ),
     ),
     'sale': List.generate(
       3,
       (i) => Product(
+        id: 'sale-${i + 1}',
         title: 'Sale Product ${i + 1}',
         price: '£${5 + i}',
-        imageUrl: 'https://via.placeholder.com/400x400?text=Sale+${i + 1}',
+        imageUrl: '',
         description: 'Sale product ${i + 1}',
       ),
     ),

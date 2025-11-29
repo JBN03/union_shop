@@ -24,6 +24,7 @@ class ProductCard extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap ?? () {
         final product = Product(
+          id: title.hashCode.toString(),
           title: title,
           price: price,
           imageUrl: imageUrl,

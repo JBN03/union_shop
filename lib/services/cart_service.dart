@@ -1,89 +1,80 @@
 import 'package:flutter/foundation.dart';
-
-import '../models/cart_item.dart';
-import '../models/product.dart';
+import 'package:union_shop/models/cart_item.dart';
+import 'package:union_shop/models/product.dart';
 
 class CartService extends ChangeNotifier {
   CartService._internal();
   static final CartService instance = CartService._internal();
 
-  final Map<String, CartItem> _itemsById = {}; // key: cartItem.id
+  final List<CartItem> _items = [];
 
-  // Helper: find item by productId
-  CartItem? _findByProductId(String productId) {
-    try {
-      return _itemsById.values.firstWhere((it) => it.productId == productId);
-    } catch (_) {
-      return null;
-    }
-  }
+  // Expose an unmodifiable view of items
+  List<CartItem> get items => List.unmodifiable(_items);
 
-  num _parsePrice(String p) {
+  int get totalItems => _items.fold<int>(0, (s, it) => s + it.quantity);
+
+  double get totalPrice => _items.fold<double>(0.0, (s, it) => s + (it.price.toDouble() * it.quantity));
+
+  double _parsePrice(String p) {
     final cleaned = p.replaceAll(RegExp(r'[^0-9\.-]'), '');
-    return num.tryParse(cleaned) ?? 0;
+    return double.tryParse(cleaned) ?? 0.0;
   }
 
-  // Public getters
-  List<CartItem> get items => List.unmodifiable(_itemsById.values);
-
-  int get totalItems => _itemsById.values.fold<int>(0, (s, it) => s + it.quantity);
-
-  num get totalPrice => _itemsById.values.fold<num>(0, (s, it) => s + it.price * it.quantity);
-
-  // Add item. If product already in cart, increase quantity.
-  void addItem(Product product, {int qty = 1}) {
+  // Add item — merge with existing item if productId + attributes match
+  void addItem(Product product, {int qty = 1, Map<String, String>? attributes}) {
     if (qty <= 0) return;
     final productKey = product.title;
-    final existing = _findByProductId(productKey);
-    if (existing != null) {
-      final updated = existing.copyWith(quantity: existing.quantity + qty);
-      _itemsById[existing.id] = updated;
+
+    final idx = _items.indexWhere((it) => it.productId == productKey && mapEquals(it.attributes ?? {}, attributes ?? {}));
+    if (idx != -1) {
+      final existing = _items[idx];
+      _items[idx] = existing.copyWith(quantity: existing.quantity + qty);
     } else {
-      final id = DateTime.now().millisecondsSinceEpoch.toString();
-      final cartItem = CartItem(
+      final id = DateTime.now().microsecondsSinceEpoch.toString();
+      final item = CartItem(
         id: id,
         productId: productKey,
         title: product.title,
         price: _parsePrice(product.price),
         imageUrl: product.imageUrl,
         quantity: qty,
+        attributes: attributes,
       );
-      _itemsById[id] = cartItem;
+      _items.add(item);
     }
+
+    // state changed
     notifyListeners();
   }
 
-  // Remove by cart item id
-  void removeItem(String cartItemId) {
-    if (_itemsById.containsKey(cartItemId)) {
-      _itemsById.remove(cartItemId);
-      notifyListeners();
-    }
+  void removeItem(String id) {
+    final initialLength = _items.length;
+    _items.removeWhere((it) => it.id == id);
+    if (_items.length != initialLength) notifyListeners();
   }
 
-  // Update quantity (set). If qty <= 0 remove the item.
-  void updateQuantity(String cartItemId, int qty) {
-    if (!_itemsById.containsKey(cartItemId)) return;
+  void updateQuantity(String id, int qty) {
+    final idx = _items.indexWhere((it) => it.id == id);
+    if (idx == -1) return;
     if (qty <= 0) {
-      _itemsById.remove(cartItemId);
+      _items.removeAt(idx);
     } else {
-      final existing = _itemsById[cartItemId]!;
-      _itemsById[cartItemId] = existing.copyWith(quantity: qty);
+      final existing = _items[idx];
+      _items[idx] = existing.copyWith(quantity: qty);
     }
     notifyListeners();
   }
 
-  // Clear cart
   void clear() {
-    if (_itemsById.isNotEmpty) {
-      _itemsById.clear();
+    if (_items.isNotEmpty) {
+      _items.clear();
       notifyListeners();
     }
   }
 
-  // For convenience: find cartItemId for productId (or null)
-  String? cartItemIdForProduct(String productId) {
-    final found = _findByProductId(productId);
-    return found?.id;
+  // convenience: find cart item id for product+attributes
+  String? cartItemIdForProduct(String productId, [Map<String, String>? attributes]) {
+    final idx = _items.indexWhere((it) => it.productId == productId && mapEquals(it.attributes ?? {}, attributes ?? {}));
+    return idx == -1 ? null : _items[idx].id;
   }
 }

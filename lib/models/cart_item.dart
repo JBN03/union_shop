@@ -7,6 +7,7 @@ class CartItem {
   final num price;
   final String? imageUrl;
   final int quantity;
+  final Map<String, String>? attributes;
 
   CartItem({
     required this.id,
@@ -15,6 +16,7 @@ class CartItem {
     required this.price,
     this.imageUrl,
     required this.quantity,
+    this.attributes,
   });
 
   CartItem copyWith({
@@ -24,6 +26,7 @@ class CartItem {
     num? price,
     String? imageUrl,
     int? quantity,
+    Map<String, String>? attributes,
   }) {
     return CartItem(
       id: id ?? this.id,
@@ -32,6 +35,7 @@ class CartItem {
       price: price ?? this.price,
       imageUrl: imageUrl ?? this.imageUrl,
       quantity: quantity ?? this.quantity,
+      attributes: attributes ?? this.attributes,
     );
   }
 
@@ -43,6 +47,7 @@ class CartItem {
       price: json['price'] as num,
       imageUrl: json['imageUrl'] as String?,
       quantity: (json['quantity'] as num).toInt(),
+      attributes: json['attributes'] == null ? null : Map<String, String>.from(json['attributes'] as Map),
     );
   }
 
@@ -54,11 +59,12 @@ class CartItem {
       'price': price,
       'imageUrl': imageUrl,
       'quantity': quantity,
+      'attributes': attributes,
     };
   }
 
   @override
   String toString() {
-    return 'CartItem(id: $id, productId: $productId, title: $title, price: $price, quantity: $quantity)';
+    return 'CartItem(id: $id, productId: $productId, title: $title, price: $price, quantity: $quantity, attributes: $attributes)';
   }
 }

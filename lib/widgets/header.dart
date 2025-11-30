@@ -32,18 +32,21 @@ class Header extends StatelessWidget {
           final showLinks = constraints.maxWidth >= 800;
           return Row(
             children: [
-              // Logo
-              GestureDetector(
-                onTap: onLogoTap,
-                child: SizedBox(
-                  width: 48,
-                  height: 48,
-                  child: Image.network(
-                    'https://shop.upsu.net/cdn/shop/files/upsu_300x300.png?v=1614735854',
-                    fit: BoxFit.contain,
-                    errorBuilder: (ctx, err, st) => Container(
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.image_not_supported, color: Colors.grey),
+              // Logo (larger, clickable)
+              MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: onLogoTap,
+                  child: SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: Image.network(
+                      'https://shop.upsu.net/cdn/shop/files/upsu_300x300.png?v=1614735854',
+                      fit: BoxFit.contain,
+                      errorBuilder: (ctx, err, st) => Container(
+                        color: Colors.grey[300],
+                        child: const Icon(Icons.image_not_supported, color: Colors.grey),
+                      ),
                     ),
                   ),
                 ),
@@ -87,7 +90,14 @@ class Header extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(icon: const Icon(Icons.search, size: 20, color: Colors.grey), onPressed: onSearch),
-                    IconButton(icon: const Icon(Icons.person_outline, size: 20, color: Colors.grey), onPressed: onAccount),
+                    IconButton(
+                      icon: const Icon(Icons.person_outline, size: 20, color: Colors.grey),
+                      onPressed: () {
+                        // Always navigate to login so the icon works from any screen.
+                        if (onAccount != null) onAccount!();
+                        Navigator.pushNamed(context, '/login');
+                      },
+                    ),
                     // Cart icon with badge that listens to CartService
                     AnimatedBuilder(
                       animation: CartService.instance,

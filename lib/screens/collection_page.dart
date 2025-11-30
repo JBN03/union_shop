@@ -17,6 +17,7 @@ class _CollectionPageState extends State<CollectionPage> {
   late String collectionId;
   late String title;
   late Future<List<Product>> _productsFuture;
+  // (Pagination intentionally removed for now)
 
   @override
   void didChangeDependencies() {
@@ -97,38 +98,47 @@ class _CollectionPageState extends State<CollectionPage> {
 
                         final crossAxisCount = width > 800 ? 3 : (width > 400 ? 2 : 1);
 
+                        // no pagination: show all products for now
+                        final pageItems = products;
+
                         return Center(
                           child: ConstrainedBox(
                             constraints: BoxConstraints(maxWidth: targetCardWidth * crossAxisCount + spacing * (crossAxisCount - 1)),
-                            child: GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: products.length,
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: crossAxisCount,
-                                crossAxisSpacing: spacing,
-                                mainAxisSpacing: spacing,
-                                childAspectRatio: 0.85,
-                              ),
-                              itemBuilder: (context, index) {
-                                final p = products[index];
-                                return Center(
-                                  child: SizedBox(
-                                    width: targetCardWidth,
-                                    child: GestureDetector(
-                                      onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (ctx) => ProductPage(product: p)),
-                                      ),
-                                      child: ProductCard(
-                                        title: p.title,
-                                        price: p.price,
-                                        imageUrl: p.imageUrl,
-                                      ),
-                                    ),
+                            child: Column(
+                              children: [
+                                GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: pageItems.length,
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: crossAxisCount,
+                                    crossAxisSpacing: spacing,
+                                    mainAxisSpacing: spacing,
+                                    childAspectRatio: 0.85,
                                   ),
-                                );
-                              },
+                                  itemBuilder: (context, index) {
+                                    final p = pageItems[index];
+                                    return Center(
+                                      child: SizedBox(
+                                        width: targetCardWidth,
+                                        child: GestureDetector(
+                                          onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (ctx) => ProductPage(product: p)),
+                                          ),
+                                          child: ProductCard(
+                                            title: p.title,
+                                            price: p.price,
+                                            imageUrl: p.imageUrl,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+
+                                const SizedBox(height: 12),
+                              ],
                             ),
                           ),
                         );

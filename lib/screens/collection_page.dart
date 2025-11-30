@@ -17,7 +17,14 @@ class _CollectionPageState extends State<CollectionPage> {
   late String collectionId;
   late String title;
   late Future<List<Product>> _productsFuture;
-  // (Pagination intentionally removed for now)
+  // pagination state for individual collection pages
+  int _page = 0;
+  int _pageSize = 12;
+
+  void _goToPage(int page, int pageCount) {
+    final next = page < 0 ? 0 : (page >= pageCount ? pageCount - 1 : page);
+    setState(() => _page = next);
+  }
 
   @override
   void didChangeDependencies() {
@@ -98,8 +105,13 @@ class _CollectionPageState extends State<CollectionPage> {
 
                         final crossAxisCount = width > 800 ? 3 : (width > 400 ? 2 : 1);
 
-                        // no pagination: show all products for now
-                        final pageItems = products;
+                        // apply client-side pagination for the collection product list
+                        final total = products.length;
+                        final pageCount = total == 0 ? 0 : (total / _pageSize).ceil();
+                        if (pageCount > 0 && _page >= pageCount) _page = pageCount - 1;
+                        final start = (_page * _pageSize).clamp(0, total);
+                        final end = (start + _pageSize).clamp(0, total);
+                        final pageItems = (start < end) ? products.sublist(start, end) : <Product>[];
 
                         return Center(
                           child: ConstrainedBox(
@@ -138,6 +150,38 @@ class _CollectionPageState extends State<CollectionPage> {
                                 ),
 
                                 const SizedBox(height: 12),
+                                // Pagination controls (arrows + numbered buttons)
+                                Center(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.chevron_left),
+                                        onPressed: (pageCount > 1 && _page > 0) ? () => _goToPage(_page - 1, pageCount) : null,
+                                      ),
+                                      Wrap(
+                                        spacing: 6,
+                                        children: List.generate(pageCount > 0 ? pageCount : 1, (i) {
+                                          final pageIndex = i;
+                                          final disabled = pageCount <= 1 || _page == pageIndex;
+                                          return OutlinedButton(
+                                            style: OutlinedButton.styleFrom(
+                                              backgroundColor: _page == pageIndex ? Colors.grey[200] : null,
+                                              minimumSize: const Size(36, 36),
+                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                            ),
+                                            onPressed: disabled ? null : () => _goToPage(pageIndex, pageCount),
+                                            child: Text('${pageIndex + 1}'),
+                                          );
+                                        }),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.chevron_right),
+                                        onPressed: (pageCount > 1 && _page < pageCount - 1) ? () => _goToPage(_page + 1, pageCount) : null,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),

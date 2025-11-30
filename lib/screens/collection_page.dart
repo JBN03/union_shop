@@ -3,6 +3,8 @@ import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/models/product.dart';
+import 'package:union_shop/widgets/product_card.dart';
+import 'package:union_shop/screens/product_page.dart';
 
 class CollectionPage extends StatefulWidget {
   const CollectionPage({Key? key}) : super(key: key);
@@ -84,40 +86,53 @@ class _CollectionPageState extends State<CollectionPage> {
                       }
                       if (snapshot.hasError) return Text('Error: ${snapshot.error}');
                       final products = snapshot.data ?? [];
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: MediaQuery.of(context).size.width > 800 ? 3 : (MediaQuery.of(context).size.width > 400 ? 2 : 1),
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          childAspectRatio: 0.78,
-                        ),
-                        itemCount: products.length,
-                        itemBuilder: (context, index) {
-                          final p = products[index];
-                          return Card(
-                            clipBehavior: Clip.hardEdge,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Expanded(child: Image.network(p.imageUrl, fit: BoxFit.cover)),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(p.title, style: const TextStyle(fontWeight: FontWeight.w700)),
-                                      const SizedBox(height: 6),
-                                      Text(p.price, style: const TextStyle(color: Color(0xFF4d2963), fontWeight: FontWeight.bold)),
-                                    ],
+
+                      return LayoutBuilder(builder: (context, constraints) {
+                        final width = constraints.maxWidth;
+                        final spacing = 16.0;
+
+                        // compute a target card width similar to HomeScreen logic
+                        final desiredFourColWidth = (width - spacing * 3) / 4;
+                        final targetCardWidth = desiredFourColWidth.clamp(140.0, 360.0);
+
+                        final crossAxisCount = width > 800 ? 3 : (width > 400 ? 2 : 1);
+
+                        return Center(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: targetCardWidth * crossAxisCount + spacing * (crossAxisCount - 1)),
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: products.length,
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: crossAxisCount,
+                                crossAxisSpacing: spacing,
+                                mainAxisSpacing: spacing,
+                                childAspectRatio: 0.85,
+                              ),
+                              itemBuilder: (context, index) {
+                                final p = products[index];
+                                return Center(
+                                  child: SizedBox(
+                                    width: targetCardWidth,
+                                    child: GestureDetector(
+                                      onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (ctx) => ProductPage(product: p)),
+                                      ),
+                                      child: ProductCard(
+                                        title: p.title,
+                                        price: p.price,
+                                        imageUrl: p.imageUrl,
+                                      ),
+                                    ),
                                   ),
-                                )
-                              ],
+                                );
+                              },
                             ),
-                          );
-                        },
-                      );
+                          ),
+                        );
+                      });
                     },
                   ),
                 ],

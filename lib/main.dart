@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/screens/product_page.dart';
-import 'package:union_shop/widgets/product_card.dart';
 import 'package:union_shop/screens/home_screen.dart';
 import 'package:union_shop/screens/about_us_page.dart';
 import 'package:union_shop/screens/collections_page.dart';

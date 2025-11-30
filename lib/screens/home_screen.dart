@@ -17,8 +17,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine screen width
-    final screenWidth = MediaQuery.of(context).size.width;
+    // screen width is available from constraints where needed; remove unused local variable
 
     return Scaffold(
       body: SingleChildScrollView(

@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+// No Flutter foundation imports required here
 
 class CartItem {
   final String id;

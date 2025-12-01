@@ -168,8 +168,23 @@ class _CartPageState extends State<CartPage> {
                       onPressed: () {
                         final orderId = DateTime.now().millisecondsSinceEpoch.toString();
                         final total = cart.totalPrice;
+
+                        // Build a serializable order items list to show on the success page
+                        final orderItems = cart.items.map((it) => {
+                              'title': it.title,
+                              'qty': it.quantity,
+                              'unitPrice': it.price,
+                              'lineTotal': it.price * it.quantity,
+                            }).toList();
+
+                        // Clear cart after capturing the order snapshot
                         cart.clear();
-                        Navigator.pushNamed(context, '/checkout-success', arguments: {'orderId': orderId, 'total': total});
+
+                        Navigator.pushNamed(context, '/checkout-success', arguments: {
+                          'orderId': orderId,
+                          'total': total,
+                          'items': orderItems,
+                        });
                       },
                       child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 12.0),

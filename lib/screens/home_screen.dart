@@ -114,8 +114,10 @@ class HomeScreen extends StatelessWidget {
                   LayoutBuilder(
                     builder: (context, constraints) {
                       final width = constraints.maxWidth;
-                      final crossAxisCount = width >= 600 ? 2 : 1; // 2 columns desktop, 1 mobile
-                      final spacing = 16.0;
+                      // Use a responsive column count but ensure mobile shows 2 columns
+                        final spacing = 32.0; // doubled spacing between product cards
+                        // Force a 2x2 layout (2 columns) for consistency across devices
+                        final crossAxisCount = 2;
 
                       final products = List.generate(4, (i) => {
                             'title': 'Placeholder Product ${i + 1}',
@@ -123,15 +125,16 @@ class HomeScreen extends StatelessWidget {
                             'image':
                                 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
                           });
-
-                      // Compute width as if there were 4 columns to preserve skeleton sizing
-                      final desiredFourColWidth = (width - spacing * 3) / 4;
-                      final targetCardWidth = math.max(140.0, math.min(desiredFourColWidth, 360.0));
+                      // Compute a sensible target card width based on the chosen column count
+                      final totalSpacing = spacing * (crossAxisCount - 1);
+                      final desiredCardWidth = (width - totalSpacing) / crossAxisCount;
+                      final targetCardWidth = math.max(140.0, math.min(desiredCardWidth, 360.0));
 
                       // Center the grid and cap its total width so cards don't expand indefinitely
+                      final maxGridWidth = targetCardWidth * crossAxisCount + totalSpacing;
                       return Center(
                         child: ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: targetCardWidth * 2 + spacing),
+                          constraints: BoxConstraints(maxWidth: maxGridWidth),
                           child: GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -164,6 +167,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
+            const SizedBox(height: 56),
             const Footer(),
           ],
         ),

@@ -54,6 +54,8 @@ class Header extends StatelessWidget {
 
               const SizedBox(width: 16),
 
+              const SizedBox(width: 0),
+
               // Desktop: center nav links; Mobile: hide links and use menu button
               if (showLinks) ...[
                 // center the nav links between logo and the icons
@@ -92,11 +94,7 @@ class Header extends StatelessWidget {
                     IconButton(icon: const Icon(Icons.search, size: 20, color: Colors.grey), onPressed: onSearch),
                     IconButton(
                       icon: const Icon(Icons.person_outline, size: 20, color: Colors.grey),
-                      onPressed: () {
-                        // Always navigate to login so the icon works from any screen.
-                        if (onAccount != null) onAccount!();
-                        Navigator.pushNamed(context, '/login');
-                      },
+                        onPressed: onAccount,
                     ),
                     // Cart icon with badge that listens to CartService
                     AnimatedBuilder(
@@ -146,7 +144,10 @@ class Header extends StatelessWidget {
                 ),
               ] else ...[
                 const Spacer(),
-                IconButton(icon: const Icon(Icons.menu, size: 24, color: Colors.grey), onPressed: onMenu),
+                IconButton(
+                  icon: const Icon(Icons.menu, size: 24, color: Colors.grey),
+                  onPressed: onMenu,
+                ),
               ],
             ],
           );

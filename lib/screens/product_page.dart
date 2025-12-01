@@ -16,6 +16,7 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   String selectedSize = 'M';
   String selectedColor = 'Red';
+  int quantity = 1;
 
   void navigateToHome(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
@@ -122,6 +123,45 @@ class _ProductPageState extends State<ProductPage> {
         ),
 
         const SizedBox(height: 20),
+        // Quantity selector
+        Row(
+          children: [
+            const Text('Quantity', style: TextStyle(fontWeight: FontWeight.w600)),
+            const SizedBox(width: 12),
+            Container(
+              decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300), borderRadius: BorderRadius.circular(6)),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.remove, size: 18),
+                    padding: const EdgeInsets.all(8),
+                    onPressed: () {
+                      setState(() {
+                        if (quantity > 1) quantity -= 1;
+                      });
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text('$quantity', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add, size: 18),
+                    padding: const EdgeInsets.all(8),
+                    onPressed: () {
+                      setState(() {
+                        quantity += 1;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 16),
         Row(
           children: [
             Expanded(
@@ -129,13 +169,13 @@ class _ProductPageState extends State<ProductPage> {
                 onPressed: () {
                   final prod = widget.product;
                   if (prod == null) return;
-                  CartService.instance.addItem(prod, qty: 1, attributes: {'Size': selectedSize, 'Color': selectedColor});
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added 1 × ${prod.title} to cart')));
+                  CartService.instance.addItem(prod, qty: quantity, attributes: {'Size': selectedSize, 'Color': selectedColor});
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added $quantity × ${prod.title} to cart')));
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF4d2963)),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 14.0),
-                  child: Text('Add to cart'),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 14.0),
+                  child: Text('Add to cart${quantity > 1 ? ' ($quantity)' : ''}'),
                 ),
               ),
             ),

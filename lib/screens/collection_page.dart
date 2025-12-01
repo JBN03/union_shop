@@ -17,7 +17,7 @@ class _CollectionPageState extends State<CollectionPage> {
   late String collectionId;
   late String title;
   late Future<List<Product>> _productsFuture;
-  // pagination state for individual collection pages
+  
   int _page = 0;
   int _pageSize = 12;
 

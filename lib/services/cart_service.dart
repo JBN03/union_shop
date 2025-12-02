@@ -8,7 +8,7 @@ class CartService extends ChangeNotifier {
 
   final List<CartItem> _items = [];
 
-  // Expose an unmodifiable view of items
+  
   List<CartItem> get items => List.unmodifiable(_items);
 
   int get totalItems => _items.fold<int>(0, (s, it) => s + it.quantity);
@@ -20,7 +20,6 @@ class CartService extends ChangeNotifier {
     return double.tryParse(cleaned) ?? 0.0;
   }
 
-  // Add item — merge with existing item if productId + attributes match
   void addItem(Product product, {int qty = 1, Map<String, String>? attributes}) {
     if (qty <= 0) return;
     final productKey = product.id;
@@ -43,7 +42,7 @@ class CartService extends ChangeNotifier {
       _items.add(item);
     }
 
-    // state changed
+    
     notifyListeners();
   }
 
@@ -72,7 +71,7 @@ class CartService extends ChangeNotifier {
     }
   }
 
-  // convenience: find cart item id for product+attributes
+  
   String? cartItemIdForProduct(String productId, [Map<String, String>? attributes]) {
     final idx = _items.indexWhere((it) => it.productId == productId && mapEquals(it.attributes ?? {}, attributes ?? {}));
     return idx == -1 ? null : _items[idx].id;

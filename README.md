@@ -144,154 +144,116 @@ From the Dimensions menu, select a mobile device preset (e.g., iPhone 12 Pro, Pi
 
 This assessment is worth 55% of the marks for the module's assessment item 1 (the remaining 45% comes from the weekly sign-offs). The mark for the assessment is divided into two components:
 
-- **[Application (functionality) (30%)](#application)**: Demonstrated through a live demo during practical
-- **[Software Development Practices (25%)](#software-development-practices)**: Assessed through your repository
+# Union Shop (Flutter)
 
-⚠️ You will only receive marks if you **both** attend a practical session for the demo **and** submit the link to your forked repository on Moodle before the deadline. Failure to do either will result in a mark of 0 for the entire coursework.
+A simple, educational Flutter e‑commerce frontend used for coursework and demos. The app demonstrates responsive layouts, routing (including deep links), a small in-memory product service, and a basic in-memory shopping cart.
 
-For info on the overall assessment structure, visit the [Flutter Course homepage](https://manighahrmani.github.io/sandwich_shop/).
+This README replaces the original course README and focuses on practical setup, running, testing, and developer notes specific to this codebase.
 
-### Application
+## Quick Start
 
-30% of the coursework mark comes from functionality demonstrated through a live demo during practical sessions. More information about the demo sessions is provided in the [demonstration section](#demonstration).
+- Prerequisites: Flutter SDK (stable channel), Git, and an editor (VS Code or Android Studio). Verify with:
 
-Your objective is to reimplement as many features from the existing [Union Shop website](https://shop.upsu.net) as you can in your forked repository using Flutter.
-
-The table below is an almost comprehensive list of features present on the website, sorted by difficulty. Each feature has a corresponding percentage value indicating its weight in the 30% application mark and a reference link to the relevant page on the actual website.
-
-⚠️ Note that this assessment focuses on functionality over visual design (do not spend a lot of time making it look exactly like the real website). You do not have to list the exact same products or collections as the real website. You are also encouraged to use copyright-free or AI-generated images instead of downloading images from the real website.
-
-| Feature | Description | Marks (%) | Reference |
-|---------|-------------|-----------|-----------|
-| **Basic (40%)** | | | |
-| Static Homepage | Homepage layout and widgets with static content (hardcoded data* acceptable, mobile view focus) | 5% | [Homepage](https://shop.upsu.net/) |
-| Static Navbar | Top navigation bar with menu (links do not have to work at this stage, mobile view focus) | 5% | [Homepage](https://shop.upsu.net/) |
-| About Us Page | Static about us page* with company information (separate page from homepage) | 5% | [About Us](https://shop.upsu.net/pages/about-us) |
-| Footer | Footer with dummy* links and information present in at least one page | 4% | [Homepage](https://shop.upsu.net/) |
-| Dummy* Collections Page | Page displaying various collections of products (hardcoded data* acceptable) | 5% | [Collections](https://shop.upsu.net/collections/) |
-| Dummy* Collection Page | Page displaying products within one collection including dropdowns and filters (hardcoded data* acceptable, widgets do not have to function) | 5% | [Collection Example](https://shop.upsu.net/collections/autumn-favourites) |
-| Dummy* Product Page | Product page showing details and images with dropdowns, buttons and widgets (hardcoded data* acceptable, widgets do not have to function) | 4% | [Product Example](https://shop.upsu.net/collections/autumn-favourites/products/classic-sweatshirt-1) |
-| Sale Collection | Page showing sale products with discounted prices and promotional messaging (hardcoded data* acceptable, widgets do not have to function) | 4% | [Sale Items](https://shop.upsu.net/collections/sale-items) |
-| Authentication UI | Login/signup page with the relevant forms (widgets do not have to function) | 3% | [Sign In](https://shop.upsu.net/account/login) |
-| **Intermediate (35%)** | | | |
-| Navigation | Full navigation across all pages; users should be able to navigate using buttons, navbar, and URLs | 3% | All pages |
-| Dynamic Collections Page | Collections page populated from data models or services with functioning sorting, filtering, pagination widgets | 6% | [Collections](https://shop.upsu.net/collections/) |
-| Dynamic Collection Page | Product listings of a collection populated from data models or services with functioning sorting, filtering, pagination widgets | 6% | [Collection Example](https://shop.upsu.net/collections/autumn-favourites) |
-| Functional Product Pages | Product pages populated from data models or services with functioning dropdowns and counters (add to cart buttons do not have to work yet) | 6% | [Product Example](https://shop.upsu.net/collections/autumn-favourites/products/classic-sweatshirt-1) |
-| Shopping Cart | Add items to cart, view cart page, basic cart functionality (checkout buttons should place order without real monetary transactions) | 6% | [Cart](https://shop.upsu.net/cart) |
-| Print Shack | Text personalisation page with associated about page, the form must dynamically update based on selected fields | 3% | [Personalisation](https://shop.upsu.net/products/personalise-text) |
-| Responsiveness* | The layout of the application should be adaptive and the application should function on desktop in addition to mobile view (no need to test it on real devices) | 5% | All pages |
-| **Advanced (25%)** | | | |
-| Authentication System | Full user authentication and account management (you can implement this with other external authentications like Google, not just Shop), includes the account dashboard and all relevant functionality | 8% | [Account](https://shop.upsu.net/account) |
-| Cart Management | Full cart functionality including quantity editing/removal, price calculations and persistence | 6% | [Cart](https://shop.upsu.net/cart) |
-| Search System | Complete search functionality (search buttons should function on the navbar and the footer) | 4% | [Search](https://shop.upsu.net/search) |
-
-Below are explanations for some of the terminology used in the table:
-
-***Pages** refer to distinct screens or views in your application that users can navigate to. See [line 22 of `lib/main.dart`](https://github.com/manighahrmani/union_shop/blob/main/lib/main.dart#L22) or the `navigateToProduct` function in the same file for an example of how to define routes for different pages.
-
-***Hardcoded data** refers to data (text or images) that is directly written into your code files rather than being fetched from a database or external service. For example, you can create a list of products with an AI-generated image and text descriptions directly in your Dart code instead of retrieving them from a backend.
-
-***Dummy data** is data that is often hardcoded or (AI) generated for display or testing purposes. It is not meant to represent real-world data stored in your services.
-
-***Responsiveness** refers to the ability of your application to adapt its layout and design based on the screen size and orientation of the device it is being viewed on. Your app should primarily focus on mobile view but to achieve full marks in this section, it should also function correctly on wider screens (desktop view).
-
-### Software Development Practices
-
-In addition to functionality, you will be assessed on your software development practices demonstrated throughout the project (worth 25% of the coursework mark). These marks are awarded after the demo based on evidence in your repository.
-
-The table below outlines the aspects that will be evaluated and the mark (from the 25%) allocated to each:
-
-| Aspect | Description | Marks (%) |
-|--------|-------------|-----------|
-| Git | Regular, small, meaningful commits* to your repository throughout development; clear commit messages | 8% |
-| README | A comprehensive, well-formatted and accurate README file* (delete the current README file first) | 5% |
-| Testing | Tests covering all or almost all of the application; passing tests | 6% |
-| External Services* | Integration and utilization of cloud services | 6% |
-
-⚠️ You may not be awarded the 25% software development practices mark if your code has problems or poor quality. Your code must be properly formatted and free from errors, warnings, or suggestions. Make sure your codebase is also well-structured, refactored and relatively free of repetition too. Your code must be your own work (you need to understand it). **Plagiarised code** (e.g., commits showing large chunks of code copied over, especially from other students) will be penalised according to the University’s academic misconduct policy, and you be awarded 0 marks for the entire coursework.
-
-Below are some explanations for the terminology used in the table:
-
-***Regular, small, meaningful commits**: [worksheet 2](https://manighahrmani.github.io/sandwich_shop/worksheet-2.html) onwards on the [Flutter Course homepage](https://manighahrmani.github.io/sandwich_shop/) have demonstrated how to use Git effectively. You need to follow the practice taught in the worksheets.
-
-***README**: Refer to [worksheet 4](https://manighahrmani.github.io/sandwich_shop/worksheet-4.html#writing-a-readme) for guidance on writing a good README file.
-
-***External Services** refer to third-party cloud services like Firebase or Azure that your application integrates with. This could include services like user authentication, database, or hosting the application live on the web. To get marks for this, you must integrate at **least two** separate external services. You are only awarded marks if your README documents this integration and explains how it is used in your application (e.g., provide a live link to the website if you have hosted it).
-
-## Submission
-
-You need to submit the link to your forked repository on Moodle **before the deadline**. Open the Moodle page for Programming Applications and Programming Languages (M30235) or User Experience Design and Implementation (M32605) and find the submission section titled "Item 1 - Set exercise (coursework) (CW)". See below:
-
-![Moodle Submission Page](https://raw.githubusercontent.com/manighahrmani/sandwich_shop/refs/heads/main/images/screenshot_moodle_submission_section.png)
-
-Open the On time or the Late/Extenuating Circumstances submission link and click on Add submission. There you will find an editable Online text field. Paste the link to the GitHub repository for your coursework in the provided text field and click on Save changes. You are **not** submitting any files for this coursework.
-
-![Moodle Submission Online Text](https://raw.githubusercontent.com/manighahrmani/sandwich_shop/refs/heads/main/images/screenshot_moodle_submission_online_text.png)
-
-Make sure the repository is public. Check to see if it opens in an incognito/private window (you should not get a 404 error).
-
-⚠️ You can edit the link itself before the deadline, but do not edit the repository (do not make new commits) after the deadline. I will label your submission as late if you do this.
-
-## Demonstration
-
-The demos take place during your usual timetabled practical sessions in weeks 19 or 20 (Friday 12/12/2025 or Friday 19/12/2025). More information about the demo sessions will be provided closer to the time.
-
-During the demo, you will have **up to 10 minutes** to demonstrate your application to staff. You must clone your repository and run the application live. You need to be prepared to show the features you have implemented and answer any questions about your code.
-
-⚠️ Make sure your application runs correctly (on your personal device or the university computers) from a fresh clone before attending the demo session.
-
-## Project Structure
-
-This starter repository that you will fork provides a minimal skeletal structure with:
-
-- **Homepage** (`lib/main.dart`): A basic homepage
- - **Product Page** (`lib/screens/product_page.dart`): A single product page
-- **Widget Tests**: Basic tests for both of the above pages (`test/home_test.dart` and `test/product_test.dart`)
-
-Here is an overview of the project structure after forking:
-
-```plaintext
-union_shop/
-├── lib/
-│   ├── main.dart                 # Main application and homepage
-│   └── screens/
-│       └── product_page.dart     # Product detail page
-├── test/
-│   ├── home_test.dart            # Homepage widget tests
-  └── product_test.dart         # Product page widget tests
-├── pubspec.yaml                  # Project dependencies
-└── README.md                     # This file
+```powershell
+flutter --version
+flutter doctor
 ```
 
-Note that this is the initial structure. You are expected to create additional files and directories as needed to complete the coursework. You can also reorganize the project structure as you see fit.
+- Install dependencies and run on Chrome (recommended for quick development):
 
-## Help with Coursework
+```powershell
+flutter pub get
+flutter run -d chrome
+```
 
-### Support
+Note: The project targets the web for rapid UI iteration and responsive checks; it also runs on device simulators/emulators.
 
-If you have questions or encounter issues while working on this coursework, use [the dedicated Discord channel](https://portdotacdotuk-my.sharepoint.com/:b:/g/personal/mani_ghahremani_port_ac_uk/EbX583gvURRAhqsnhYqmbSEBwIFw6tXRyz_Br1GxIyE8dg) to ask for help. Before posting a new question, check the existing posts to see if your question has already been answered. You can also attend your timetabled practical sessions to get face-to-face support from teaching staff.
+## Project Structure (important files)
 
-If you are facing external extenuating circumstances that are affecting your ability to complete this coursework, you should submit an [Extenuating Circumstances Form](https://myport.port.ac.uk/my-course/exams/extenuating-circumstances) as soon as possible. You are also welcome to contact me on Discord for additional support without needing to disclose the private details of your situation.
+- `lib/main.dart` — App entry, route table and `onGenerateRoute` (dynamic `/product/<id>` and `/collection/<id>` support), and a small `RouteLogger` observer used during development.
+- `lib/screens/` — Screens (pages):
+  - `home_screen.dart` — Home page with product grid.
+  - `collections_page.dart` / `collection_page.dart` — Collections list and single collection pages.
+  - `product_page.dart` — Product detail page; accepts either a `Product` object or a `productId` to load.
+  - `cart_page.dart` — Shopping cart UI and checkout flow.
+  - `checkout_success_page.dart` — Order confirmation page.
+- `lib/widgets/` — Reusable widgets: `header.dart`, `footer.dart`, `product_card.dart`.
+- `lib/models/` — Data models: `product.dart`, `cart_item.dart`, `collection.dart`.
+- `lib/services/` — Lightweight in-memory services:
+  - `product_service.dart` — supplies collections and products and supports `getProductById` (with a fallback for legacy hash ids).
+  - `cart_service.dart` — singleton `ChangeNotifier` that manages cart items.
+- `test/` — Widget tests (if present).
 
-### Resources
+## Routing and Deep Links
 
-The worksheets listed on [the homepage](https://manighahrmani.github.io/sandwich_shop/) are your primary learning resource for Flutter development. Work through these worksheets systematically as they provide the foundation you need to complete the coursework successfully. Refrain from using other online resources such as Stack Overflow, YouTube tutorials, or other websites for this coursework as they may contain outdated or incorrect information that could lead you astray.
+This app uses a combination of static `routes` and `onGenerateRoute` to support both named and dynamic routes. Important routes:
 
-### Tips
+- `/` — Home
+- `/collections` — Collections overview
+- `/collection/<id>` — Single collection (dynamic)
+- `/product/<id>` — Product detail (dynamic)
+- `/cart` — Cart page
 
-Starting early is crucial for success in this coursework. The earlier you begin, the more time you have to learn, experiment, and seek help when needed. You should aim to work on the coursework alongside the worksheets rather than leaving everything until the end. As you complete each worksheet, implement the corresponding features in your coursework application. This approach allows you to apply what you learn immediately and build your application incrementally.
+When navigating from a product tile we push a named URL like `/product/<id>` and also pass the `Product` object via `arguments` to avoid a redundant lookup. The `onGenerateRoute` logic prefers the provided `Product` argument and falls back to loading by id from `ProductService`.
 
-When planning your implementation, prioritize features based on the difficulty levels outlined in the [marking criteria](#application). Start with the basic features to establish a solid foundation before moving on to intermediate and advanced functionality. This strategy ensures you secure marks early and have a working application even if you run out of time for the more complex features.
+If you need to add or change routes, update `lib/main.dart`'s `routes` map and `onGenerateRoute` accordingly.
 
-Version control is an essential part of this coursework. Commit your changes regularly to Git with clear, descriptive commit messages. Each commit should represent a small, meaningful unit of work rather than large batches of changes. This practice creates checkpoints you can return to if something goes wrong and demonstrates your development process to assessors. To commit and push your changes, use the following commands:
+## Product IDs and Compatibility
+
+Products in the in-memory `ProductService` have stable `id` values (e.g., `new-1`, `summer-2`). Some parts of the app historically created temporary `Product` objects with `id = title.hashCode.toString()` (used by `ProductCard` in legacy code). To support both cases the `ProductService.getProductById` includes a fallback that matches `title.hashCode.toString()` against known product titles. For production code you should normalize IDs so all pages use the canonical `product.id`.
+
+## Cart Behavior
+
+`CartService` is a singleton `ChangeNotifier` used throughout the app. Key notes:
+
+- `addItem(Product product, {int qty = 1, Map<String, String>? attributes})` records items using `product.id` as the `productId` key and merges items that share the same `productId` and attributes.
+- `items` is exposed as an unmodifiable `List<CartItem>` and the service provides `totalItems` and `totalPrice` convenience getters.
+
+The cart is in-memory only; persistence (local storage or backend) is a reasonable next step.
+
+## Development Tips
+
+- Use the browser address bar to test deep links (e.g., `http://localhost:xxxxx/#/product/new-1`).
+- The app includes a `RouteLogger` navigator observer; check the terminal logs for `onGenerateRoute` and push/pop messages when debugging navigation issues.
+- When making changes to routing, remove any static route entry for a dynamic path (e.g., avoid having a `/product` static route and also handling `/product/<id>` in `onGenerateRoute`) to prevent unexpected routing fallbacks.
+
+## Testing
+
+If there are widget tests in `test/`, run them with:
+
+```powershell
+flutter test
+```
+
+Add tests for new functionality as you implement it (especially for services and routing behavior).
+
+## Code Hygiene and Git
+
+- Commit often with small messages. Example:
 
 ```bash
 git add .
-git commit -m "Brief description of what you changed"
+git commit -m "Implement dynamic product routing and product lookup by id"
 git push
 ```
 
-If you make a mistake and need to revert to a previous commit, you can view your commit history with `git log --oneline`, find the commit hash where things were working (for example, `abc1234`), and revert to that commit with `git reset --hard abc1234`. If necessary, you can force push with `git push --force`. In extreme cases where your repository is completely broken and unrecoverable, you can start fresh by deleting your forked repository on GitHub (Settings → Danger Zone → Delete this repository), forking the original repository again from [github.com/manighahrmani/union_shop](https://github.com/manighahrmani/union_shop), and cloning your fresh fork.
+- If you rewrite history (e.g., with `git filter-repo`), work on a backup branch and verify the rewritten repository locally before force-pushing to any shared remote.
 
-AI tools are valuable during development, and you are encouraged to use them. However, you must apply the best practices taught in the worksheets, particularly those covered in [Worksheet 6](https://manighahrmani.github.io/sandwich_shop/worksheet-6.html). AI-generated code should be reviewed, understood, and adapted to fit your application properly. Blindly copying AI suggestions without understanding them will likely result in poor code quality and may not meet the requirements. Use AI as a learning aid and coding partner rather than a replacement for your own understanding and decision-making.
+## Troubleshooting
+
+- If Add-to-cart does nothing, confirm the `ProductPage` has a resolved `Product` instance (either passed via `arguments` or loaded by `productId`). Check terminal logs for `onGenerateRoute` and `RouteLogger` output.
+- If the browser URL does not update when navigating, make sure no static `routes` entry handles the same path and that `onGenerateRoute` returns a `Route` with `RouteSettings(name: settings.name, ...)` so the route name is used in browser history.
+
+## Next Improvements (suggested)
+
+- Persist cart to `shared_preferences` or a lightweight backend.
+- Replace transient `title.hashCode` ids by canonical ids everywhere.
+- Add authentication, server-backed products, and hosted deployment (e.g., GitHub Pages or Firebase Hosting) for live demo.
+
+## License & Attribution
+
+This project is provided for coursework and learning. If you fork or reuse parts of it, keep attribution to the original repository author where appropriate.
+
+---
+
+If you'd like, I can also add a short CONTRIBUTING section, suggested git branching workflow, or a one‑page developer quickstart to the repo. Let me know which you prefer.

@@ -3,11 +3,23 @@ import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/services/cart_service.dart';
+import 'package:union_shop/services/product_service.dart';
 
 class ProductPage extends StatefulWidget {
   final Product? product;
+  final String? productId;
+  final bool isFavorite;
 
-  const ProductPage({Key? key, this.product}) : super(key: key);
+
+  const ProductPage({
+  Key? key,
+  this.product,
+  this.productId,
+  this.isFavorite = false,
+}) : super(key: key);
+
+
+
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -17,6 +29,8 @@ class _ProductPageState extends State<ProductPage> {
   String selectedSize = 'M';
   String selectedColor = 'Red';
   int quantity = 1;
+  Product? _loadedProduct;
+  bool _loadingProduct = false;
 
   void navigateToHome(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
@@ -24,6 +38,18 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    final product = _loadedProduct ?? widget.product;
+    if (product == null && !_loadingProduct && widget.productId != null) {
+      _loadingProduct = true;
+      ProductService.instance.getProductById(widget.productId!).then((p) {
+        if (!mounted) return;
+        setState(() {
+          _loadedProduct = p;
+          _loadingProduct = false;
+        });
+      });
+    }
+
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final isDesktop = screenWidth > 800;
@@ -36,7 +62,7 @@ class _ProductPageState extends State<ProductPage> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Image.network(
-          widget.product?.imageUrl ??
+          product?.imageUrl ??
               'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
@@ -69,12 +95,12 @@ class _ProductPageState extends State<ProductPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.product?.title ?? 'Placeholder Product Name',
+          product?.title ?? 'Placeholder Product Name',
           style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black),
         ),
         const SizedBox(height: 12),
         Text(
-          widget.product?.price ?? '£15.00',
+          product?.price ?? '£15.00',
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF4d2963)),
         ),
         const SizedBox(height: 18),
@@ -117,7 +143,7 @@ class _ProductPageState extends State<ProductPage> {
         ),
         const SizedBox(height: 8),
         Text(
-          widget.product?.description ??
+          product?.description ??
               'This is a placeholder description for the product. Students should replace this with real product information and implement proper data management.',
           style: const TextStyle(fontSize: 16, color: Colors.grey, height: 1.5),
         ),
@@ -167,7 +193,7 @@ class _ProductPageState extends State<ProductPage> {
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
-                  final prod = widget.product;
+                  final prod = product;
                   if (prod == null) return;
                   CartService.instance.addItem(prod, qty: quantity, attributes: {'Size': selectedSize, 'Color': selectedColor});
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added $quantity × ${prod.title} to cart')));

@@ -23,7 +23,7 @@ class CartService extends ChangeNotifier {
   // Add item — merge with existing item if productId + attributes match
   void addItem(Product product, {int qty = 1, Map<String, String>? attributes}) {
     if (qty <= 0) return;
-    final productKey = product.title;
+    final productKey = product.id;
 
     final idx = _items.indexWhere((it) => it.productId == productKey && mapEquals(it.attributes ?? {}, attributes ?? {}));
     if (idx != -1) {

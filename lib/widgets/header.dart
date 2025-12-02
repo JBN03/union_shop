@@ -7,9 +7,11 @@ class Header extends StatelessWidget {
   final VoidCallback? onAccount;
   final VoidCallback? onCart;
   final VoidCallback? onMenu;
+  final String? id;
 
   const Header({
     super.key,
+    this.id,
     this.onLogoTap,
     this.onSearch,
     this.onAccount,
@@ -32,7 +34,7 @@ class Header extends StatelessWidget {
           final showLinks = constraints.maxWidth >= 800;
           return Row(
             children: [
-              // Logo (larger, clickable)
+              
               MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
@@ -56,9 +58,9 @@ class Header extends StatelessWidget {
 
               const SizedBox(width: 0),
 
-              // Desktop: center nav links; Mobile: hide links and use menu button
+              
               if (showLinks) ...[
-                // center the nav links between logo and the icons
+                
                 Expanded(
                   child: Center(
                     child: Row(
@@ -87,7 +89,7 @@ class Header extends StatelessWidget {
                     ),
                   ),
                 ),
-                // icons remain aligned to the right
+                
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -96,7 +98,7 @@ class Header extends StatelessWidget {
                       icon: const Icon(Icons.person_outline, size: 20, color: Colors.grey),
                         onPressed: onAccount,
                     ),
-                    // Cart icon with badge that listens to CartService
+                    
                     AnimatedBuilder(
                       animation: CartService.instance,
                       builder: (context, _) {

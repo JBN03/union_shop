@@ -4,7 +4,6 @@ import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/widgets/product_card.dart';
-import 'package:union_shop/screens/product_page.dart';
 
 class CollectionPage extends StatefulWidget {
   const CollectionPage({Key? key}) : super(key: key);
@@ -134,10 +133,7 @@ class _CollectionPageState extends State<CollectionPage> {
                                       child: SizedBox(
                                         width: targetCardWidth,
                                         child: GestureDetector(
-                                          onTap: () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (ctx) => ProductPage(product: p)),
-                                          ),
+                                          onTap: () => Navigator.pushNamed(context, '/product/${p.id}', arguments: p),
                                           child: ProductCard(
                                             title: p.title,
                                             price: p.price,

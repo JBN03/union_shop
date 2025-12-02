@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/models/product.dart';
-import 'package:union_shop/screens/product_page.dart';
 
 class ProductCard extends StatelessWidget {
   final String title;
@@ -30,10 +29,10 @@ class ProductCard extends StatelessWidget {
           imageUrl: imageUrl,
           description: '',
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (ctx) => ProductPage(product: product)),
-        );
+        // debug: log navigation target
+        // ignore: avoid_print
+        print('ProductCard.tap -> pushing /product/${product.id}');
+        Navigator.pushNamed(context, '/product/${product.id}', arguments: product);
       },
         child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

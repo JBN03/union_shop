@@ -119,11 +119,11 @@ class _CollectionsPageState extends State<CollectionsPage> {
                                   itemBuilder: (context, index) {
                                     final c = pageItems[index];
                                     return Center(
-                                      child: SizedBox(
+                                        child: SizedBox(
                                         width: targetCardWidth,
                                         child: GestureDetector(
                                           onTap: () {
-                                            Navigator.pushNamed(context, '/collection', arguments: {'id': c.id, 'title': c.title});
+                                            Navigator.pushNamed(context, '/collection/${c.id}');
                                           },
                                           child: Card(
                                             clipBehavior: Clip.hardEdge,

@@ -77,4 +77,14 @@ class ProductService {
     }
     return null;
   }
+
+  Future<Product?> getProductById(String id, {Duration delay = const Duration(milliseconds: 200)}) async {
+    await Future.delayed(delay);
+    for (var list in _productsByCollection.values) {
+      for (var p in list) {
+        if (p.id == id) return p;
+      }
+    }
+    return null;
+  }
 }

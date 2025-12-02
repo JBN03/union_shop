@@ -36,15 +36,17 @@ class ProductCard extends StatelessWidget {
       },
         child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
-          // Square image (aspect ratio 1)
-          AspectRatio(
-            aspectRatio: 1,
+          Expanded(
+            flex: 6,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
                 imageUrl,
                 fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
                     color: Colors.grey[300],
@@ -57,16 +59,22 @@ class ProductCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            title,
-            style: const TextStyle(fontSize: 14, color: Colors.black),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2),
+            child: Text(
+              title,
+              style: const TextStyle(fontSize: 14, color: Colors.black),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           const SizedBox(height: 4),
-          Text(
-            price,
-            style: const TextStyle(fontSize: 13, color: Colors.grey),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2),
+            child: Text(
+              price,
+              style: const TextStyle(fontSize: 13, color: Colors.grey),
+            ),
           ),
         ],
         ),

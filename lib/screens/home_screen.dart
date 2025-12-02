@@ -17,13 +17,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header
+            
             Header(
               onLogoTap: () => navigateToHome(context),
               onSearch: placeholderCallbackForButtons,
@@ -100,7 +98,7 @@ class HomeScreen extends StatelessWidget {
               );
             }),
 
-            // Products Section
+            
             Container(
               color: Colors.white,
               padding: const EdgeInsets.all(24),
@@ -114,27 +112,25 @@ class HomeScreen extends StatelessWidget {
                   LayoutBuilder(
                     builder: (context, constraints) {
                       final width = constraints.maxWidth;
-                      
-                        final spacing = 32.0; 
-                        
-                        final crossAxisCount = 2;
 
+                      
+                      final crossAxisCount = width < 600 ? 1 : 2;
+                      final spacing = width < 600 ? 16.0 : 32.0;
+                      final containerMaxWidth = math.min(width, 1100.0);
                       final products = List.generate(4, (i) => {
                             'title': 'Placeholder Product ${i + 1}',
                             'price': ['£10.00', '£15.00', '£20.00', '£25.00'][i],
                             'image':
                                 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
                           });
-                      
-                      final totalSpacing = spacing * (crossAxisCount - 1);
-                      final desiredCardWidth = (width - totalSpacing) / crossAxisCount;
-                      final targetCardWidth = math.max(140.0, math.min(desiredCardWidth, 360.0));
 
-                      
-                      final maxGridWidth = targetCardWidth * crossAxisCount + totalSpacing;
+                      final itemWidth = (containerMaxWidth - spacing * (crossAxisCount - 1)) / crossAxisCount;
+                      const targetCardHeight = 380.0;
+                      final childAspectRatio = itemWidth / targetCardHeight;
+
                       return Center(
                         child: ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: maxGridWidth),
+                          constraints: BoxConstraints(maxWidth: containerMaxWidth),
                           child: GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -143,18 +139,16 @@ class HomeScreen extends StatelessWidget {
                               crossAxisCount: crossAxisCount,
                               crossAxisSpacing: spacing,
                               mainAxisSpacing: spacing,
-                              childAspectRatio: 0.85,
+                              childAspectRatio: childAspectRatio,
                             ),
                             itemBuilder: (context, index) {
                               final product = products[index];
-                              return Center(
-                                child: SizedBox(
-                                  width: targetCardWidth,
-                                  child: ProductCard(
-                                    title: product['title']!,
-                                    price: product['price']!,
-                                    imageUrl: product['image']!,
-                                  ),
+                              return SizedBox(
+                                height: targetCardHeight,
+                                child: ProductCard(
+                                  title: product['title']!,
+                                  price: product['price']!,
+                                  imageUrl: product['image']!,
                                 ),
                               );
                             },
@@ -166,7 +160,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-
+          
             const SizedBox(height: 56),
             const Footer(),
           ],

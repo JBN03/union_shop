@@ -24,6 +24,7 @@ class Header extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final calculated = screenHeight * 0.10;
     final height = calculated.clamp(56.0, 88.0).toDouble();
+    final cart = CartService.instance;
 
     return Container(
       height: height,
@@ -92,48 +93,98 @@ class Header extends StatelessWidget {
                 
                 Row(
                   mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.search),
+                        onPressed: onSearch,
+                        tooltip: 'Search',
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.person_outline),
+                        onPressed: onAccount,
+                        tooltip: 'Account',
+                      ),
+                      AnimatedBuilder(
+                          animation: cart,
+                          builder: (context, _) {
+                            final count = cart.totalItems;
+                          return Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.shopping_bag_outlined),
+                                onPressed: onCart,
+                                tooltip: 'Cart',
+                              ),
+                              if (count > 0)
+                                Positioned(
+                                  right: 4,
+                                  top: -2,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.redAccent,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+                                    child: Center(
+                                      child: Text(
+                                        count.toString(),
+                                        style: const TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.menu_rounded),
+                        onPressed: onMenu,
+                        tooltip: 'Menu',
+                      ),
+                    ],
+                ),
+              ] else ...[
+                const Spacer(),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    IconButton(icon: const Icon(Icons.search, size: 20, color: Colors.grey), onPressed: onSearch),
+                    IconButton(
+                      icon: const Icon(Icons.search, size: 20, color: Colors.grey),
+                      onPressed: onSearch,
+                      tooltip: 'Search',
+                    ),
                     IconButton(
                       icon: const Icon(Icons.person_outline, size: 20, color: Colors.grey),
-                        onPressed: onAccount,
+                      onPressed: onAccount,
+                      tooltip: 'Account',
                     ),
-                    
                     AnimatedBuilder(
-                      animation: CartService.instance,
+                      animation: cart,
                       builder: (context, _) {
-                        final count = CartService.instance.totalItems;
+                        final count = cart.totalItems;
                         return Stack(
                           clipBehavior: Clip.none,
                           children: [
                             IconButton(
                               icon: const Icon(Icons.shopping_bag_outlined, size: 20, color: Colors.grey),
-                              onPressed: () {
-                                if (onCart != null) onCart!();
-                                Navigator.pushNamed(context, '/cart');
-                              },
+                              onPressed: onCart,
+                              tooltip: 'Cart',
                             ),
                             if (count > 0)
                               Positioned(
                                 right: 4,
-                                top: 4,
-                                child: MouseRegion(
-                                  cursor: SystemMouseCursors.click,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (onCart != null) onCart!();
-                                      Navigator.pushNamed(context, '/cart');
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: const BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
-                                      constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
-                                      child: Center(
-                                        child: Text(
-                                          '$count',
-                                          style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
-                                        ),
-                                      ),
+                                top: -2,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
+                                  constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+                                  child: Center(
+                                    child: Text(
+                                      count.toString(),
+                                      style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w700),
                                     ),
                                   ),
                                 ),
@@ -142,13 +193,12 @@ class Header extends StatelessWidget {
                         );
                       },
                     ),
+                    IconButton(
+                      icon: const Icon(Icons.menu_rounded, size: 20, color: Colors.grey),
+                      onPressed: onMenu,
+                      tooltip: 'Menu',
+                    ),
                   ],
-                ),
-              ] else ...[
-                const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.menu, size: 24, color: Colors.grey),
-                  onPressed: onMenu,
                 ),
               ],
             ],

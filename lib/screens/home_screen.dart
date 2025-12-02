@@ -12,12 +12,12 @@ class HomeScreen extends StatelessWidget {
   }
 
   void placeholderCallbackForButtons() {
-    // Buttons not functional yet
+    
   }
 
   @override
   Widget build(BuildContext context) {
-    // screen width is available from constraints where needed; remove unused local variable
+    
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
               onMenu: placeholderCallbackForButtons,
             ),
 
-            // Hero Section
+            
             Builder(builder: (context) {
               final heroHeight = math.min(400, MediaQuery.of(context).size.height * 0.45).toDouble();
               return SizedBox(
@@ -114,9 +114,9 @@ class HomeScreen extends StatelessWidget {
                   LayoutBuilder(
                     builder: (context, constraints) {
                       final width = constraints.maxWidth;
-                      // Use a responsive column count but ensure mobile shows 2 columns
-                        final spacing = 32.0; // doubled spacing between product cards
-                        // Force a 2x2 layout (2 columns) for consistency across devices
+                      
+                        final spacing = 32.0; 
+                        
                         final crossAxisCount = 2;
 
                       final products = List.generate(4, (i) => {
@@ -125,12 +125,12 @@ class HomeScreen extends StatelessWidget {
                             'image':
                                 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
                           });
-                      // Compute a sensible target card width based on the chosen column count
+                      
                       final totalSpacing = spacing * (crossAxisCount - 1);
                       final desiredCardWidth = (width - totalSpacing) / crossAxisCount;
                       final targetCardWidth = math.max(140.0, math.min(desiredCardWidth, 360.0));
 
-                      // Center the grid and cap its total width so cards don't expand indefinitely
+                      
                       final maxGridWidth = targetCardWidth * crossAxisCount + totalSpacing;
                       return Center(
                         child: ConstrainedBox(

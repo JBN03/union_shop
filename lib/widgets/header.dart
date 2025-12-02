@@ -96,12 +96,18 @@ class Header extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.search),
-                        onPressed: onSearch,
+                        onPressed: () {
+                          if (onSearch != null) onSearch!();
+                          Navigator.pushNamed(context, '/collections');
+                        },
                         tooltip: 'Search',
                       ),
                       IconButton(
                         icon: const Icon(Icons.person_outline),
-                        onPressed: onAccount,
+                        onPressed: () {
+                          if (onAccount != null) onAccount!();
+                          Navigator.pushNamed(context, '/login');
+                        },
                         tooltip: 'Account',
                       ),
                       AnimatedBuilder(
@@ -113,7 +119,10 @@ class Header extends StatelessWidget {
                             children: [
                               IconButton(
                                 icon: const Icon(Icons.shopping_bag_outlined),
-                                onPressed: onCart,
+                                onPressed: () {
+                                  if (onCart != null) onCart!();
+                                  Navigator.pushNamed(context, '/cart');
+                                },
                                 tooltip: 'Cart',
                               ),
                               if (count > 0)
@@ -141,7 +150,10 @@ class Header extends StatelessWidget {
                       ),
                       IconButton(
                         icon: const Icon(Icons.menu_rounded),
-                        onPressed: onMenu,
+                        onPressed: () {
+                          if (onMenu != null) onMenu!();
+                          Navigator.pushNamed(context, '/collections');
+                        },
                         tooltip: 'Menu',
                       ),
                     ],
@@ -153,12 +165,18 @@ class Header extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.search, size: 20, color: Colors.grey),
-                      onPressed: onSearch,
+                      onPressed: () {
+                        if (onSearch != null) onSearch!();
+                        Navigator.pushNamed(context, '/collections');
+                      },
                       tooltip: 'Search',
                     ),
                     IconButton(
                       icon: const Icon(Icons.person_outline, size: 20, color: Colors.grey),
-                      onPressed: onAccount,
+                      onPressed: () {
+                        if (onAccount != null) onAccount!();
+                        Navigator.pushNamed(context, '/login');
+                      },
                       tooltip: 'Account',
                     ),
                     AnimatedBuilder(
@@ -170,7 +188,10 @@ class Header extends StatelessWidget {
                           children: [
                             IconButton(
                               icon: const Icon(Icons.shopping_bag_outlined, size: 20, color: Colors.grey),
-                              onPressed: onCart,
+                              onPressed: () {
+                                if (onCart != null) onCart!();
+                                Navigator.pushNamed(context, '/cart');
+                              },
                               tooltip: 'Cart',
                             ),
                             if (count > 0)
@@ -195,7 +216,10 @@ class Header extends StatelessWidget {
                     ),
                     IconButton(
                       icon: const Icon(Icons.menu_rounded, size: 20, color: Colors.grey),
-                      onPressed: onMenu,
+                      onPressed: () {
+                        if (onMenu != null) onMenu!();
+                        Navigator.pushNamed(context, '/collections');
+                      },
                       tooltip: 'Menu',
                     ),
                   ],

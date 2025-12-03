@@ -32,8 +32,6 @@ class ProductCard extends StatelessWidget {
           imageUrl: imageUrl,
           description: '',
         );
-      
-        print('ProductCard.tap -> pushing /product/$id');
         Navigator.pushNamed(context, '/product/$id', arguments: product);
       },
         child: Column(

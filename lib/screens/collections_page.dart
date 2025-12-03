@@ -19,6 +19,11 @@ class _CollectionsPageState extends State<CollectionsPage> {
   int _page = 0;
   int _pageSize = 4;
 
+  void _goToPage(int page, int pageCount) {
+    final next = page < 0 ? 0 : (page >= pageCount ? pageCount - 1 : page);
+    setState(() => _page = next);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -150,22 +155,37 @@ class _CollectionsPageState extends State<CollectionsPage> {
                             ),
 
                             const SizedBox(height: 12),
-                            if (pageCount > 1)
-                              Center(
-                                child: Wrap(
-                                  spacing: 8,
-                                  children: List.generate(pageCount, (i) {
-                                    final pageIndex = i;
-                                    return OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        backgroundColor: _page == pageIndex ? Colors.grey[200] : null,
-                                      ),
-                                      onPressed: () => setState(() => _page = pageIndex),
-                                      child: Text('${pageIndex + 1}'),
-                                    );
-                                  }),
-                                ),
+                            Center(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.chevron_left),
+                                    onPressed: (pageCount > 1 && _page > 0) ? () => _goToPage(_page - 1, pageCount) : null,
+                                  ),
+                                  Wrap(
+                                    spacing: 6,
+                                    children: List.generate(pageCount > 0 ? pageCount : 1, (i) {
+                                      final pageIndex = i;
+                                      final disabled = pageCount <= 1 || _page == pageIndex;
+                                      return OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          backgroundColor: _page == pageIndex ? Colors.grey[200] : null,
+                                          minimumSize: const Size(36, 36),
+                                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                        ),
+                                        onPressed: disabled ? null : () => _goToPage(pageIndex, pageCount),
+                                        child: Text('${pageIndex + 1}'),
+                                      );
+                                    }),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.chevron_right),
+                                    onPressed: (pageCount > 1 && _page < pageCount - 1) ? () => _goToPage(_page + 1, pageCount) : null,
+                                  ),
+                                ],
                               ),
+                            ),
                           ],
                         );
                       });

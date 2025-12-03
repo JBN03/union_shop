@@ -7,6 +7,10 @@ final List<Collection> collections = [
   Collection(id: 'summer', title: 'Summer Collection', imageUrl: ''),
   Collection(id: 'print', title: 'Print Shack', imageUrl: ''),
   Collection(id: 'sale', title: 'Sale', imageUrl: ''),
+  Collection(id: 'featured', title: 'Featured Products', imageUrl: ''),
+  Collection(id: 'winter', title: 'Winter Collection', imageUrl: ''),
+  Collection(id: 'hoodies', title: 'Hoodies', imageUrl:''),
+  Collection(id: 'graduation', title: 'Graduation', imageUrl:'')
 ];
 
 final Map<String, List<Product>> productsByCollection = {

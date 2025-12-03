@@ -4,7 +4,7 @@ import 'package:union_shop/models/product.dart';
 import 'package:union_shop/models/collection.dart';
 import 'package:union_shop/services/product_data.dart';
 
-/// Lightweight in-memory product service for demo / coursework.
+
 class ProductService {
   ProductService._internal();
   static final ProductService instance = ProductService._internal();

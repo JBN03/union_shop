@@ -17,12 +17,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
   List<Collection> _allCollections = [];
   final String _search = '';
   String _sort = 'Title A→Z';
-  int _page = 0;
-
-  void _goToPage(int page, int pageCount) {
-    final next = page < 0 ? 0 : (page >= pageCount ? pageCount - 1 : page);
-    setState(() => _page = next);
-  }
+  
 
   @override
   void initState() {
@@ -65,8 +60,6 @@ class _CollectionsPageState extends State<CollectionsPage> {
                         search: _search,
                         sort: _sort,
                         onSortChanged: (v) => setState(() { _sort = v ?? _sort; }),
-                        page: _page,
-                        onPage: (p, pageCount) => _goToPage(p, pageCount),
                       );
                     },
                   ),

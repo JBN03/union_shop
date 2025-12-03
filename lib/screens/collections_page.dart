@@ -62,89 +62,14 @@ class _CollectionsPageState extends State<CollectionsPage> {
                       }
                       _allCollections = snapshot.data ?? [];
 
-                      
-                      final filtered = _allCollections.where((c) => c.title.toLowerCase().contains(_search.toLowerCase())).toList();
-
-                      if (_sort == 'Title A→Z') {
-                        filtered.sort((a, b) => a.title.compareTo(b.title));
-                      } else if (_sort == 'Title Z→A') {
-                        filtered.sort((a, b) => b.title.compareTo(a.title));
-                      }
-
-                      return LayoutBuilder(builder: (context, constraints) {
-                        final width = constraints.maxWidth;
-                        const spacing = 16.0;
-
-                        final desiredFourColWidth = (width - spacing * 3) / 4;
-                        final targetCardWidth = (desiredFourColWidth.clamp(140.0, 360.0));
-
-                        final cross = width >= 1000 ? 3 : (width >= 600 ? 2 : 1);
-
-                        
-                        const rows = 2;
-                        final visiblePageSize = cross * rows;
-
-                        final total = filtered.length;
-                        final pageCount = (total / visiblePageSize).ceil().clamp(1, total);
-                        if (_page >= pageCount) _page = (pageCount - 1).clamp(0, pageCount - 1);
-
-                        final start = _page * visiblePageSize;
-                        final end = (start + visiblePageSize).clamp(0, total);
-                        final pageItems = (start < end) ? filtered.sublist(start, end) : <Collection>[];
-
-                        final controls = Row(
-                          children: [
-                            const Expanded(child: SizedBox()),
-                            DropdownButton<String>(
-                              value: _sort,
-                              items: const [
-                                DropdownMenuItem(value: 'Title A→Z', child: Text('Title A→Z')),
-                                DropdownMenuItem(value: 'Title Z→A', child: Text('Title Z→A')),
-                              ],
-                              onChanged: (v) => setState(() { _sort = v ?? _sort; }),
-                            ),
-                          ],
-                        );
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            controls,
-                            const SizedBox(height: 12),
-                            Center(
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints(maxWidth: targetCardWidth * cross + spacing * (cross - 1)),
-                                child: GridView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: pageItems.length,
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: cross,
-                                    crossAxisSpacing: spacing,
-                                    mainAxisSpacing: spacing,
-                                    childAspectRatio: 0.85,
-                                  ),
-                                  itemBuilder: (context, index) {
-                                    final c = pageItems[index];
-                                    return CollectionCard(
-                                      collection: c,
-                                      width: targetCardWidth,
-                                      onTap: () => Navigator.pushNamed(context, '/collection/${c.id}'),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(height: 12),
-                            CollectionsPagination(
-                              pageCount: pageCount,
-                              page: _page,
-                              onPage: (p) => _goToPage(p, pageCount),
-                            ),
-                          ],
-                        );
-                      });
+                      return CollectionsBody(
+                        collections: _allCollections,
+                        search: _search,
+                        sort: _sort,
+                        onSortChanged: (v) => setState(() { _sort = v ?? _sort; }),
+                        page: _page,
+                        onPage: (p, pageCount) => _goToPage(p, pageCount),
+                      );
                     },
                   ),
                 ],

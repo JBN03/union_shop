@@ -47,7 +47,7 @@ class CheckoutSuccessPage extends StatelessWidget {
                   Text('Total: £${total.toStringAsFixed(2)}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700), textAlign: TextAlign.center),
                   const SizedBox(height: 24),
 
-                  Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.grey[50], borderRadius: BorderRadius.circular(6)), child: Row(children: const [Expanded(child: Text('Item', style: TextStyle(fontWeight: FontWeight.w700))), SizedBox(width: 120, child: Text('Price', textAlign: TextAlign.right, style: TextStyle(fontWeight: FontWeight.w700)))])),
+                  Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.grey[50], borderRadius: BorderRadius.circular(6)), child: const Row(children: [Expanded(child: Text('Item', style: TextStyle(fontWeight: FontWeight.w700))), SizedBox(width: 120, child: Text('Price', textAlign: TextAlign.right, style: TextStyle(fontWeight: FontWeight.w700)))])),
                   const SizedBox(height: 8),
 
                   ...items.map((raw) => _itemRow(Map<String, dynamic>.from(raw as Map))).toList(),

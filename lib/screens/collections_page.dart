@@ -3,6 +3,8 @@ import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/models/collection.dart';
+import 'package:union_shop/widgets/collection_card.dart';
+import 'package:union_shop/widgets/collections_pagination.dart';
 
 class CollectionsPage extends StatefulWidget {
   const CollectionsPage({Key? key}) : super(key: key);
@@ -124,30 +126,10 @@ class _CollectionsPageState extends State<CollectionsPage> {
                                   ),
                                   itemBuilder: (context, index) {
                                     final c = pageItems[index];
-                                    return Center(
-                                      child: SizedBox(
-                                        width: targetCardWidth,
-                                        child: GestureDetector(
-                                          onTap: () => Navigator.pushNamed(context, '/collection/${c.id}'),
-                                          child: Card(
-                                            clipBehavior: Clip.hardEdge,
-                                            child: Stack(
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 1,
-                                                  child: c.imageUrl.isNotEmpty ? Image.network(c.imageUrl, fit: BoxFit.cover) : Container(color: Colors.grey[200]),
-                                                ),
-                                                Positioned(
-                                                  left: 12,
-                                                  right: 12,
-                                                  bottom: 12,
-                                                  child: Text(c.title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                    return CollectionCard(
+                                      collection: c,
+                                      width: targetCardWidth,
+                                      onTap: () => Navigator.pushNamed(context, '/collection/${c.id}'),
                                     );
                                   },
                                 ),
@@ -155,36 +137,10 @@ class _CollectionsPageState extends State<CollectionsPage> {
                             ),
 
                             const SizedBox(height: 12),
-                            Center(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.chevron_left),
-                                    onPressed: (pageCount > 1 && _page > 0) ? () => _goToPage(_page - 1, pageCount) : null,
-                                  ),
-                                  Wrap(
-                                    spacing: 6,
-                                    children: List.generate(pageCount > 0 ? pageCount : 1, (i) {
-                                      final pageIndex = i;
-                                      final disabled = pageCount <= 1 || _page == pageIndex;
-                                      return OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                          backgroundColor: _page == pageIndex ? Colors.grey[200] : null,
-                                          minimumSize: const Size(36, 36),
-                                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                                        ),
-                                        onPressed: disabled ? null : () => _goToPage(pageIndex, pageCount),
-                                        child: Text('${pageIndex + 1}'),
-                                      );
-                                    }),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.chevron_right),
-                                    onPressed: (pageCount > 1 && _page < pageCount - 1) ? () => _goToPage(_page + 1, pageCount) : null,
-                                  ),
-                                ],
-                              ),
+                            CollectionsPagination(
+                              pageCount: pageCount,
+                              page: _page,
+                              onPage: (p) => _goToPage(p, pageCount),
                             ),
                           ],
                         );

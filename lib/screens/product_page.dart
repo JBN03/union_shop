@@ -79,8 +79,8 @@ class _ProductPageState extends State<ProductPage> {
                     const double detailsMaxWidth = 520.0;
                     const double spacing = 24.0;
 
-                    final double shift = (detailsMaxWidth - imageMaxWidth) / 2.0;
-                    final double groupMaxWidth = imageMaxWidth + spacing + detailsMaxWidth;
+                    const double shift = (detailsMaxWidth - imageMaxWidth) / 2.0;
+                    const double groupMaxWidth = imageMaxWidth + spacing + detailsMaxWidth;
 
                     return Center(
                       child: Transform.translate(
@@ -101,7 +101,7 @@ class _ProductPageState extends State<ProductPage> {
                                     const SizedBox(width: spacing),
 
                                     ConstrainedBox(
-                                      constraints: BoxConstraints(maxWidth: detailsMaxWidth),
+                                      constraints: const BoxConstraints(maxWidth: detailsMaxWidth),
                                       child: SingleChildScrollView(
                                         child: ProductDetails(
                                           product: widget.product ?? _loadedProduct,

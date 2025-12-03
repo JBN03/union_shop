@@ -80,7 +80,26 @@ class UnionShopApp extends StatelessWidget {
             );
           }
           if (name.startsWith('/collection/')) {
-            final id = name.substring('/collection/'.length);
+            // support /collection/<collectionSlug>/product/<productSlug>
+            final rest = name.substring('/collection/'.length);
+            if (rest.contains('/product/')) {
+              final parts = rest.split('/product/');
+              final collectionSlug = parts.first;
+              final productSlug = parts.length > 1 ? parts[1] : '';
+              final args = settings.arguments;
+              if (args is Product) {
+                return MaterialPageRoute(
+                  settings: RouteSettings(name: settings.name, arguments: settings.arguments),
+                  builder: (_) => ProductPage(product: args, productId: productSlug),
+                );
+              }
+              return MaterialPageRoute(
+                settings: RouteSettings(name: settings.name, arguments: settings.arguments),
+                builder: (_) => ProductPage(productId: productSlug),
+              );
+            }
+
+            final id = rest;
             return MaterialPageRoute(
               settings: RouteSettings(name: settings.name, arguments: {'id': id}),
               builder: (_) => const CollectionPage(),

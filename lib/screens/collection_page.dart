@@ -79,7 +79,12 @@ class _CollectionPageState extends State<CollectionPage> {
                         page: _page,
                         pageSize: _pageSize,
                         onPage: (p) => _goToPage(p, (products.isEmpty ? 0 : (products.length / _pageSize).ceil())),
-                        onProductTap: (product) => Navigator.pushNamed(context, '/product/${product.id}', arguments: product),
+                        onProductTap: (product, collectionSlug) => Navigator.pushNamed(
+                          context,
+                          '/collection/$collectionSlug/product/${product.slug}',
+                          arguments: product,
+                        ),
+                        collectionSlug: collectionId,
                       );
                     },
                   ),

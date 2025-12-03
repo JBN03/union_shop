@@ -12,4 +12,10 @@ class Product {
     required this.imageUrl,
     this.description = '',
   });
+
+  String get slug {
+    final s = title.toLowerCase();
+    final replaced = s.replaceAll(RegExp(r"[^a-z0-9]+"), '-');
+    return replaced.replaceAll(RegExp(r'(^-+|-+\$)'), '');
+  }
 }

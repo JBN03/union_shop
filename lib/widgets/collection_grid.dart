@@ -8,7 +8,8 @@ class CollectionGrid extends StatelessWidget {
   final int page;
   final int pageSize;
   final void Function(int page) onPage;
-  final void Function(Product product) onProductTap;
+  final void Function(Product product, String collectionSlug) onProductTap;
+  final String collectionSlug;
 
   const CollectionGrid({
     Key? key,
@@ -17,6 +18,7 @@ class CollectionGrid extends StatelessWidget {
     required this.pageSize,
     required this.onPage,
     required this.onProductTap,
+    required this.collectionSlug,
   }) : super(key: key);
 
   @override
@@ -59,13 +61,12 @@ class CollectionGrid extends StatelessWidget {
                   return Center(
                     child: SizedBox(
                       width: targetCardWidth,
-                      child: GestureDetector(
-                        onTap: () => onProductTap(p),
-                        child: ProductCard(
-                          title: p.title,
-                          price: p.price,
-                          imageUrl: p.imageUrl,
-                        ),
+                      child: ProductCard(
+                        title: p.title,
+                        price: p.price,
+                        imageUrl: p.imageUrl,
+                        productId: p.id,
+                        onTap: () => onProductTap(p, collectionSlug),
                       ),
                     ),
                   );

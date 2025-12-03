@@ -38,8 +38,8 @@ class _CartPageState extends State<CartPage> {
             onMenu: () {},
           ),
         ),
-        body: Column(
-          children: const [
+        body: const Column(
+          children: [
             Expanded(child: CartItemsList()),
             CartSummary(),
             Footer(),

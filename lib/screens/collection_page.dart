@@ -3,7 +3,6 @@ import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/models/product.dart';
-import 'package:union_shop/widgets/product_card.dart';
 import 'package:union_shop/widgets/collection_filters.dart';
 import 'package:union_shop/widgets/collection_grid.dart';
 
@@ -79,7 +78,7 @@ class _CollectionPageState extends State<CollectionPage> {
                         products: products,
                         page: _page,
                         pageSize: _pageSize,
-                        onPage: (p) => _goToPage(p, (products.length == 0 ? 0 : (products.length / _pageSize).ceil())),
+                        onPage: (p) => _goToPage(p, (products.isEmpty ? 0 : (products.length / _pageSize).ceil())),
                         onProductTap: (product) => Navigator.pushNamed(context, '/product/${product.id}', arguments: product),
                       );
                     },

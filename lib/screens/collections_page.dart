@@ -3,8 +3,6 @@ import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/models/collection.dart';
-import 'package:union_shop/widgets/collection_card.dart';
-import 'package:union_shop/widgets/collections_pagination.dart';
 import 'package:union_shop/widgets/collections_body.dart';
 
 class CollectionsPage extends StatefulWidget {
@@ -20,7 +18,6 @@ class _CollectionsPageState extends State<CollectionsPage> {
   final String _search = '';
   String _sort = 'Title A→Z';
   int _page = 0;
-  final int _pageSize = 4;
 
   void _goToPage(int page, int pageCount) {
     final next = page < 0 ? 0 : (page >= pageCount ? pageCount - 1 : page);

@@ -1,8 +1,11 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/product_card.dart';
+import 'package:union_shop/services/product_service.dart';
+import 'package:union_shop/models/product.dart' as model;
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -117,13 +120,6 @@ class HomeScreen extends StatelessWidget {
                       final crossAxisCount = width < 600 ? 1 : 2;
                       final spacing = width < 600 ? 16.0 : 32.0;
                       final containerMaxWidth = math.min(width, 1100.0);
-                      final products = List.generate(4, (i) => {
-                            'title': 'Placeholder Product ${i + 1}',
-                            'price': ['£10.00', '£15.00', '£20.00', '£25.00'][i],
-                            'image':
-                                'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
-                          });
-
                       final itemWidth = (containerMaxWidth - spacing * (crossAxisCount - 1)) / crossAxisCount;
                       const targetCardHeight = 380.0;
                       final childAspectRatio = itemWidth / targetCardHeight;
@@ -131,25 +127,37 @@ class HomeScreen extends StatelessWidget {
                       return Center(
                         child: ConstrainedBox(
                           constraints: BoxConstraints(maxWidth: containerMaxWidth),
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: products.length,
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: crossAxisCount,
-                              crossAxisSpacing: spacing,
-                              mainAxisSpacing: spacing,
-                              childAspectRatio: childAspectRatio,
-                            ),
-                            itemBuilder: (context, index) {
-                              final product = products[index];
-                              return SizedBox(
-                                height: targetCardHeight,
-                                child: ProductCard(
-                                  title: product['title']!,
-                                  price: product['price']!,
-                                  imageUrl: product['image']!,
+                          child: FutureBuilder<List<model.Product>>(
+                            future: ProductService.instance.getProductsForCollection('new'),
+                            builder: (context, snapshot) {
+                              final products = snapshot.data ?? [];
+
+                              return GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: products.length,
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: crossAxisCount,
+                                  crossAxisSpacing: spacing,
+                                  mainAxisSpacing: spacing,
+                                  childAspectRatio: childAspectRatio,
                                 ),
+                                itemBuilder: (context, index) {
+                                  final model.Product product = products[index];
+                                  return SizedBox(
+                                    height: targetCardHeight,
+                                    child: ProductCard(
+                                      productId: product.id,
+                                      title: product.title,
+                                      price: product.price,
+                                      imageUrl: product.imageUrl,
+                                      onTap: () {
+                                        // push with the product object as argument
+                                        Navigator.pushNamed(context, '/product/${product.id}', arguments: product);
+                                      },
+                                    ),
+                                  );
+                                },
                               );
                             },
                           ),

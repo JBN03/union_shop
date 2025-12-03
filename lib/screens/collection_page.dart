@@ -18,7 +18,7 @@ class _CollectionPageState extends State<CollectionPage> {
   late Future<List<Product>> _productsFuture;
   
   int _page = 0;
-  int _pageSize = 12;
+  final int _pageSize = 12;
 
   void _goToPage(int page, int pageCount) {
     final next = page < 0 ? 0 : (page >= pageCount ? pageCount - 1 : page);
@@ -96,7 +96,7 @@ class _CollectionPageState extends State<CollectionPage> {
 
                       return LayoutBuilder(builder: (context, constraints) {
                         final width = constraints.maxWidth;
-                        final spacing = 16.0;
+                        const spacing = 16.0;
 
                         
                         final desiredFourColWidth = (width - spacing * 3) / 4;

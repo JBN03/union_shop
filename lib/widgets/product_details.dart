@@ -45,7 +45,7 @@ class ProductDetails extends StatelessWidget {
             Expanded(
               child: DropdownButtonFormField<String>(
                 decoration: const InputDecoration(labelText: 'Size', border: OutlineInputBorder()),
-                value: selectedSize,
+                initialValue: selectedSize,
                 items: const [
                   DropdownMenuItem(value: 'S', child: Text('S')),
                   DropdownMenuItem(value: 'M', child: Text('M')),
@@ -59,7 +59,7 @@ class ProductDetails extends StatelessWidget {
             Expanded(
               child: DropdownButtonFormField<String>(
                 decoration: const InputDecoration(labelText: 'Color', border: OutlineInputBorder()),
-                value: selectedColor,
+                initialValue: selectedColor,
                 items: const [
                   DropdownMenuItem(value: 'Red', child: Text('Red')),
                   DropdownMenuItem(value: 'Blue', child: Text('Blue')),

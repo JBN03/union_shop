@@ -18,11 +18,11 @@ class AboutUsPage extends StatelessWidget {
               onCart: () {},
               onMenu: () {},
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text('About Union Shop', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                   SizedBox(height: 12),
                   Text(

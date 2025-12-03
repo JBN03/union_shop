@@ -5,6 +5,7 @@ class ProductCard extends StatelessWidget {
   final String title;
   final String price;
   final String imageUrl;
+  final String? productId;
 
   const ProductCard({
     super.key,
@@ -12,6 +13,7 @@ class ProductCard extends StatelessWidget {
     required this.price,
     required this.imageUrl,
     this.onTap,
+    this.productId,
   });
 
   final VoidCallback? onTap;
@@ -22,17 +24,17 @@ class ProductCard extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: onTap ?? () {
+        final id = productId ?? title.hashCode.toString();
         final product = Product(
-          id: title.hashCode.toString(),
+          id: id,
           title: title,
           price: price,
           imageUrl: imageUrl,
           description: '',
         );
-        // debug: log navigation target
-        // ignore: avoid_print
-        print('ProductCard.tap -> pushing /product/${product.id}');
-        Navigator.pushNamed(context, '/product/${product.id}', arguments: product);
+      
+        print('ProductCard.tap -> pushing /product/$id');
+        Navigator.pushNamed(context, '/product/$id', arguments: product);
       },
         child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

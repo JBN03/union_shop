@@ -54,7 +54,7 @@ class _CollectionPageState extends State<CollectionPage> {
                   Text(title, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
 
-                  // Filters (non-functional)
+                  
                   Row(
                     children: [
                       Expanded(
@@ -98,13 +98,13 @@ class _CollectionPageState extends State<CollectionPage> {
                         final width = constraints.maxWidth;
                         final spacing = 16.0;
 
-                        // compute a target card width similar to HomeScreen logic
+                        
                         final desiredFourColWidth = (width - spacing * 3) / 4;
                         final targetCardWidth = desiredFourColWidth.clamp(140.0, 360.0);
 
                         final crossAxisCount = width > 800 ? 3 : (width > 400 ? 2 : 1);
 
-                        // apply client-side pagination for the collection product list
+                        
                         final total = products.length;
                         final pageCount = total == 0 ? 0 : (total / _pageSize).ceil();
                         if (pageCount > 0 && _page >= pageCount) _page = pageCount - 1;
@@ -146,7 +146,7 @@ class _CollectionPageState extends State<CollectionPage> {
                                 ),
 
                                 const SizedBox(height: 12),
-                                // Pagination controls (arrows + numbered buttons)
+                                
                                 Center(
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,

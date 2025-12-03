@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/models/collection.dart';
 
-/// Lightweight in-memory product service for demo / coursework.
+
 class ProductService {
   ProductService._internal();
   static final ProductService instance = ProductService._internal();
@@ -16,16 +16,95 @@ class ProductService {
   ];
 
   final Map<String, List<Product>> _productsByCollection = {
-    'new': List.generate(
-      6,
-      (i) => Product(
-        id: 'new-${i + 1}',
-        title: 'New Product ${i + 1}',
-        price: '£${12 + i}',
-        imageUrl: '',
-        description: 'Description for new product ${i + 1}',
+    
+    'new': [
+      Product(
+        id: 'placeholder-1',
+        title: 'Placeholder Product 1',
+        price: '£10.00',
+        imageUrl: 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        description: 'Placeholder product 1',
       ),
-    ),
+      Product(
+        id: 'placeholder-2',
+        title: 'Placeholder Product 2',
+        price: '£15.00',
+        imageUrl: 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        description: 'Placeholder product 2',
+      ),
+      Product(
+        id: 'placeholder-3',
+        title: 'Placeholder Product 3',
+        price: '£20.00',
+        imageUrl: 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        description: 'Placeholder product 3',
+      ),
+      Product(
+        id: 'placeholder-4',
+        title: 'Placeholder Product 4',
+        price: '£25.00',
+        imageUrl: 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        description: 'Placeholder product 4',
+      ),
+      Product(
+        id: 'limited-zip-hoodies',
+        title: 'Limited Edition Essential Zip Hoodies',
+        price: '£14.99',
+        imageUrl: 'https://shop.upsu.net/cdn/shop/files/Pink_Essential_Hoodie_2a3589c2-096f-479f-ac60-d41e8a853d04_1024x1024@2x.jpg?v=17491310891',
+        description: 'Limited edition hoodie',
+      ),
+      Product(
+        id: 'essential-tshirt',
+        title: 'Essential T-Shirt',
+        price: '£6.99',
+        imageUrl: 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        description: 'Essential cotton t-shirt',
+      ),
+      Product(
+        id: 'signature-hoodie',
+        title: 'Signature Hoodie',
+        price: '£32.99',
+        imageUrl: 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        description: 'Signature range hoodie',
+      ),
+      Product(
+        id: 'signature-tshirt',
+        title: 'Signature T-Shirt',
+        price: '£14.99',
+        imageUrl: 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        description: 'Signature range t-shirt',
+      ),
+    ],
+    'featured': [
+      Product(
+        id: 'limited-zip-hoodies',
+        title: 'Limited Edition Essential Zip Hoodies',
+        price: '£14.99',
+        imageUrl: 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        description: 'Limited edition hoodie',
+      ),
+      Product(
+        id: 'essential-tshirt',
+        title: 'Essential T-Shirt',
+        price: '£6.99',
+        imageUrl: 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        description: 'Essential cotton t-shirt',
+      ),
+      Product(
+        id: 'signature-hoodie',
+        title: 'Signature Hoodie',
+        price: '£32.99',
+        imageUrl: 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        description: 'Signature range hoodie',
+      ),
+      Product(
+        id: 'signature-tshirt',
+        title: 'Signature T-Shirt',
+        price: '£14.99',
+        imageUrl: 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        description: 'Signature range t-shirt',
+      ),
+    ],
     'summer': List.generate(
       6,
       (i) => Product(

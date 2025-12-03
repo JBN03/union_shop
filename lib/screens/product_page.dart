@@ -149,7 +149,7 @@ class _ProductPageState extends State<ProductPage> {
         ),
 
         const SizedBox(height: 20),
-        // Quantity selector
+        
         Row(
           children: [
             const Text('Quantity', style: TextStyle(fontWeight: FontWeight.w600)),

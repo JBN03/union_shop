@@ -55,10 +55,10 @@ class _CollectionsPageState extends State<CollectionsPage> {
                       }
                       _allCollections = snapshot.data ?? [];
 
-                      // apply search filter
+                      
                       final filtered = _allCollections.where((c) => c.title.toLowerCase().contains(_search.toLowerCase())).toList();
 
-                      // apply sort
+                      
                       if (_sort == 'Title A→Z') {
                         filtered.sort((a, b) => a.title.compareTo(b.title));
                       } else if (_sort == 'Title Z→A') {
@@ -73,7 +73,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
                       final end = (start + _pageSize).clamp(0, total);
                       final pageItems = (start < end) ? filtered.sublist(start, end) : <Collection>[];
 
-                      // only keep the sort control on the collections overview page
+                      
                       final controls = Row(
                         children: [
                           const Expanded(child: SizedBox()),
@@ -97,7 +97,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
                             final width = constraints.maxWidth;
                             final spacing = 16.0;
 
-                            // follow home_screen sizing: compute a target card width to keep cards similar
+                            
                             final desiredFourColWidth = (width - spacing * 3) / 4;
                             final targetCardWidth = (desiredFourColWidth.clamp(140.0, 360.0));
 
@@ -154,7 +154,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
                           }),
 
                           const SizedBox(height: 12),
-                          // numeric pagination buttons
+                          
                           if (pageCount > 1)
                             Center(
                               child: Wrap(

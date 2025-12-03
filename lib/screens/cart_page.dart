@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
-import 'package:union_shop/services/cart_service.dart';
 import 'package:union_shop/widgets/cart_items_list.dart';
 import 'package:union_shop/widgets/cart_summary.dart';
 
@@ -16,7 +15,7 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
-    final cart = CartService.instance;
+   
 
     return Focus(
       autofocus: true,

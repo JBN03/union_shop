@@ -63,7 +63,7 @@ class UnionShopApp extends StatelessWidget {
       },
    onGenerateRoute: (settings) {
           final name = settings.name ?? '';
-          // ignore: avoid_print
+          
           print('onGenerateRoute: name=$name args=${settings.arguments}');
           if (name.startsWith('/product/')) {
             final id = name.substring('/product/'.length);

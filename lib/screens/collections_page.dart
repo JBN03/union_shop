@@ -5,6 +5,7 @@ import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/models/collection.dart';
 import 'package:union_shop/widgets/collection_card.dart';
 import 'package:union_shop/widgets/collections_pagination.dart';
+import 'package:union_shop/widgets/collections_body.dart';
 
 class CollectionsPage extends StatefulWidget {
   const CollectionsPage({Key? key}) : super(key: key);

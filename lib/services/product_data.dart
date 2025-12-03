@@ -1,7 +1,7 @@
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/models/collection.dart';
 
-// Public product/collection data shared with ProductService.
+
 final List<Collection> collections = [
   Collection(id: 'new', title: 'New Arrivals', imageUrl: ''),
   Collection(id: 'summer', title: 'Summer Collection', imageUrl: ''),

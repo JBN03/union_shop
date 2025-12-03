@@ -35,6 +35,11 @@ class Header extends StatelessWidget {
           final showLinks = constraints.maxWidth >= 800;
           return Row(
             children: [
+
+              if (showLinks) ...[
+                
+                
+              ],
               
               MouseRegion(
                 cursor: SystemMouseCursors.click,
@@ -125,14 +130,46 @@ class Header extends StatelessWidget {
                                 },
                                 tooltip: 'Cart',
                               ),
-                              if (count > 0)
-                                Positioned(
-                                  right: 4,
-                                  top: -2,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.redAccent,
+                        Builder(builder: (ctx) {
+                          final platform = defaultTargetPlatform;
+                          final isDesktopPlatform = platform == TargetPlatform.windows || platform == TargetPlatform.linux || platform == TargetPlatform.macOS;
+                          if (isDesktopPlatform) {
+                            return IconButton(
+                              icon: const Icon(Icons.menu_rounded, size: 20, color: Colors.grey),
+                              onPressed: () {
+                                if (onMenu != null) onMenu!();
+                                Navigator.pushNamed(context, '/collections');
+                              },
+                              tooltip: 'Menu',
+                            );
+                          }
+                          return PopupMenuButton<int>(
+                            icon: const Icon(Icons.menu_rounded, size: 20, color: Colors.grey),
+                            onSelected: (v) {
+                              if (onMenu != null) onMenu!();
+                              switch (v) {
+                                case 0:
+                                  Navigator.pushNamed(context, '/');
+                                  break;
+                                case 1:
+                                  Navigator.pushNamed(context, '/collections');
+                                  break;
+                                case 2:
+                                  Navigator.pushNamed(context, '/sale');
+                                  break;
+                                case 3:
+                                  Navigator.pushNamed(context, '/about');
+                                  break;
+                              }
+                            },
+                            itemBuilder: (context) => const [
+                              PopupMenuItem(value: 0, child: Text('Home')),
+                              PopupMenuItem(value: 1, child: Text('Collections')),
+                              PopupMenuItem(value: 2, child: Text('Sale')),
+                              PopupMenuItem(value: 3, child: Text('About')),
+                            ],
+                          );
+                        }),
                                       shape: BoxShape.circle,
                                     ),
                                     constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
@@ -214,13 +251,31 @@ class Header extends StatelessWidget {
                         );
                       },
                     ),
-                    IconButton(
+                    PopupMenuButton<int>(
                       icon: const Icon(Icons.menu_rounded, size: 20, color: Colors.grey),
-                      onPressed: () {
+                      onSelected: (v) {
                         if (onMenu != null) onMenu!();
-                        Navigator.pushNamed(context, '/collections');
+                        switch (v) {
+                          case 0:
+                            Navigator.pushNamed(context, '/');
+                            break;
+                          case 1:
+                            Navigator.pushNamed(context, '/collections');
+                            break;
+                          case 2:
+                            Navigator.pushNamed(context, '/sale');
+                            break;
+                          case 3:
+                            Navigator.pushNamed(context, '/about');
+                            break;
+                        }
                       },
-                      tooltip: 'Menu',
+                      itemBuilder: (context) => const [
+                        PopupMenuItem(value: 0, child: Text('Home')),
+                        PopupMenuItem(value: 1, child: Text('Collections')),
+                        PopupMenuItem(value: 2, child: Text('Sale')),
+                        PopupMenuItem(value: 3, child: Text('About')),
+                      ],
                     ),
                   ],
                 ),

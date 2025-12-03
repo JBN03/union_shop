@@ -4,6 +4,8 @@ import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/widgets/product_card.dart';
+import 'package:union_shop/widgets/collection_filters.dart';
+import 'package:union_shop/widgets/collection_grid.dart';
 
 class CollectionPage extends StatefulWidget {
   const CollectionPage({Key? key}) : super(key: key);
@@ -55,32 +57,11 @@ class _CollectionPageState extends State<CollectionPage> {
                   const SizedBox(height: 8),
 
                   
-                  Row(
-                    children: [
-                      Expanded(
-                        child: DropdownButtonFormField<String>(
-                          decoration: const InputDecoration(labelText: 'Sort by', border: OutlineInputBorder()),
-                          items: const [
-                            DropdownMenuItem(value: 'popular', child: Text('Most popular')),
-                            DropdownMenuItem(value: 'latest', child: Text('Latest')),
-                            DropdownMenuItem(value: 'price_low', child: Text('Price: low to high')),
-                          ],
-                          onChanged: (_) {},
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: DropdownButtonFormField<String>(
-                          decoration: const InputDecoration(labelText: 'Filter', border: OutlineInputBorder()),
-                          items: const [
-                            DropdownMenuItem(value: 'all', child: Text('All')),
-                            DropdownMenuItem(value: 'in_stock', child: Text('In stock')),
-                            DropdownMenuItem(value: 'sale', child: Text('On sale')),
-                          ],
-                          onChanged: (_) {},
-                        ),
-                      ),
-                    ],
+                  CollectionFilters(
+                    sortValue: null,
+                    onSortChanged: (_) {},
+                    filterValue: null,
+                    onFilterChanged: (_) {},
                   ),
 
                   const SizedBox(height: 16),
@@ -94,95 +75,13 @@ class _CollectionPageState extends State<CollectionPage> {
                       if (snapshot.hasError) return Text('Error: ${snapshot.error}');
                       final products = snapshot.data ?? [];
 
-                      return LayoutBuilder(builder: (context, constraints) {
-                        final width = constraints.maxWidth;
-                        const spacing = 16.0;
-
-                        
-                        final desiredFourColWidth = (width - spacing * 3) / 4;
-                        final targetCardWidth = desiredFourColWidth.clamp(140.0, 360.0);
-
-                        final crossAxisCount = width > 800 ? 3 : (width > 400 ? 2 : 1);
-
-                        
-                        final total = products.length;
-                        final pageCount = total == 0 ? 0 : (total / _pageSize).ceil();
-                        if (pageCount > 0 && _page >= pageCount) _page = pageCount - 1;
-                        final start = (_page * _pageSize).clamp(0, total);
-                        final end = (start + _pageSize).clamp(0, total);
-                        final pageItems = (start < end) ? products.sublist(start, end) : <Product>[];
-
-                        return Center(
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: targetCardWidth * crossAxisCount + spacing * (crossAxisCount - 1)),
-                            child: Column(
-                              children: [
-                                GridView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: pageItems.length,
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: crossAxisCount,
-                                    crossAxisSpacing: spacing,
-                                    mainAxisSpacing: spacing,
-                                    childAspectRatio: 0.85,
-                                  ),
-                                  itemBuilder: (context, index) {
-                                    final p = pageItems[index];
-                                    return Center(
-                                      child: SizedBox(
-                                        width: targetCardWidth,
-                                        child: GestureDetector(
-                                          onTap: () => Navigator.pushNamed(context, '/product/${p.id}', arguments: p),
-                                          child: ProductCard(
-                                            title: p.title,
-                                            price: p.price,
-                                            imageUrl: p.imageUrl,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-
-                                const SizedBox(height: 12),
-                                
-                                Center(
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.chevron_left),
-                                        onPressed: (pageCount > 1 && _page > 0) ? () => _goToPage(_page - 1, pageCount) : null,
-                                      ),
-                                      Wrap(
-                                        spacing: 6,
-                                        children: List.generate(pageCount > 0 ? pageCount : 1, (i) {
-                                          final pageIndex = i;
-                                          final disabled = pageCount <= 1 || _page == pageIndex;
-                                          return OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                              backgroundColor: _page == pageIndex ? Colors.grey[200] : null,
-                                              minimumSize: const Size(36, 36),
-                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                                            ),
-                                            onPressed: disabled ? null : () => _goToPage(pageIndex, pageCount),
-                                            child: Text('${pageIndex + 1}'),
-                                          );
-                                        }),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.chevron_right),
-                                        onPressed: (pageCount > 1 && _page < pageCount - 1) ? () => _goToPage(_page + 1, pageCount) : null,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      });
+                      return CollectionGrid(
+                        products: products,
+                        page: _page,
+                        pageSize: _pageSize,
+                        onPage: (p) => _goToPage(p, (products.length == 0 ? 0 : (products.length / _pageSize).ceil())),
+                        onProductTap: (product) => Navigator.pushNamed(context, '/product/${product.id}', arguments: product),
+                      );
                     },
                   ),
                 ],

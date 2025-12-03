@@ -14,10 +14,10 @@ class CollectionsPage extends StatefulWidget {
 class _CollectionsPageState extends State<CollectionsPage> {
   late Future<List<Collection>> _collectionsFuture;
   List<Collection> _allCollections = [];
-  String _search = '';
+  final String _search = '';
   String _sort = 'Title A→Z';
   int _page = 0;
-  int _pageSize = 4;
+  final int _pageSize = 4;
 
   void _goToPage(int page, int pageCount) {
     final next = page < 0 ? 0 : (page >= pageCount ? pageCount - 1 : page);
@@ -71,7 +71,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
 
                       return LayoutBuilder(builder: (context, constraints) {
                         final width = constraints.maxWidth;
-                        final spacing = 16.0;
+                        const spacing = 16.0;
 
                         final desiredFourColWidth = (width - spacing * 3) / 4;
                         final targetCardWidth = (desiredFourColWidth.clamp(140.0, 360.0));
@@ -79,7 +79,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
                         final cross = width >= 1000 ? 3 : (width >= 600 ? 2 : 1);
 
                         
-                        final rows = 2;
+                        const rows = 2;
                         final visiblePageSize = cross * rows;
 
                         final total = filtered.length;

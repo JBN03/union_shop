@@ -3,6 +3,7 @@ import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/models/product.dart';
+import 'package:union_shop/models/collection.dart';
 import 'package:union_shop/widgets/collection_filters.dart';
 import 'package:union_shop/widgets/collection_grid.dart';
 
@@ -33,6 +34,24 @@ class _CollectionPageState extends State<CollectionPage> {
     collectionId = args != null && args['id'] is String ? args['id'] as String : 'new';
     title = args != null && args['title'] is String ? args['title'] as String : 'Collection';
     _productsFuture = ProductService.instance.getProductsForCollection(collectionId);
+
+    
+    if ((args == null || args['title'] == null) && collectionId.isNotEmpty) {
+      ProductService.instance.getCollections().then((cols) {
+        try {
+          final Collection? match = cols.isNotEmpty
+              ? cols.firstWhere((c) => c.id == collectionId, orElse: () => cols.first)
+              : null;
+          if (match != null && mounted) {
+            setState(() {
+              title = match.title;
+            });
+          }
+        } catch (_) {
+          
+        }
+      });
+    }
   }
 
   @override
@@ -52,7 +71,7 @@ class _CollectionPageState extends State<CollectionPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                  Center(child: Text(title, textAlign: TextAlign.center, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold))),
                   const SizedBox(height: 8),
 
                   

@@ -27,6 +27,13 @@ class ProductDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const noOptionsIds = {
+      'portsmouth-city-postcard',
+      'portsmouth-city-magnet',
+      'portsmouth-city-bookmark',
+      'portsmouth-city-keyring',
+    };
+    final hideOptions = product != null && noOptionsIds.contains(product!.id);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -40,36 +47,37 @@ class ProductDetails extends StatelessWidget {
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF4d2963)),
         ),
         const SizedBox(height: 18),
-        Row(
-          children: [
-            Expanded(
-              child: DropdownButtonFormField<String>(
-                decoration: const InputDecoration(labelText: 'Size', border: OutlineInputBorder()),
-                initialValue: selectedSize,
-                items: const [
-                  DropdownMenuItem(value: 'S', child: Text('S')),
-                  DropdownMenuItem(value: 'M', child: Text('M')),
-                  DropdownMenuItem(value: 'L', child: Text('L')),
-                  DropdownMenuItem(value: 'XL', child: Text('XL')),
-                ],
-                onChanged: onSizeChanged,
+        if (!hideOptions)
+          Row(
+            children: [
+              Expanded(
+                child: DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(labelText: 'Size', border: OutlineInputBorder()),
+                  initialValue: selectedSize,
+                  items: const [
+                    DropdownMenuItem(value: 'S', child: Text('S')),
+                    DropdownMenuItem(value: 'M', child: Text('M')),
+                    DropdownMenuItem(value: 'L', child: Text('L')),
+                    DropdownMenuItem(value: 'XL', child: Text('XL')),
+                  ],
+                  onChanged: onSizeChanged,
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: DropdownButtonFormField<String>(
-                decoration: const InputDecoration(labelText: 'Color', border: OutlineInputBorder()),
-                initialValue: selectedColor,
-                items: const [
-                  DropdownMenuItem(value: 'Red', child: Text('Red')),
-                  DropdownMenuItem(value: 'Blue', child: Text('Blue')),
-                  DropdownMenuItem(value: 'Green', child: Text('Green')),
-                ],
-                onChanged: onColorChanged,
+              const SizedBox(width: 12),
+              Expanded(
+                child: DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(labelText: 'Color', border: OutlineInputBorder()),
+                  initialValue: selectedColor,
+                  items: const [
+                    DropdownMenuItem(value: 'Red', child: Text('Red')),
+                    DropdownMenuItem(value: 'Blue', child: Text('Blue')),
+                    DropdownMenuItem(value: 'Green', child: Text('Green')),
+                  ],
+                  onChanged: onColorChanged,
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
         const SizedBox(height: 16),
         const Text('Description', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black)),
         const SizedBox(height: 8),

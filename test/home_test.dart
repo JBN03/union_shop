@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:union_shop/main.dart';
+import 'package:union_shop/widgets/product_card.dart';
 import 'test_helpers.dart';
 
 void main() {
@@ -25,7 +26,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 350));
       await tester.pumpAndSettle();
 
-      // Check that product cards from the 'new' collection are displayed
+      // Check that the Portsmouth products are present on the home screen
       expect(find.text('Portsmouth City Postcard'), findsOneWidget);
       expect(find.text('Portsmouth City Magnet'), findsOneWidget);
       expect(find.text('Portsmouth City Bookmark'), findsOneWidget);

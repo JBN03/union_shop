@@ -30,6 +30,7 @@ class ProductCard extends StatelessWidget {
           title: title,
           price: price,
           imageUrl: imageUrl,
+          images: imageUrl.isNotEmpty ? [imageUrl] : const [],
           description: '',
         );
         Navigator.pushNamed(context, '/product/$id', arguments: product);

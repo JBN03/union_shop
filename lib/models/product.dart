@@ -4,6 +4,7 @@ class Product {
   final String price;
   final String imageUrl;
   final String description;
+  final List<String> images;
 
   Product({
     required this.id,
@@ -11,8 +12,8 @@ class Product {
     required this.price,
     required this.imageUrl,
     this.description = '',
-  });
-
+    List<String>? images,
+  }) : images = images ?? const [];
   String get slug {
     final s = title.toLowerCase();
     final replaced = s.replaceAll(RegExp(r"[^a-z0-9]+"), '-');

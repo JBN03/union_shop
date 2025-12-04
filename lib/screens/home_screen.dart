@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
             HomeHero(onBrowseCollections: placeholderCallbackForButtons),
 
             
-            const ProductsGrid(),
+            const ProductsGrid(showHeader: false),
           
             const SizedBox(height: 56),
             const Footer(),

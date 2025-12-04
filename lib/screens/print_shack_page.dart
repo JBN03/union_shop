@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/body_with_footer.dart';
+import 'package:union_shop/screens/print_shack_content.dart';
 
 class PrintShackPage extends StatelessWidget {
   const PrintShackPage({Key? key}) : super(key: key);
@@ -20,14 +21,7 @@ class PrintShackPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('The Print Shack', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 12),
-                    
-                  ],
-                ),
+                child: const PrintShackContent(),
               ),
             ],
           ),
@@ -36,3 +30,4 @@ class PrintShackPage extends StatelessWidget {
     );
   }
 }
+  

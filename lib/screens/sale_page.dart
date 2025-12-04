@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/widgets/product_card.dart';
 
 class SalePage extends StatelessWidget {
 	const SalePage({Key? key}) : super(key: key);
@@ -32,54 +33,46 @@ class SalePage extends StatelessWidget {
 									const SizedBox(height: 8),
 									const Text('Limited time discounts and promotions. Prices shown are examples and static.'),
 									const SizedBox(height: 20),
-									GridView.builder(
-										shrinkWrap: true,
-										physics: const NeverScrollableScrollPhysics(),
-										gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-											crossAxisCount: 2,
-											crossAxisSpacing: 12,
-											mainAxisSpacing: 12,
-											childAspectRatio: 0.78,
-										),
-										itemCount: saleItems.length,
-										itemBuilder: (context, index) {
-											final item = saleItems[index];
-											return Card(
-												clipBehavior: Clip.hardEdge,
-												child: Column(
-													crossAxisAlignment: CrossAxisAlignment.stretch,
-													children: [
-														Expanded(
-															child: Image.network(item['image']!, fit: BoxFit.cover),
-														),
-														Padding(
-															padding: const EdgeInsets.all(8.0),
-															child: Column(
-																crossAxisAlignment: CrossAxisAlignment.start,
-																children: [
-																	Text(item['title']!, style: const TextStyle(fontWeight: FontWeight.w700)),
-																	const SizedBox(height: 6),
-																	Row(
-																		children: [
-																			Text(item['price']!, style: const TextStyle(color: Color(0xFF4d2963), fontWeight: FontWeight.bold)),
-																			const SizedBox(width: 8),
-																			Text(item['orig']!, style: const TextStyle(color: Colors.grey, decoration: TextDecoration.lineThrough)),
-																		],
-																	),
-																	const SizedBox(height: 8),
-																	ElevatedButton(
-																		onPressed: () {},
-																		style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF4d2963)),
-																		child: const Text('Shop now'),
-																	),
-																],
-															),
-														)
-													],
-												),
-											);
-										},
-									),
+																		LayoutBuilder(builder: (context, constraints) {
+																			final width = constraints.maxWidth;
+																			const spacing = 12.0;
+
+																			final desiredFourColWidth = (width - spacing * 3) / 4;
+																			final targetCardWidth = desiredFourColWidth.clamp(140.0, 360.0);
+
+																			final crossAxisCount = width > 800 ? 3 : (width > 400 ? 2 : 1);
+
+																			return Center(
+																				child: ConstrainedBox(
+																					constraints: BoxConstraints(maxWidth: targetCardWidth * crossAxisCount + spacing * (crossAxisCount - 1)),
+																					child: GridView.builder(
+																						shrinkWrap: true,
+																						physics: const NeverScrollableScrollPhysics(),
+																						itemCount: saleItems.length,
+																						gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+																							crossAxisCount: crossAxisCount,
+																							crossAxisSpacing: spacing,
+																							mainAxisSpacing: spacing,
+																							childAspectRatio: 0.85,
+																						),
+																						itemBuilder: (context, index) {
+																							final item = saleItems[index];
+																							return Center(
+																								child: SizedBox(
+																									width: targetCardWidth,
+																									child: ProductCard(
+																										title: item['title']!,
+																										price: item['price']!,
+																										imageUrl: item['image']!,
+																										productId: item['title']!.hashCode.toString(),
+																									),
+																								),
+																							);
+																						},
+																					),
+																				),
+																			);
+																		}),
 								],
 							),
 						),

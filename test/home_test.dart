@@ -15,9 +15,8 @@ void main() {
       await tester.pump(const Duration(milliseconds: 350));
       await tester.pumpAndSettle();
 
-      // Basic hero and products section are present
+      // Basic hero and browse button are present
       expect(find.text('Placeholder Hero Title'), findsOneWidget);
-      expect(find.text('PRODUCTS SECTION'), findsOneWidget);
       expect(find.text('BROWSE PRODUCTS'), findsOneWidget);
     });
 

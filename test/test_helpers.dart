@@ -106,6 +106,14 @@ class _FakeHttpHeaders implements HttpHeaders {
 }
 
 class _FakeHttpClient implements HttpClient {
+	bool _autoUncompress = true;
+
+	@override
+	bool get autoUncompress => _autoUncompress;
+
+	@override
+	set autoUncompress(bool v) => _autoUncompress = v;
+
 	@override
 	Future<HttpClientRequest> getUrl(Uri url) async => _FakeHttpClientRequest(url);
 

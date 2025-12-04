@@ -28,9 +28,6 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  String selectedSize = 'M';
-  String selectedColor = 'Red';
-  int quantity = 1;
   Product? _loadedProduct;
   bool _loadingProduct = false;
 
@@ -103,22 +100,7 @@ class _ProductPageState extends State<ProductPage> {
                                     ConstrainedBox(
                                       constraints: const BoxConstraints(maxWidth: detailsMaxWidth),
                                       child: SingleChildScrollView(
-                                        child: ProductDetails(
-                                          product: widget.product ?? _loadedProduct,
-                                          selectedSize: selectedSize,
-                                          selectedColor: selectedColor,
-                                          quantity: quantity,
-                                          onSizeChanged: (v) => setState(() => selectedSize = v ?? 'M'),
-                                          onColorChanged: (v) => setState(() => selectedColor = v ?? 'Red'),
-                                          onIncrease: () => setState(() => quantity += 1),
-                                          onDecrease: () => setState(() { if (quantity > 1) quantity -= 1; }),
-                                          onAddToCart: () {
-                                            final prod = widget.product ?? _loadedProduct;
-                                            if (prod == null) return;
-                                            CartService.instance.addItem(prod, qty: quantity, attributes: {'Size': selectedSize, 'Color': selectedColor});
-                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added $quantity × ${prod.title} to cart')));
-                                          },
-                                        ),
+                                        child: ProductDetails(product: widget.product ?? _loadedProduct),
                                       ),
                                     ),
                             ],
@@ -132,22 +114,7 @@ class _ProductPageState extends State<ProductPage> {
                       children: [
                         ProductImage(product: widget.product ?? _loadedProduct, maxHeight: maxImageHeight),
                         const SizedBox(height: 24),
-                        ProductDetails(
-                          product: widget.product ?? _loadedProduct,
-                          selectedSize: selectedSize,
-                          selectedColor: selectedColor,
-                          quantity: quantity,
-                          onSizeChanged: (v) => setState(() => selectedSize = v ?? 'M'),
-                          onColorChanged: (v) => setState(() => selectedColor = v ?? 'Red'),
-                          onIncrease: () => setState(() => quantity += 1),
-                          onDecrease: () => setState(() { if (quantity > 1) quantity -= 1; }),
-                          onAddToCart: () {
-                            final prod = widget.product ?? _loadedProduct;
-                            if (prod == null) return;
-                            CartService.instance.addItem(prod, qty: quantity, attributes: {'Size': selectedSize, 'Color': selectedColor});
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added $quantity × ${prod.title} to cart')));
-                          },
-                        ),
+                        ProductDetails(product: widget.product ?? _loadedProduct),
                       ],
                     );
                   }

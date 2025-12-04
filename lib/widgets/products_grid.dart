@@ -6,8 +6,9 @@ import 'package:union_shop/models/product.dart' as model;
 
 class ProductsGrid extends StatelessWidget {
   final String collectionId;
+  final bool showHeader;
 
-  const ProductsGrid({Key? key, this.collectionId = 'new'}) : super(key: key);
+  const ProductsGrid({Key? key, this.collectionId = 'new', this.showHeader = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +16,14 @@ class ProductsGrid extends StatelessWidget {
       color: Colors.white,
       padding: const EdgeInsets.all(24),
       child: Column(
-        children: [
-          const Text(
-            'PRODUCTS SECTION',
-            style: TextStyle(fontSize: 20, color: Colors.black, letterSpacing: 1),
-          ),
-          const SizedBox(height: 24),
+          children: [
+          if (showHeader) ...[
+            const Text(
+              'PRODUCTS SECTION',
+              style: TextStyle(fontSize: 20, color: Colors.black, letterSpacing: 1),
+            ),
+            const SizedBox(height: 24),
+          ],
           LayoutBuilder(
             builder: (context, constraints) {
               final width = constraints.maxWidth;

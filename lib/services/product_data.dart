@@ -53,6 +53,10 @@ final Map<String, List<Product>> productsByCollection = {
       title: 'Essential T-Shirt',
       price: '£6.99',
       imageUrl: 'https://i.ibb.co/FkbrBJ9W/Gemini-Generated-Image-i292hli292hli292.png',
+      images: [
+        'https://i.ibb.co/FkbrBJ9W/Gemini-Generated-Image-i292hli292hli292.png',
+        'https://i.ibb.co/MDMRD57D/Gemini-Generated-Image-5z5rnr5z5rnr5z5r.png',
+      ],
       description: 'Essential cotton t-shirt',
     ),
   ],

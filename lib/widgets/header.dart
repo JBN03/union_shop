@@ -82,6 +82,10 @@ class Header extends StatelessWidget {
                           child: const Text('Collections', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                         ),
                         const SizedBox(width: 12),
+                         TextButton(
+                          onPressed: () => Navigator.pushNamed(context, '/The Print Shack'),
+                          child: const Text('The Print Shack', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                        ),
                         TextButton(
                           onPressed: () => Navigator.pushNamed(context, '/sale'),
                           child: const Text('Sale', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),

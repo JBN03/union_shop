@@ -19,7 +19,7 @@ class _CollectionPageState extends State<CollectionPage> {
   late Future<List<Product>> _productsFuture;
   
   int _page = 0;
-  final int _pageSize = 12;
+  final int _pageSize = 9;
 
   void _goToPage(int page, int pageCount) {
     final next = page < 0 ? 0 : (page >= pageCount ? pageCount - 1 : page);

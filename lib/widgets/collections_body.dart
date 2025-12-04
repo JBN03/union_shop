@@ -72,7 +72,7 @@ class CollectionsBody extends StatelessWidget {
                     return CollectionCard(
                       collection: c,
                       width: targetCardWidth,
-                      onTap: () => Navigator.pushNamed(context, '/collection/${c.id}'),
+                      onTap: () => Navigator.pushNamed(context, '/collection/${c.id}', arguments: {'id': c.id, 'title': c.title}),
                     );
                   },
                 ),

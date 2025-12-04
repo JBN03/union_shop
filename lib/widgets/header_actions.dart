@@ -37,12 +37,15 @@ class HeaderActions extends StatelessWidget {
             return Stack(
               clipBehavior: Clip.none,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.shopping_bag_outlined),
-                  onPressed: () {
-                    if (onCart != null) onCart!();
-                    Navigator.pushNamed(context, '/cart');
-                  },
+                              IconButton(
+                                icon: const Icon(Icons.shopping_bag_outlined),
+                                onPressed: () {
+                                  if (onCart != null) onCart!();
+                                  final current = ModalRoute.of(context)?.settings.name;
+                                  if (current != '/cart') {
+                                    Navigator.pushNamed(context, '/cart');
+                                  }
+                                },
                   tooltip: 'Cart',
                 ),
                 if (count > 0)

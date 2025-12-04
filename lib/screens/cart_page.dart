@@ -32,7 +32,7 @@ class _CartPageState extends State<CartPage> {
           preferredSize: const Size.fromHeight(72),
           child: Header(
             onLogoTap: () => Navigator.pushNamed(context, '/'),
-            onCart: () => Navigator.pushNamed(context, '/cart'),
+                onCart: () => Navigator.pushNamed(context, '/cart'),
             onSearch: () {},
             onAccount: () => Navigator.pushNamed(context, '/login'),
             onMenu: () {},

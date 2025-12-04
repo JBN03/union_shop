@@ -42,7 +42,8 @@ class HeaderCompactActions extends StatelessWidget {
                   icon: const Icon(Icons.shopping_bag_outlined, size: 20, color: Colors.grey),
                   onPressed: () {
                     if (onCart != null) onCart!();
-                    Navigator.pushNamed(context, '/cart');
+                    final current = ModalRoute.of(context)?.settings.name;
+                    if (current != '/cart') Navigator.pushNamed(context, '/cart');
                   },
                   tooltip: 'Cart',
                 ),

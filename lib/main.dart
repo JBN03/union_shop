@@ -6,6 +6,7 @@ import 'package:union_shop/screens/about_us_page.dart';
 import 'package:union_shop/screens/collections_page.dart';
 import 'package:union_shop/screens/collection_page.dart';
 import 'package:union_shop/screens/sale_page.dart';
+import 'package:union_shop/screens/print_shack_page.dart';
 import 'package:union_shop/screens/login_page.dart';
 import 'package:union_shop/screens/signup_page.dart';
 import 'package:union_shop/screens/cart_page.dart';
@@ -52,6 +53,7 @@ class UnionShopApp extends StatelessWidget {
       
       routes: { 
         '/about': (context) => const AboutUsPage(),
+        '/The Print Shack': (context) => const PrintShackPage(),
         '/cart': (context) => const CartPage(),
         '/checkout-success': (context) => const CheckoutSuccessPage(),
         '/collections': (context) => const CollectionsPage(),

@@ -42,7 +42,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Collections', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                  Center(child: const Text('Collections', textAlign: TextAlign.center, style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold))),
                   const SizedBox(height: 12),
                   FutureBuilder<List<Collection>>(
                     future: _collectionsFuture,

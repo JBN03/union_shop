@@ -24,7 +24,8 @@ class _FooterState extends State<Footer> {
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final isNarrow = constraints.maxWidth < 600;
+          try {
+            final isNarrow = constraints.maxWidth < 600;
 
           Widget sectionTitle(String text) => Text(text, style: const TextStyle(fontWeight: FontWeight.w700));
 
@@ -51,7 +52,6 @@ class _FooterState extends State<Footer> {
           final helpLines = [
             sectionTitle('Help and Information'),
             const SizedBox(height: 8),
-            // Plain text labels — avoid introducing routes that may not exist.
             TextButton(onPressed: () {}, child: const Text('Search')),
             TextButton(onPressed: () {}, child: const Text('Terms & Conditions of Sale Policy')),
           ];
@@ -64,7 +64,6 @@ class _FooterState extends State<Footer> {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    // Limit width of the email field so it doesn't stretch too wide
                     SizedBox(
                       width: 220,
                       child: TextField(
@@ -80,15 +79,14 @@ class _FooterState extends State<Footer> {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    ElevatedButton(
-                      onPressed: () {
-                        final email = _emailController.text.trim();
-                        if (email.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter your email')));
-                          return;
-                        }
-                        // Placeholder behaviour: show confirmation. Integrate with backend as needed.
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Subscribed $email')));
+                      ElevatedButton(
+                        onPressed: () {
+                          final email = _emailController.text.trim();
+                          if (email.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter your email')));
+                            return;
+                          }
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Subscribed $email')));
                         _emailController.clear();
                       },
                       style: ElevatedButton.styleFrom(
@@ -111,25 +109,44 @@ class _FooterState extends State<Footer> {
                     const SizedBox(height: 14),
                     ...helpLines,
                     const SizedBox(height: 18),
-                    const Center(child: Text('© 2025 Union Shop — All rights reserved', style: TextStyle(color: Colors.grey))),
+                    const Center(
+                      child: Text(
+                        '© 2025 Union Shop — All rights reserved',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
                   ],
                 )
               : Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      flex: 3,
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: openingLines),
+                    SizedBox(
+                      width: constraints.maxWidth * 0.30,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: openingLines,
+                      ),
                     ),
-                    const SizedBox(width: 32),
-                    Expanded(
-                      flex: 2,
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: helpLines),
+                    SizedBox(
+                      width: constraints.maxWidth * 0.20,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: helpLines,
+                      ),
                     ),
-                    const SizedBox(width: 32),
-                    Flexible(flex: 3, child: latestOffers()),
+                    SizedBox(
+                      width: constraints.maxWidth * 0.33,
+                      child: latestOffers(),
+                    ),
                   ],
                 );
+          } catch (e, st) {
+            
+            debugPrint('Footer build error: $e');
+            debugPrintStack(stackTrace: st);
+            return const SizedBox.shrink();
+          }
         },
       ),
     );

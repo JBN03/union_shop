@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/body_with_footer.dart';
 import 'package:union_shop/widgets/product_card.dart';
@@ -16,9 +17,9 @@ class SalePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Header(
-              onLogoTap: () => Navigator.pushNamed(context, '/'),
+              onLogoTap: () => context.go('/'),
               onAccount: () {},
-              onCart: () => Navigator.pushNamed(context, '/cart'),
+              onCart: () => context.push('/cart'),
               onMenu: () {},
             ),
             Padding(
@@ -73,7 +74,7 @@ class SalePage extends StatelessWidget {
                                       originalPrice: item.originalPrice,
                                       imageUrl: item.imageUrl,
                                       productId: item.id,
-                                      onTap: () => Navigator.pushNamed(context, '/product/${item.id}', arguments: item),
+                                      onTap: () => context.push('/product/${item.id}'),
                                     ),
                                   ),
                                 );

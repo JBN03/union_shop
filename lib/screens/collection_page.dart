@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/body_with_footer.dart';
 import 'package:union_shop/services/product_service.dart';
@@ -8,7 +9,9 @@ import 'package:union_shop/widgets/collection_filters.dart';
 import 'package:union_shop/widgets/collection_grid.dart';
 
 class CollectionPage extends StatefulWidget {
-  const CollectionPage({Key? key}) : super(key: key);
+  final String? collectionId;
+  
+  const CollectionPage({Key? key, this.collectionId}) : super(key: key);
 
   @override
   _CollectionPageState createState() => _CollectionPageState();
@@ -53,8 +56,9 @@ class _CollectionPageState extends State<CollectionPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // Use widget.collectionId if provided, otherwise try to get from route args
     final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-    collectionId = args != null && args['id'] is String ? args['id'] as String : 'new';
+    collectionId = widget.collectionId ?? (args != null && args['id'] is String ? args['id'] as String : 'new');
     title = args != null && args['title'] is String ? args['title'] as String : 'Collection';
     _productsFuture = ProductService.instance.getProductsForCollection(collectionId);
 
@@ -85,9 +89,9 @@ class _CollectionPageState extends State<CollectionPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Header(
-              onLogoTap: () => Navigator.pushNamed(context, '/'),
+              onLogoTap: () => context.go('/'),
               onAccount: () {},
-              onCart: () => Navigator.pushNamed(context, '/cart'),
+              onCart: () => context.push('/cart'),
               onMenu: () {},
             ),
             Padding(
@@ -126,10 +130,8 @@ class _CollectionPageState extends State<CollectionPage> {
                         page: _page,
                         pageSize: _pageSize,
                         onPage: (p) => _goToPage(p, (products.isEmpty ? 0 : (products.length / _pageSize).ceil())),
-                        onProductTap: (product, collectionSlug) => Navigator.pushNamed(
-                          context,
+                        onProductTap: (product, collectionSlug) => context.push(
                           '/collection/$collectionSlug/product/${product.slug}',
-                          arguments: product,
                         ),
                         collectionSlug: collectionId,
                       );

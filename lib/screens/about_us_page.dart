@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/body_with_footer.dart';
 
@@ -13,10 +14,10 @@ class AboutUsPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Header(
-              onLogoTap: () => Navigator.pushNamed(context, '/'),
+              onLogoTap: () => context.go('/'),
               onSearch: () {},
               onAccount: () {},
-              onCart: () => Navigator.pushNamed(context, '/cart'),
+              onCart: () => context.push('/cart'),
               onMenu: () {},
             ),
             const Padding(

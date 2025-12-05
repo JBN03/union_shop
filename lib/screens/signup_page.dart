@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/body_with_footer.dart';
 
@@ -13,7 +14,7 @@ class SignupPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Header(
-              onLogoTap: () => Navigator.pushNamed(context, '/'),
+              onLogoTap: () => context.go('/'),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
@@ -60,7 +61,7 @@ class SignupPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text('Already have an account?'),
-                          TextButton(onPressed: () => Navigator.pushNamed(context, '/login'), child: const Text('Sign in')),
+                          TextButton(onPressed: () => context.push('/login'), child: const Text('Sign in')),
                         ],
                       ),
                     ],

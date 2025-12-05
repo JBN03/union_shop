@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/body_with_footer.dart';
 import 'package:union_shop/services/product_service.dart';
@@ -33,9 +34,9 @@ class _CollectionsPageState extends State<CollectionsPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Header(
-              onLogoTap: () => Navigator.pushNamed(context, '/'),
+              onLogoTap: () => context.go('/'),
               onAccount: () {},
-              onCart: () => Navigator.pushNamed(context, '/cart'),
+              onCart: () => context.push('/cart'),
               onMenu: () {},
             ),
             Padding(

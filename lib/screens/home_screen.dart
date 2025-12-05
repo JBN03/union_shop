@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/widgets/home_hero.dart';
@@ -28,11 +29,11 @@ class HomeScreen extends StatelessWidget {
                     Header(
                       onLogoTap: () {},
                       onSearch: placeholderCallbackForButtons,
-                      onAccount: () => Navigator.pushNamed(context, '/login'),
-                      onCart: () => Navigator.pushNamed(context, '/cart'),
+                      onAccount: () => context.push('/login'),
+                      onCart: () => context.push('/cart'),
                       onMenu: placeholderCallbackForButtons,
                     ),
-                    HomeHero(onBrowseCollections: () => Navigator.pushNamed(context, '/collections')),
+                    HomeHero(onBrowseCollections: () => context.push('/collections')),
                     const ProductsGrid(showHeader: false),
                     const SizedBox(height: 56),
                   ],

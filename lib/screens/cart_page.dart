@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/widgets/cart_items_list.dart';
@@ -22,7 +23,7 @@ class _CartPageState extends State<CartPage> {
       onKeyEvent: (node, event) {
         if (event is KeyDownEvent &&
             event.logicalKey == LogicalKeyboardKey.backspace) {
-          if (Navigator.canPop(context)) Navigator.pop(context);
+          if (context.canPop()) context.pop();
           return KeyEventResult.handled;
         }
         return KeyEventResult.ignored;
@@ -41,10 +42,10 @@ class _CartPageState extends State<CartPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Header(
-                      onLogoTap: () => Navigator.pushNamed(context, '/'),
+                      onLogoTap: () => context.go('/'),
                       onCart: () {},
                       onSearch: () {},
-                      onAccount: () => Navigator.pushNamed(context, '/login'),
+                      onAccount: () => context.push('/login'),
                       onMenu: () {},
                     ),
                     const Padding(

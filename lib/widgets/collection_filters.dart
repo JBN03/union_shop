@@ -17,30 +17,31 @@ class CollectionFilters extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(
-          child: DropdownButtonFormField<String>(
-            decoration: const InputDecoration(labelText: 'Sort by', border: OutlineInputBorder()),
-            initialValue: sortValue,
-            items: const [
-              DropdownMenuItem(value: 'popular', child: Text('Most popular')),
-              DropdownMenuItem(value: 'latest', child: Text('Latest')),
-              DropdownMenuItem(value: 'price_low', child: Text('Price: low to high')),
-            ],
-            onChanged: onSortChanged,
+        const Text(
+          'SORT BY',
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: Colors.black54,
+            letterSpacing: 1.0,
           ),
         ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: DropdownButtonFormField<String>(
-            decoration: const InputDecoration(labelText: 'Filter', border: OutlineInputBorder()),
-            initialValue: filterValue,
+        const SizedBox(width: 8),
+        DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            value: sortValue ?? 'Featured',
+            icon: const Icon(Icons.keyboard_arrow_down, color: Colors.black54),
+            style: const TextStyle(fontSize: 14, color: Colors.black87),
             items: const [
-              DropdownMenuItem(value: 'all', child: Text('All')),
-              DropdownMenuItem(value: 'in_stock', child: Text('In stock')),
-              DropdownMenuItem(value: 'sale', child: Text('On sale')),
+              DropdownMenuItem(value: 'Featured', child: Text('Featured')),
+              DropdownMenuItem(value: 'Price: Low to High', child: Text('Price: Low to High')),
+              DropdownMenuItem(value: 'Price: High to Low', child: Text('Price: High to Low')),
+              DropdownMenuItem(value: 'A-Z', child: Text('A-Z')),
+              DropdownMenuItem(value: 'Z-A', child: Text('Z-A')),
             ],
-            onChanged: onFilterChanged,
+            onChanged: onSortChanged,
           ),
         ),
       ],

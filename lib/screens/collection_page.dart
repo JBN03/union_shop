@@ -21,10 +21,33 @@ class _CollectionPageState extends State<CollectionPage> {
   
   int _page = 0;
   final int _pageSize = 9;
+  String _sortValue = 'Featured';
+  String _filterValue = 'All products';
 
   void _goToPage(int page, int pageCount) {
     final next = page < 0 ? 0 : (page >= pageCount ? pageCount - 1 : page);
     setState(() => _page = next);
+  }
+
+  List<Product> _applyFiltersAndSort(List<Product> products) {
+    var result = List<Product>.from(products);
+    
+    switch (_sortValue) {
+      case 'Price: Low to High':
+        result.sort((a, b) => a.price.compareTo(b.price));
+        break;
+      case 'Price: High to Low':
+        result.sort((a, b) => b.price.compareTo(a.price));
+        break;
+      case 'A-Z':
+        result.sort((a, b) => a.title.compareTo(b.title));
+        break;
+      case 'Z-A':
+        result.sort((a, b) => b.title.compareTo(a.title));
+        break;
+    }
+    
+    return result;
   }
 
   @override
@@ -77,10 +100,10 @@ class _CollectionPageState extends State<CollectionPage> {
 
                   
                   CollectionFilters(
-                    sortValue: null,
-                    onSortChanged: (_) {},
-                    filterValue: null,
-                    onFilterChanged: (_) {},
+                    sortValue: _sortValue,
+                    onSortChanged: (val) => setState(() { _sortValue = val ?? 'Featured'; _page = 0; }),
+                    filterValue: _filterValue,
+                    onFilterChanged: (val) => setState(() { _filterValue = val ?? 'All products'; _page = 0; }),
                   ),
 
                   const SizedBox(height: 16),
@@ -96,6 +119,7 @@ class _CollectionPageState extends State<CollectionPage> {
                       if (collectionId == 'new') {
                         products = products.where((p) => p.id == 'pen').toList();
                       }
+                      products = _applyFiltersAndSort(products);
 
                       return CollectionGrid(
                         products: products,

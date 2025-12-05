@@ -16,7 +16,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
   late Future<List<Collection>> _collectionsFuture;
   List<Collection> _allCollections = [];
   final String _search = '';
-  String _sort = 'Title A→Z';
+  String _sort = 'Default';
   
 
   @override

@@ -35,24 +35,9 @@ class CollectionsBody extends StatelessWidget {
       final targetCardWidth = desiredCardWidth.clamp(140.0, 360.0);
       final pageItems = filtered;
 
-      final controls = Row(
-        children: [
-          const Expanded(child: SizedBox()),
-          DropdownButton<String>(
-            value: sort,
-            items: const [
-              DropdownMenuItem(value: 'Title A→Z', child: Text('Title A→Z')),
-              DropdownMenuItem(value: 'Title Z→A', child: Text('Title Z→A')),
-            ],
-            onChanged: onSortChanged,
-          ),
-        ],
-      );
-
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          controls,
           const SizedBox(height: 12),
           Center(
               child: ConstrainedBox(

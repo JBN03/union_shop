@@ -30,10 +30,21 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   Product? _loadedProduct;
   bool _loadingProduct = false;
+  String? _selectedColor;
+
+  String _getDefaultColor(Product? p) {
+    if (p == null) return 'Blue';
+    if (p.id == 'joggers') return 'Grey';
+    if (p.id == 'small-logo-tshirt') return 'Blue';
+    if (p.id == 'essential-tshirt') return 'Pink';
+    if (p.id == 'essentials-hoodie' || p.id == 'essentials-hoodie-hoodies') return 'Blue';
+    return 'Blue';
+  }
 
   @override
   Widget build(BuildContext context) {
     final product = _loadedProduct ?? widget.product;
+    _selectedColor ??= _getDefaultColor(product);
     if (product == null && !_loadingProduct && widget.productId != null) {
       _loadingProduct = true;
       ProductService.instance.getProductById(widget.productId!).then((p) {
@@ -88,7 +99,12 @@ class _ProductPageState extends State<ProductPage> {
                                       constraints: BoxConstraints(maxWidth: imageMaxWidth, maxHeight: constraints.maxHeight * 0.8),
                                       child: AspectRatio(
                                         aspectRatio: 4 / 3,
-                                        child: ProductImage(product: widget.product ?? _loadedProduct, maxHeight: constraints.maxHeight * 0.8),
+                                        child: ProductImage(
+                                          product: widget.product ?? _loadedProduct,
+                                          maxHeight: constraints.maxHeight * 0.8,
+                                          selectedColor: _selectedColor!,
+                                          onColorChanged: (c) => setState(() => _selectedColor = c ?? _getDefaultColor(product)),
+                                        ),
                                       ),
                                     ),
 
@@ -96,7 +112,11 @@ class _ProductPageState extends State<ProductPage> {
 
                                     ConstrainedBox(
                                       constraints: const BoxConstraints(maxWidth: detailsMaxWidth),
-                                      child: ProductDetails(product: widget.product ?? _loadedProduct),
+                                      child: ProductDetails(
+                                        product: widget.product ?? _loadedProduct,
+                                        selectedColor: _selectedColor!,
+                                        onColorChanged: (c) => setState(() => _selectedColor = c ?? _getDefaultColor(product)),
+                                      ),
                                     ),
                             ],
                           ),
@@ -107,9 +127,18 @@ class _ProductPageState extends State<ProductPage> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ProductImage(product: widget.product ?? _loadedProduct, maxHeight: maxImageHeight),
+                        ProductImage(
+                          product: widget.product ?? _loadedProduct,
+                          maxHeight: maxImageHeight,
+                          selectedColor: _selectedColor!,
+                          onColorChanged: (c) => setState(() => _selectedColor = c ?? _getDefaultColor(product)),
+                        ),
                         const SizedBox(height: 24),
-                        ProductDetails(product: widget.product ?? _loadedProduct),
+                        ProductDetails(
+                          product: widget.product ?? _loadedProduct,
+                          selectedColor: _selectedColor!,
+                          onColorChanged: (c) => setState(() => _selectedColor = c ?? _getDefaultColor(product)),
+                        ),
                       ],
                     );
                   }

@@ -4,8 +4,10 @@ import 'package:union_shop/models/product.dart';
 class ProductImage extends StatefulWidget {
   final Product? product;
   final double maxHeight;
+  final String? selectedColor;
+  final ValueChanged<String?>? onColorChanged;
 
-  const ProductImage({Key? key, required this.product, required this.maxHeight}) : super(key: key);
+  const ProductImage({Key? key, required this.product, required this.maxHeight, this.selectedColor, this.onColorChanged}) : super(key: key);
 
   @override
   State<ProductImage> createState() => _ProductImageState();
@@ -22,16 +24,58 @@ class _ProductImageState extends State<ProductImage> {
     return [];
   }
 
+  String? _getColorForImage(String imageUrl) {
+    final p = widget.product;
+    if (p == null || p.colorImages.isEmpty) return null;
+    for (final entry in p.colorImages.entries) {
+      if (entry.value == imageUrl) return entry.key;
+    }
+    return null;
+  }
+
+  int _getIndexForColor(String? color) {
+    if (color == null) return 0;
+    final p = widget.product;
+    if (p == null || p.colorImages.isEmpty) return 0;
+    final imageUrl = p.colorImages[color];
+    if (imageUrl == null) return 0;
+    final images = _images;
+    final idx = images.indexOf(imageUrl);
+    return idx >= 0 ? idx : 0;
+  }
+
+  @override
+  void didUpdateWidget(ProductImage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedColor != oldWidget.selectedColor) {
+      final newIndex = _getIndexForColor(widget.selectedColor);
+      if (newIndex != _index) {
+        setState(() => _index = newIndex);
+      }
+    }
+  }
+
+  void _goToIndex(int newIndex) {
+    setState(() => _index = newIndex);
+    final images = _images;
+    if (newIndex >= 0 && newIndex < images.length) {
+      final color = _getColorForImage(images[newIndex]);
+      if (color != null && widget.onColorChanged != null) {
+        widget.onColorChanged!(color);
+      }
+    }
+  }
+
   void _prev() {
-    setState(() {
-      _index = (_index - 1) < 0 ? (_images.length - 1) : _index - 1;
-    });
+    final images = _images;
+    final newIndex = (_index - 1) < 0 ? (images.length - 1) : _index - 1;
+    _goToIndex(newIndex);
   }
 
   void _next() {
-    setState(() {
-      _index = (_index + 1) % (_images.isEmpty ? 1 : _images.length);
-    });
+    final images = _images;
+    final newIndex = (_index + 1) % (images.isEmpty ? 1 : images.length);
+    _goToIndex(newIndex);
   }
 
   @override
@@ -39,6 +83,7 @@ class _ProductImageState extends State<ProductImage> {
     final images = _images;
     final hasImages = images.isNotEmpty;
     final current = hasImages ? images[_index.clamp(0, images.length - 1)] : '';
+    final showCarousel = hasImages && images.length > 1;
 
     return Container(
       constraints: BoxConstraints(maxHeight: widget.maxHeight),
@@ -70,7 +115,7 @@ class _ProductImageState extends State<ProductImage> {
                           ),
                   ),
                 ),
-                if (hasImages && images.length > 1)
+                if (showCarousel)
                   Positioned(
                     left: 8,
                     top: 0,
@@ -83,7 +128,7 @@ class _ProductImageState extends State<ProductImage> {
                       ),
                     ),
                   ),
-                if (hasImages && images.length > 1)
+                if (showCarousel)
                   Positioned(
                     right: 8,
                     top: 0,
@@ -100,7 +145,7 @@ class _ProductImageState extends State<ProductImage> {
             ),
           ),
           const SizedBox(height: 8),
-          if (hasImages)
+          if (showCarousel)
             SizedBox(
               height: 56,
               child: ListView.separated(
@@ -112,7 +157,7 @@ class _ProductImageState extends State<ProductImage> {
                   final src = images[i];
                   final selected = i == _index;
                   return GestureDetector(
-                    onTap: () => setState(() => _index = i),
+                    onTap: () => _goToIndex(i),
                     child: Container(
                       width: 56,
                       decoration: BoxDecoration(

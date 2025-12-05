@@ -22,67 +22,168 @@ class PrintShackPersonalisationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lineOptions = ['One line of text', 'Two lines of text', 'Three lines of text'];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Personalisation', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 6),
-        Text(priceLabel, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+        const Text(
+          'Personalisation',
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black),
+        ),
         const SizedBox(height: 12),
-        const Text('Lines of text', style: TextStyle(fontWeight: FontWeight.w600)),
-        const SizedBox(height: 6),
-        DropdownButton<String>(
+        Text(
+          priceLabel,
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF4d2963)),
+        ),
+        const SizedBox(height: 24),
+
+        _buildDropdown(
+          label: 'Lines of text',
           value: lines,
-          isExpanded: true,
-          items: const [
-            DropdownMenuItem(value: 'One line of text', child: Text('One line of text')),
-            DropdownMenuItem(value: 'Two lines of text', child: Text('Two lines of text')),
-            DropdownMenuItem(value: 'Three lines of text', child: Text('Three lines of text')),
-          ],
+          items: lineOptions,
           onChanged: onLinesChanged,
         ),
-        const SizedBox(height: 16),
-        const Text('Preview', style: TextStyle(fontWeight: FontWeight.w600)),
+        const SizedBox(height: 20),
+
+        const Text('Preview', style: TextStyle(fontSize: 14, color: Colors.black87)),
         const SizedBox(height: 8),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300), borderRadius: BorderRadius.circular(6)),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade400),
+            borderRadius: BorderRadius.circular(4),
+          ),
           child: Text(lines, style: const TextStyle(fontSize: 16)),
         ),
-        const SizedBox(height: 16),
-        Row(
-          children: [
-            const Text('Quantity', style: TextStyle(fontWeight: FontWeight.w600)),
-            const SizedBox(width: 12),
-            Container(
-              decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300), borderRadius: BorderRadius.circular(6)),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(icon: const Icon(Icons.remove, size: 18), padding: const EdgeInsets.all(8), onPressed: onDecrease),
-                  Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0), child: Text('$qty', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600))),
-                  IconButton(icon: const Icon(Icons.add, size: 18), padding: const EdgeInsets.all(8), onPressed: onIncrease),
-                ],
+        const SizedBox(height: 20),
+
+        const Text('Quantity', style: TextStyle(fontSize: 14, color: Colors.black87)),
+        const SizedBox(height: 8),
+        Container(
+          width: 100,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade400),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: onDecrease,
+                child: const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Icon(Icons.remove, size: 16, color: Colors.black54),
+                ),
               ),
-            ),
-          ],
+              Text(
+                '$qty',
+                style: const TextStyle(fontSize: 16),
+              ),
+              InkWell(
+                onTap: onIncrease,
+                child: const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Icon(Icons.add, size: 16, color: Colors.black54),
+                ),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                onPressed: onAddToCart,
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF4d2963)),
-                child: Padding(padding: const EdgeInsets.symmetric(vertical: 14.0), child: Text('Add to cart${qty > 1 ? ' ($qty)' : ''}')),
+        const SizedBox(height: 24),
+
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton(
+            onPressed: onAddToCart,
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              side: const BorderSide(color: Color(0xFF4d2963), width: 1.5),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            ),
+            child: const Text(
+              'ADD TO CART',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF4d2963),
+                letterSpacing: 1.2,
               ),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: OutlinedButton(onPressed: () {}, child: const Padding(padding: EdgeInsets.symmetric(vertical: 14.0), child: Text('Buy now'))),
+          ),
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF5A31F4),
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
             ),
-          ],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Buy with ',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                ),
+                Text(
+                  'shop',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white.withOpacity(0.95),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDropdown({
+    required String label,
+    required String value,
+    required List<String> items,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '$label:  $value',
+          style: const TextStyle(fontSize: 14, color: Colors.black87),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          width: 280,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade400),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: ButtonTheme(
+              alignedDropdown: true,
+              child: DropdownButton<String>(
+                value: value,
+                isExpanded: true,
+                icon: const Icon(Icons.arrow_drop_down, color: Colors.black54),
+                style: const TextStyle(fontSize: 16, color: Colors.black87),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                items: items.map((item) => DropdownMenuItem(
+                  value: item,
+                  child: Text(item),
+                )).toList(),
+                onChanged: onChanged,
+              ),
+            ),
+          ),
         ),
       ],
     );

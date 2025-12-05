@@ -21,7 +21,7 @@ class CollectionFilters extends StatelessWidget {
         Expanded(
           child: DropdownButtonFormField<String>(
             decoration: const InputDecoration(labelText: 'Sort by', border: OutlineInputBorder()),
-            value: sortValue,
+            initialValue: sortValue,
             items: const [
               DropdownMenuItem(value: 'popular', child: Text('Most popular')),
               DropdownMenuItem(value: 'latest', child: Text('Latest')),
@@ -34,7 +34,7 @@ class CollectionFilters extends StatelessWidget {
         Expanded(
           child: DropdownButtonFormField<String>(
             decoration: const InputDecoration(labelText: 'Filter', border: OutlineInputBorder()),
-            value: filterValue,
+            initialValue: filterValue,
             items: const [
               DropdownMenuItem(value: 'all', child: Text('All')),
               DropdownMenuItem(value: 'in_stock', child: Text('In stock')),

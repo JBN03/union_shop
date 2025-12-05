@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/header.dart';
-import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/widgets/body_with_footer.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/services/cart_service.dart';
 import 'package:union_shop/services/product_service.dart';
@@ -56,9 +56,10 @@ class _ProductPageState extends State<ProductPage> {
     final maxImageHeight = isDesktop ? screenHeight * 0.6 : screenHeight * 0.4;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
+      body: BodyWithFooter(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
             Header(
               onLogoTap: () => navigateToHome(context),
               onSearch: () {},
@@ -81,9 +82,9 @@ class _ProductPageState extends State<ProductPage> {
 
                     return Center(
                       child: Transform.translate(
-                        offset: Offset(shift, 0),
+                        offset: const Offset(shift, 0),
                         child: ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: groupMaxWidth),
+                          constraints: const BoxConstraints(maxWidth: groupMaxWidth),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -121,8 +122,8 @@ class _ProductPageState extends State<ProductPage> {
                 },
               ),
             ),
-            const Footer(),
-          ],
+            ],
+          ),
         ),
       ),
     );

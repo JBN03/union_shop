@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/header.dart';
-import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/widgets/body_with_footer.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -8,9 +8,10 @@ class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
+      body: BodyWithFooter(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
             Header(
               onLogoTap: () => Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false),
             ),
@@ -67,8 +68,8 @@ class SignupPage extends StatelessWidget {
                 ),
               ),
             ),
-            const Footer(),
-          ],
+            ],
+          ),
         ),
       ),
     );

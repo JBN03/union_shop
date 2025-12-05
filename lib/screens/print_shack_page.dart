@@ -19,9 +19,9 @@ class PrintShackPage extends StatelessWidget {
                 onCart: () => Navigator.pushNamed(context, '/cart'),
                 onMenu: () {},
               ),
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: const PrintShackContent(),
+              const Padding(
+                padding: EdgeInsets.all(24.0),
+                child: PrintShackContent(),
               ),
             ],
           ),

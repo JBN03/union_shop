@@ -54,9 +54,9 @@ class _PrintShackContentState extends State<PrintShackContent> {
                     const SizedBox(width: 24),
 
                     
-                    SizedBox(
+                    const SizedBox(
                       width: 320,
-                      child: const PrintShackPersonalisation(),
+                      child: PrintShackPersonalisation(),
                     ),
                   ],
                 ),

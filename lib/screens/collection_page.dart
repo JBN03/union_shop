@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/header.dart';
-import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/widgets/body_with_footer.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/models/collection.dart';
@@ -57,9 +57,10 @@ class _CollectionPageState extends State<CollectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
+      body: BodyWithFooter(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
             Header(
               onLogoTap: () => Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false),
               onAccount: () {},
@@ -113,8 +114,8 @@ class _CollectionPageState extends State<CollectionPage> {
                 ],
               ),
             ),
-            const Footer(),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/header.dart';
-import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/widgets/body_with_footer.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/models/collection.dart';
 import 'package:union_shop/widgets/collections_body.dart';
@@ -28,9 +28,10 @@ class _CollectionsPageState extends State<CollectionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
+      body: BodyWithFooter(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
             Header(
               onLogoTap: () => Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false),
               onAccount: () {},
@@ -42,7 +43,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(child: const Text('Collections', textAlign: TextAlign.center, style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold))),
+                  const Center(child: Text('Collections', textAlign: TextAlign.center, style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold))),
                   const SizedBox(height: 12),
                   FutureBuilder<List<Collection>>(
                     future: _collectionsFuture,
@@ -66,8 +67,8 @@ class _CollectionsPageState extends State<CollectionsPage> {
                 ],
               ),
             ),
-            const Footer(),
-          ],
+            ],
+          ),
         ),
       ),
     );

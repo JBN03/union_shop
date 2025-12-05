@@ -9,11 +9,11 @@ class SignupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BodyWithFooter(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             Header(
-              onLogoTap: () => Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false),
+              onLogoTap: () => Navigator.pushNamed(context, '/'),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
@@ -68,8 +68,7 @@ class SignupPage extends StatelessWidget {
                 ),
               ),
             ),
-            ],
-          ),
+          ],
         ),
       ),
     );

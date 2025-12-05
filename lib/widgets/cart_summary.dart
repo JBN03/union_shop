@@ -57,19 +57,66 @@ class CartSummary extends StatelessWidget {
       );
 
   void _checkout(BuildContext context, CartService cart) {
-    final orderId = DateTime.now().millisecondsSinceEpoch.toString();
+    final orderId = DateTime.now().millisecondsSinceEpoch.toString().substring(7);
     final total = cart.totalPrice;
-    final orderItems = cart.items
-        .map((it) => {
-              'title': it.title,
-              'qty': it.quantity,
-              'unitPrice': it.price,
-              'lineTotal': it.price * it.quantity,
-            })
-        .toList();
+    final items = cart.items.toList();
 
+    // Show success dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        title: Row(
+          children: [
+            const Icon(Icons.check_circle, color: Colors.green, size: 28),
+            const SizedBox(width: 8),
+            const Text('Order Confirmed!'),
+          ],
+        ),
+        content: SizedBox(
+          width: 300,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Order #$orderId', style: const TextStyle(color: Colors.black54)),
+              const Divider(height: 20),
+              const Text('Items:', style: TextStyle(fontWeight: FontWeight.w600)),
+              const SizedBox(height: 8),
+              ...items.map((item) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(child: Text('${item.title} × ${item.quantity}')),
+                    Text('£${(item.price * item.quantity).toStringAsFixed(2)}'),
+                  ],
+                ),
+              )),
+              const Divider(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Total', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  Text('£${total.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                ],
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              context.go('/');
+            },
+            child: const Text('Continue Shopping'),
+          ),
+        ],
+      ),
+    );
+
+    // Clear cart after showing dialog
     cart.clear();
-
-    context.go('/checkout-success');
   }
 }

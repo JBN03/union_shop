@@ -29,45 +29,56 @@ class HeaderActions extends StatelessWidget {
           },
           tooltip: 'Account',
         ),
-        AnimatedBuilder(
-          animation: cart,
-          builder: (context, _) {
-            final count = cart.totalItems;
-            return Stack(
-              clipBehavior: Clip.none,
-              children: [
-                              IconButton(
-                                icon: const Icon(Icons.shopping_bag_outlined),
-                                onPressed: () {
-                                  if (onCart != null) onCart!();
-                                  final current = ModalRoute.of(context)?.settings.name;
-                                  if (current != '/cart') {
-                                    Navigator.pushNamed(context, '/cart');
-                                  }
-                                },
-                  tooltip: 'Cart',
-                ),
-                if (count > 0)
-                  Positioned(
-                    right: 4,
-                    top: -2,
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
-                      constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
-                      child: Center(
-                        child: Text(
-                          count.toString(),
-                          style: const TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            );
-          },
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.shopping_bag_outlined),
+              onPressed: () {
+                onCart?.call();
+                final current = ModalRoute.of(context)?.settings.name;
+                if (current != '/cart') {
+                  Navigator.pushNamed(context, '/cart');
+                }
+              },
+              tooltip: 'Cart',
+            ),
+            AnimatedBuilder(
+              animation: cart,
+              builder: (context, _) {
+                final count = cart.totalItems;
+                if (count <= 0) return const SizedBox.shrink();
+                return const Positioned(
+                  right: 4,
+                  top: -2,
+                  child: _CartBadge(),
+                );
+              },
+            ),
+          ],
         ),
       ],
+    );
+  }
+}
+
+class _CartBadge extends StatelessWidget {
+  const _CartBadge({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: const BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
+      constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+      child: Center(
+        child: Text(
+          
+          CartService.instance.totalItems.toString(),
+          style: const TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 }

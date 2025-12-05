@@ -4,6 +4,7 @@ import 'package:union_shop/models/product.dart';
 class ProductCard extends StatelessWidget {
   final String title;
   final String price;
+  final String? originalPrice;
   final String imageUrl;
   final String? productId;
 
@@ -11,6 +12,7 @@ class ProductCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.price,
+    this.originalPrice,
     required this.imageUrl,
     this.onTap,
     this.productId,
@@ -85,10 +87,28 @@ class ProductCard extends StatelessWidget {
           const SizedBox(height: 4),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: Text(
-              price,
-              style: const TextStyle(fontSize: 13, color: Colors.grey),
-            ),
+            child: originalPrice != null
+                ? Row(
+                    children: [
+                      Text(
+                        originalPrice!,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey,
+                          decoration: TextDecoration.lineThrough,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        price,
+                        style: const TextStyle(fontSize: 13, color: Color(0xFF4d2963), fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  )
+                : Text(
+                    price,
+                    style: const TextStyle(fontSize: 13, color: Colors.grey),
+                  ),
           ),
         ],
         ),

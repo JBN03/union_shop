@@ -33,12 +33,32 @@ class ProductDetailsView extends StatelessWidget {
       'portsmouth-city-bookmark',
       'portsmouth-city-keyring',
       'pen',
+      'christmas-bobble-hat',
+      'baseball-cap',
+      'beanie',
+    };
+    final noSizeIds = {
+      'pen',
+      'scarf',
+      'lanyard',
+      'portsmouth-city-keyring-acc',
+      'portsmouth-city-bookmark-acc',
+      'portsmouth-city-magnet-acc',
+      'portsmouth-city-postcard-acc',
+      'notebook',
     };
     final p = product;
     final hideOptions = p != null && noOptionsIds.contains(p.id);
+    final hideSize = p != null && noSizeIds.contains(p.id);
     final colorOptions = p != null && p.id == 'small-logo-tshirt'
-        ? ['Grey', 'Blue', 'Red', 'Purple']
-        : ['Red', 'Blue', 'Green', 'Purple'];
+        ? ['Blue', 'Grey', 'Red']
+        : p != null && p.id == 'essential-tshirt'
+            ? ['Pink', 'Red']
+            : p != null && p.id == 'joggers'
+                ? ['Grey', 'Blue']
+                : p != null && p.id == 'scarf'
+                    ? ['Blue', 'Grey']
+                    : ['Red', 'Blue', 'Green', 'Purple'];
     final sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
     return Column(
@@ -49,10 +69,31 @@ class ProductDetailsView extends StatelessWidget {
           style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black),
         ),
         const SizedBox(height: 12),
-        Text(
-          product?.price ?? '£15.00',
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF4d2963)),
-        ),
+        if (product?.originalPrice != null) ...[
+          Row(
+            children: [
+              Text(
+                product!.originalPrice!,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                  decoration: TextDecoration.lineThrough,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                product!.price,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF4d2963)),
+              ),
+            ],
+          ),
+        ] else ...[
+          Text(
+            product?.price ?? '£15.00',
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF4d2963)),
+          ),
+        ],
         const SizedBox(height: 24),
 
         if (!hideOptions) ...[
@@ -63,13 +104,15 @@ class ProductDetailsView extends StatelessWidget {
             onChanged: onColorChanged,
           ),
           const SizedBox(height: 20),
-          _buildDropdown(
-            label: 'Size',
-            value: sizeOptions.contains(selectedSize) ? selectedSize : sizeOptions.first,
-            items: sizeOptions,
-            onChanged: onSizeChanged,
-          ),
-          const SizedBox(height: 20),
+          if (!hideSize) ...[
+            _buildDropdown(
+              label: 'Size',
+              value: sizeOptions.contains(selectedSize) ? selectedSize : sizeOptions.first,
+              items: sizeOptions,
+              onChanged: onSizeChanged,
+            ),
+            const SizedBox(height: 20),
+          ],
         ],
 
         const Text('Quantity', style: TextStyle(fontSize: 14, color: Colors.black87)),

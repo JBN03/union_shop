@@ -64,6 +64,7 @@ class CollectionGrid extends StatelessWidget {
                       child: ProductCard(
                         title: p.title,
                         price: p.price,
+                        originalPrice: p.originalPrice,
                         imageUrl: p.imageUrl,
                         productId: p.id,
                         onTap: () => onProductTap(p, collectionSlug),

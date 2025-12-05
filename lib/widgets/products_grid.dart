@@ -41,7 +41,7 @@ class ProductsGrid extends StatelessWidget {
                     future: ProductService.instance.getProductsForCollection(collectionId),
                     builder: (context, snapshot) {
                       final products = snapshot.data ?? [];
-                      final displayProducts = showHeader ? products : products.where((p) => p.id != 'pen').toList();
+                      final displayProducts = showHeader ? products : products.where((p) => p.id != 'pen' && p.id != 'notebook').toList();
 
                       return GridView.builder(
                         shrinkWrap: true,
@@ -61,6 +61,7 @@ class ProductsGrid extends StatelessWidget {
                               productId: product.id,
                               title: product.title,
                               price: product.price,
+                              originalPrice: product.originalPrice,
                               imageUrl: product.imageUrl,
                               onTap: () {
                                 Navigator.pushNamed(context, '/product/${product.id}', arguments: product);

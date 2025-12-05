@@ -38,4 +38,19 @@ class ProductService {
     }
     return null;
   }
+
+  Future<List<Product>> searchProducts(String query, {Duration delay = const Duration(milliseconds: 250)}) async {
+    await Future.delayed(delay);
+    final q = query.trim().toLowerCase();
+    if (q.isEmpty) return [];
+    final results = <Product>[];
+    for (var list in productsByCollection.values) {
+      for (var p in list) {
+        final title = p.title.toLowerCase();
+        final desc = (p.description ?? '').toLowerCase();
+        if (title.contains(q) || desc.contains(q)) results.add(p);
+      }
+    }
+    return results;
+  }
 }

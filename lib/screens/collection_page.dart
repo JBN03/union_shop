@@ -58,13 +58,13 @@ class _CollectionPageState extends State<CollectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BodyWithFooter(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             Header(
-              onLogoTap: () => Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false),
+              onLogoTap: () => Navigator.pushNamed(context, '/'),
               onAccount: () {},
-              onCart: () {},
+              onCart: () => Navigator.pushNamed(context, '/cart'),
               onMenu: () {},
             ),
             Padding(
@@ -114,8 +114,7 @@ class _CollectionPageState extends State<CollectionPage> {
                 ],
               ),
             ),
-            ],
-          ),
+          ],
         ),
       ),
     );

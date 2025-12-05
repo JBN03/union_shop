@@ -50,15 +50,16 @@ test/
 
 ## Testing
 
-The project includes 24 tests covering core functionality:
+The project includes 34 tests covering core functionality:
 
 ```powershell
 flutter test
 ```
 
+- **Widget Tests**: Header rendering, cart badge integration, responsive layout
 - **Cart Service Tests**: Adding items, quantity management, totals calculation
-- **Product Service Tests**: Collection/product retrieval, search functionality
-- **Widget Tests**: Header rendering, cart integration
+- **Product Service Tests**: Collection/product retrieval, data validation
+- **Form Validation Tests**: Login, signup, and newsletter form validation
 
 ## Tech Stack
 

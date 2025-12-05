@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../widgets/footer.dart';
+import '../widgets/body_with_footer.dart';
 
 class OrderSummaryPage extends StatelessWidget {
   final String orderId;
@@ -37,7 +37,7 @@ class OrderSummaryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Order Summary'), centerTitle: true),
-      body: SingleChildScrollView(
+      body: BodyWithFooter(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Center(
@@ -176,9 +176,6 @@ class OrderSummaryPage extends StatelessWidget {
                     ),
                     child: const Text('Continue Shopping'),
                   ),
-                  
-                  const SizedBox(height: 40),
-                  const Footer(),
                 ],
               ),
             ),

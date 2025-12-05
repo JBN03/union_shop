@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:union_shop/services/cart_service.dart';
+import 'package:union_shop/screens/checkout_success_page.dart';
 
 class CartSummary extends StatelessWidget {
   const CartSummary({super.key});
@@ -104,6 +105,25 @@ class CartSummary extends StatelessWidget {
           ),
         ),
         actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => OrderSummaryPage(
+                    orderId: orderId,
+                    total: total,
+                    items: items.map((item) => {
+                      'title': item.title,
+                      'qty': item.quantity,
+                      'lineTotal': item.price * item.quantity,
+                    }).toList(),
+                  ),
+                ),
+              );
+            },
+            child: const Text('View Order Summary'),
+          ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(ctx).pop();

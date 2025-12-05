@@ -39,7 +39,6 @@ class HeaderActions extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.shopping_bag_outlined),
               onPressed: () {
-                // If callback provided, use it; otherwise navigate internally
                 if (onCart != null) {
                   onCart!();
                 } else {

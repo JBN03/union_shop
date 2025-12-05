@@ -44,7 +44,6 @@ class HeaderCompactActions extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.shopping_bag_outlined, size: 20, color: Colors.grey),
                   onPressed: () {
-                    // If callback provided, use it; otherwise navigate internally
                     if (onCart != null) {
                       onCart!();
                     } else {

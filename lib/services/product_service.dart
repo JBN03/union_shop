@@ -33,7 +33,6 @@ class ProductService {
     await Future.delayed(delay);
     for (var list in productsByCollection.values) {
       for (var p in list) {
-        // Match by id or by slug
         if (p.id == id || p.slug == id) return p;
       }
     }

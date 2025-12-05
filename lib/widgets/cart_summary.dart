@@ -61,7 +61,6 @@ class CartSummary extends StatelessWidget {
     final total = cart.totalPrice;
     final items = cart.items.toList();
 
-    // Show success dialog
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -116,7 +115,6 @@ class CartSummary extends StatelessWidget {
       ),
     );
 
-    // Clear cart after showing dialog
     cart.clear();
   }
 }

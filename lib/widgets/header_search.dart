@@ -105,7 +105,6 @@ class HeaderSearchResults extends StatelessWidget {
             child: ListView(
               shrinkWrap: true,
               children: [
-                // Collections section
                 if (model.collections.isNotEmpty) ...[
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8),
@@ -129,7 +128,6 @@ class HeaderSearchResults extends StatelessWidget {
                   )),
                   if (model.products.isNotEmpty) const Divider(),
                 ],
-                // Products section
                 if (model.products.isNotEmpty) ...[
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8),

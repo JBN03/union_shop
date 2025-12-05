@@ -31,7 +31,6 @@ class HomeHero extends StatelessWidget {
 								child: Column(
 									crossAxisAlignment: CrossAxisAlignment.center,
 									children: [
-										// Union logo in center
 										Image.network(
 											'https://shop.upsu.net/cdn/shop/files/upsu_300x300.png?v=1614735854',
 											width: 220,

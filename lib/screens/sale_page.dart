@@ -16,15 +16,15 @@ class SalePage extends StatelessWidget {
 
 		return Scaffold(
 			body: BodyWithFooter(
-				child: SingleChildScrollView(
-					child: Column(
-						children: [
-							Header(
-								onLogoTap: () => Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false),
-								onAccount: () {},
-								onCart: () {},
-								onMenu: () {},
-							),
+				child: Column(
+					mainAxisSize: MainAxisSize.min,
+					children: [
+						Header(
+							onLogoTap: () => Navigator.pushNamed(context, '/'),
+							onAccount: () {},
+							onCart: () => Navigator.pushNamed(context, '/cart'),
+							onMenu: () {},
+						),
 							Padding(
 								padding: const EdgeInsets.all(24.0),
 								child: Column(
@@ -67,20 +67,19 @@ class SalePage extends StatelessWidget {
 																		imageUrl: item['image']!,
 																		productId: item['title']!.hashCode.toString(),
 																	),
-																),
-															);
-														},
 													),
-												),
-											);
-										}),
-									],
-								),
-							),
+												);
+											},
+										),
+									),
+								);
+							}),
 						],
 					),
 				),
-			),
-		);
+			],
+		),
+	),
+);
 	}
 }

@@ -31,10 +31,6 @@ class _ProductPageState extends State<ProductPage> {
   Product? _loadedProduct;
   bool _loadingProduct = false;
 
-  void navigateToHome(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-  }
-
   @override
   Widget build(BuildContext context) {
     final product = _loadedProduct ?? widget.product;
@@ -57,11 +53,11 @@ class _ProductPageState extends State<ProductPage> {
 
     return Scaffold(
       body: BodyWithFooter(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             Header(
-              onLogoTap: () => navigateToHome(context),
+              onLogoTap: () => Navigator.pushNamed(context, '/'),
               onSearch: () {},
               onAccount: () {},
               onCart: () => Navigator.pushNamed(context, '/cart'),
@@ -100,9 +96,7 @@ class _ProductPageState extends State<ProductPage> {
 
                                     ConstrainedBox(
                                       constraints: const BoxConstraints(maxWidth: detailsMaxWidth),
-                                      child: SingleChildScrollView(
-                                        child: ProductDetails(product: widget.product ?? _loadedProduct),
-                                      ),
+                                      child: ProductDetails(product: widget.product ?? _loadedProduct),
                                     ),
                             ],
                           ),
@@ -122,8 +116,7 @@ class _ProductPageState extends State<ProductPage> {
                 },
               ),
             ),
-            ],
-          ),
+          ],
         ),
       ),
     );

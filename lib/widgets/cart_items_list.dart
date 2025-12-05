@@ -38,6 +38,8 @@ class _CartItemsListState extends State<CartItemsList> {
         }
 
         return ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.all(16),
           itemCount: items.length,
           separatorBuilder: (_, __) => const Divider(),

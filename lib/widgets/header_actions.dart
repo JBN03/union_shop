@@ -18,7 +18,6 @@ class HeaderActions extends StatelessWidget {
           icon: const Icon(Icons.search),
           onPressed: () {
             if (onSearch != null) onSearch!();
-            Navigator.pushNamed(context, '/collections');
           },
           tooltip: 'Search',
         ),

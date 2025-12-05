@@ -46,19 +46,6 @@ class PrintShackPersonalisationView extends StatelessWidget {
         ),
         const SizedBox(height: 20),
 
-        const Text('Preview', style: TextStyle(fontSize: 14, color: Colors.black87)),
-        const SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade400),
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Text(lines, style: const TextStyle(fontSize: 16)),
-        ),
-        const SizedBox(height: 20),
-
         const Text('Quantity', style: TextStyle(fontSize: 14, color: Colors.black87)),
         const SizedBox(height: 8),
         Container(

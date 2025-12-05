@@ -3,8 +3,46 @@ import 'package:go_router/go_router.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/body_with_footer.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _handleSignIn() {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter your email')),
+      );
+      return;
+    }
+
+    if (password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter your password')),
+      );
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Sign in successful!')),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +67,13 @@ class LoginPage extends StatelessWidget {
                       const Text('Sign in to your account', style: TextStyle(color: Colors.black54)),
                       const SizedBox(height: 24),
                       TextFormField(
+                        controller: _emailController,
                         decoration: const InputDecoration(labelText: 'Email', border: OutlineInputBorder()),
                         keyboardType: TextInputType.emailAddress,
                       ),
                       const SizedBox(height: 12),
                       TextFormField(
+                        controller: _passwordController,
                         decoration: const InputDecoration(labelText: 'Password', border: OutlineInputBorder()),
                         obscureText: true,
                       ),
@@ -47,7 +87,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: _handleSignIn,
                         style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF4d2963)),
                         child: const Padding(
                           padding: EdgeInsets.symmetric(vertical: 14.0),

@@ -8,11 +8,20 @@ class BodyWithFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(child: child),
-        const Footer(),
-      ],
+    final viewportHeight = MediaQuery.of(context).size.height;
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: viewportHeight),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            child,
+            const Footer(),
+          ],
+        ),
+      ),
     );
   }
 }

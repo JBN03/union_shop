@@ -104,21 +104,6 @@ class CartSummary extends StatelessWidget {
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              context.go('/order-summary', extra: {
-                'orderId': orderId,
-                'total': total,
-                'items': items.map((item) => {
-                  'title': item.title,
-                  'qty': item.quantity,
-                  'lineTotal': item.price * item.quantity,
-                }).toList(),
-              });
-            },
-            child: const Text('View Order Summary'),
-          ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(ctx).pop();

@@ -39,9 +39,7 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Sign in successful!')),
-    );
+    context.go('/');
   }
 
   @override

@@ -51,9 +51,7 @@ class _SignupPageState extends State<SignupPage> {
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Account created successfully!')),
-    );
+    context.go('/');
   }
 
   @override

@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:union_shop/widgets/header.dart';
 import 'package:union_shop/widgets/body_with_footer.dart';
 import 'package:union_shop/models/product.dart';
-import 'package:union_shop/services/cart_service.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/widgets/product_image.dart';
 import 'package:union_shop/widgets/product_details.dart';

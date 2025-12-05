@@ -34,7 +34,7 @@ class ProductSearchDelegate extends SearchDelegate<Product?> {
           itemCount: results.length,
           itemBuilder: (context, i) {
             final p = results[i];
-            return ProductCard(title: p.title, price: p.price, originalPrice: p.originalPrice, imageUrl: p.imageUrl ?? '', productId: p.id);
+            return ProductCard(title: p.title, price: p.price, originalPrice: p.originalPrice, imageUrl: p.imageUrl, productId: p.id);
           },
         );
       },

@@ -47,7 +47,7 @@ class ProductService {
     for (var list in productsByCollection.values) {
       for (var p in list) {
         final title = p.title.toLowerCase();
-        final desc = (p.description ?? '').toLowerCase();
+        final desc = p.description.toLowerCase();
         if (title.contains(q) || desc.contains(q)) results.add(p);
       }
     }

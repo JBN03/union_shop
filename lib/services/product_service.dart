@@ -53,4 +53,11 @@ class ProductService {
     }
     return results;
   }
+
+  Future<List<Collection>> searchCollections(String query, {Duration delay = const Duration(milliseconds: 250)}) async {
+    await Future.delayed(delay);
+    final q = query.trim().toLowerCase();
+    if (q.isEmpty) return [];
+    return collections.where((c) => c.title.toLowerCase().contains(q)).toList();
+  }
 }

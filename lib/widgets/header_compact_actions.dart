@@ -19,7 +19,6 @@ class HeaderCompactActions extends StatelessWidget {
           icon: const Icon(Icons.search, size: 20, color: Colors.grey),
           onPressed: () {
             if (onSearch != null) onSearch!();
-            Navigator.pushNamed(context, '/collections');
           },
           tooltip: 'Search',
         ),

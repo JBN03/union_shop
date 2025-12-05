@@ -56,7 +56,7 @@ class _CollectionPageState extends State<CollectionPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Use widget.collectionId if provided, otherwise try to get from route args
+    
     final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     collectionId = widget.collectionId ?? (args != null && args['id'] is String ? args['id'] as String : 'new');
     title = args != null && args['title'] is String ? args['title'] as String : 'Collection';

@@ -6,10 +6,35 @@ import 'package:union_shop/widgets/home_hero.dart';
 import 'package:union_shop/widgets/products_grid.dart';
 
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey _productsKey = GlobalKey();
+
   void placeholderCallbackForButtons() {}
+
+  void _scrollToProducts() {
+    final context = _productsKey.currentContext;
+    if (context != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +42,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
+          controller: _scrollController,
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: viewportHeight),
             child: Column(
@@ -33,8 +59,8 @@ class HomeScreen extends StatelessWidget {
                       onCart: () => context.push('/cart'),
                       onMenu: placeholderCallbackForButtons,
                     ),
-                    HomeHero(onBrowseCollections: () => context.push('/collections')),
-                    const ProductsGrid(showHeader: false),
+                    HomeHero(onBrowseProducts: _scrollToProducts),
+                    ProductsGrid(key: _productsKey, showHeader: false),
                     const SizedBox(height: 56),
                   ],
                 ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class HomeHero extends StatelessWidget {
-	final VoidCallback? onBrowseCollections;
+	final VoidCallback? onBrowseProducts;
 
-	const HomeHero({Key? key, this.onBrowseCollections}) : super(key: key);
+	const HomeHero({Key? key, this.onBrowseProducts}) : super(key: key);
 
 	@override
 	Widget build(BuildContext context) {
@@ -27,32 +27,26 @@ class HomeHero extends StatelessWidget {
 							Positioned(
 								left: 24,
 								right: 24,
-								top: 80,
+								top: 20,
 								child: Column(
 									crossAxisAlignment: CrossAxisAlignment.center,
 									children: [
-										const Text(
-											'Placeholder Hero Title',
-											style: TextStyle(
-												fontSize: 32,
-												fontWeight: FontWeight.bold,
-												color: Colors.white,
-												height: 1.2,
+										// Union logo in center
+										Image.network(
+											'https://shop.upsu.net/cdn/shop/files/upsu_300x300.png?v=1614735854',
+											width: 220,
+											height: 220,
+											fit: BoxFit.contain,
+											errorBuilder: (ctx, err, st) => Container(
+												width: 220,
+												height: 220,
+												color: Colors.grey[300],
+												child: const Icon(Icons.image_not_supported, color: Colors.grey),
 											),
 										),
-										const SizedBox(height: 16),
-										const Text(
-											"This is placeholder text for the hero section.",
-											style: TextStyle(
-												fontSize: 20,
-												color: Colors.white,
-												height: 1.5,
-											),
-											textAlign: TextAlign.center,
-										),
-										const SizedBox(height: 32),
+										const SizedBox(height: 24),
 										ElevatedButton(
-											onPressed: onBrowseCollections ?? () {},
+											onPressed: onBrowseProducts ?? () {},
 											style: ElevatedButton.styleFrom(
 												backgroundColor: const Color(0xFF4d2963),
 												foregroundColor: Colors.white,

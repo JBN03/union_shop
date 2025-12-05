@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/models/product.dart';
+import 'package:union_shop/models/collection.dart';
 
 class HeaderSearchModel extends ChangeNotifier {
   final TextEditingController controller = TextEditingController();
   final List<Product> products = [];
+  final List<Collection> collections = [];
   Timer? _debounce;
 
   @override
@@ -22,6 +24,7 @@ class HeaderSearchModel extends ChangeNotifier {
     final q = v.trim();
     if (q.isEmpty) {
       products.clear();
+      collections.clear();
       notifyListeners();
       return;
     }
@@ -31,17 +34,24 @@ class HeaderSearchModel extends ChangeNotifier {
   }
 
   Future<void> performSearch(String q) async {
-    final results = await ProductService.instance.searchProducts(q);
+    final productResults = await ProductService.instance.searchProducts(q);
+    final collectionResults = await ProductService.instance.searchCollections(q);
     products
       ..clear()
-      ..addAll(results);
+      ..addAll(productResults);
+    collections
+      ..clear()
+      ..addAll(collectionResults);
     notifyListeners();
   }
 
   void clearResults() {
     products.clear();
+    collections.clear();
     notifyListeners();
   }
+
+  bool get hasResults => products.isNotEmpty || collections.isNotEmpty;
 }
 
 class HeaderSearchField extends StatelessWidget {
@@ -55,7 +65,7 @@ class HeaderSearchField extends StatelessWidget {
     final field = TextField(
       controller: model.controller,
       decoration: InputDecoration(
-        hintText: 'Search products',
+        hintText: 'Search products & collections',
         isDense: true,
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(inline ? 6 : 8)),
@@ -86,27 +96,63 @@ class HeaderSearchResults extends StatelessWidget {
     return AnimatedBuilder(
       animation: model,
       builder: (context, _) {
-        if (model.products.isEmpty) return const SizedBox.shrink();
+        if (!model.hasResults) return const SizedBox.shrink();
         return Container(
           color: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 300),
-            child: ListView.separated(
-              itemCount: model.products.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
-              itemBuilder: (context, i) {
-                final p = model.products[i];
-                return ListTile(
-                  leading: SizedBox(width: 48, height: 48, child: p.imageUrl.isNotEmpty ? Image.network(p.imageUrl, fit: BoxFit.cover, errorBuilder: (c, e, s) => const Icon(Icons.image_not_supported)) : const Icon(Icons.image_not_supported)),
-                  title: Text(p.title),
-                  subtitle: Text(p.price),
-                  onTap: () {
-                    model.clearResults();
-                    context.push('/product/${p.id}');
-                  },
-                );
-              },
+            constraints: const BoxConstraints(maxHeight: 350),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                // Collections section
+                if (model.collections.isNotEmpty) ...[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Text('Collections', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black54)),
+                  ),
+                  ...model.collections.map((c) => ListTile(
+                    leading: SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: c.imageUrl.isNotEmpty
+                          ? Image.network(c.imageUrl, fit: BoxFit.cover, errorBuilder: (ctx, e, s) => const Icon(Icons.folder_outlined))
+                          : const Icon(Icons.folder_outlined),
+                    ),
+                    title: Text(c.title),
+                    subtitle: const Text('Collection'),
+                    onTap: () {
+                      model.clearResults();
+                      model.controller.clear();
+                      context.push('/collection/${c.id}');
+                    },
+                  )),
+                  if (model.products.isNotEmpty) const Divider(),
+                ],
+                // Products section
+                if (model.products.isNotEmpty) ...[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Text('Products', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black54)),
+                  ),
+                  ...model.products.map((p) => ListTile(
+                    leading: SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: p.imageUrl.isNotEmpty
+                          ? Image.network(p.imageUrl, fit: BoxFit.cover, errorBuilder: (c, e, s) => const Icon(Icons.image_not_supported))
+                          : const Icon(Icons.image_not_supported),
+                    ),
+                    title: Text(p.title),
+                    subtitle: Text(p.price),
+                    onTap: () {
+                      model.clearResults();
+                      model.controller.clear();
+                      context.push('/product/${p.id}');
+                    },
+                  )),
+                ],
+              ],
             ),
           ),
         );

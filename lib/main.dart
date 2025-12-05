@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/screens/product_page.dart';
-import 'package:union_shop/models/product.dart';
 import 'package:union_shop/screens/home_screen.dart';
 import 'package:union_shop/screens/about_us_page.dart';
 import 'package:union_shop/screens/collections_page.dart';
@@ -13,21 +13,70 @@ import 'package:union_shop/screens/cart_page.dart';
 import 'package:union_shop/screens/checkout_success_page.dart';
 import 'package:union_shop/services/cart_service.dart';
 
-class RouteLogger extends NavigatorObserver {
-  @override
-  void didPush(Route route, Route? previousRoute) {
-    // ignore: avoid_print
-    print('Navigator: push ${route.settings.name} from ${previousRoute?.settings.name}');
-    super.didPush(route, previousRoute);
-  }
-
-  @override
-  void didPop(Route route, Route? previousRoute) {
-    // ignore: avoid_print
-    print('Navigator: pop ${route.settings.name} -> ${previousRoute?.settings.name}');
-    super.didPop(route, previousRoute);
-  }
-}
+/// Global router instance for navigation
+final GoRouter router = GoRouter(
+  debugLogDiagnostics: true,
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/about',
+      builder: (context, state) => const AboutUsPage(),
+    ),
+    GoRoute(
+      path: '/The Print Shack',
+      builder: (context, state) => const PrintShackPage(),
+    ),
+    GoRoute(
+      path: '/cart',
+      builder: (context, state) => const CartPage(),
+    ),
+    GoRoute(
+      path: '/checkout-success',
+      builder: (context, state) => const CheckoutSuccessPage(),
+    ),
+    GoRoute(
+      path: '/collections',
+      builder: (context, state) => const CollectionsPage(),
+    ),
+    GoRoute(
+      path: '/collection/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id'] ?? '';
+        return CollectionPage(collectionId: id);
+      },
+    ),
+    GoRoute(
+      path: '/sale',
+      builder: (context, state) => const SalePage(),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      path: '/signup',
+      builder: (context, state) => const SignupPage(),
+    ),
+    GoRoute(
+      path: '/product/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id'] ?? '';
+        return ProductPage(productId: id);
+      },
+    ),
+    // Handle /collection/:collectionId/product/:productId
+    GoRoute(
+      path: '/collection/:collectionId/product/:productId',
+      builder: (context, state) {
+        final productId = state.pathParameters['productId'] ?? '';
+        return ProductPage(productId: productId);
+      },
+    ),
+  ],
+);
 
 void main() {
   runApp(const UnionShopApp());
@@ -40,75 +89,13 @@ class UnionShopApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CartProvider(
       notifier: CartService.instance,
-      child: MaterialApp(
-      title: 'Union Shop',
-      navigatorObservers: [RouteLogger()],
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4d2963)),
-      ),
-      home: const HomeScreen(),
-      
-      initialRoute: '/',
-      
-      routes: { 
-        '/about': (context) => const AboutUsPage(),
-        '/The Print Shack': (context) => const PrintShackPage(),
-        '/cart': (context) => const CartPage(),
-        '/checkout-success': (context) => const CheckoutSuccessPage(),
-        '/collections': (context) => const CollectionsPage(),
-        '/collection': (context) => const CollectionPage(),
-        '/sale': (context) => const SalePage(),
-        '/login': (context) => const LoginPage(),
-        '/signup': (context) => const SignupPage(),
-
-      },
-   onGenerateRoute: (settings) {
-          final name = settings.name ?? '';
-          
-          print('onGenerateRoute: name=$name args=${settings.arguments}');
-          if (name.startsWith('/product/')) {
-            final id = name.substring('/product/'.length);
-            final args = settings.arguments;
-            if (args is Product) {
-              return MaterialPageRoute(
-                settings: RouteSettings(name: settings.name, arguments: settings.arguments),
-                builder: (_) => ProductPage(product: args, productId: id),
-              );
-            }
-            return MaterialPageRoute(
-              settings: RouteSettings(name: settings.name, arguments: settings.arguments),
-              builder: (_) => ProductPage(productId: id),
-            );
-          }
-          if (name.startsWith('/collection/')) {
-            // support /collection/<collectionSlug>/product/<productSlug>
-            final rest = name.substring('/collection/'.length);
-            if (rest.contains('/product/')) {
-              final parts = rest.split('/product/');
-              final collectionSlug = parts.first;
-              final productSlug = parts.length > 1 ? parts[1] : '';
-              final args = settings.arguments;
-              if (args is Product) {
-                return MaterialPageRoute(
-                  settings: RouteSettings(name: settings.name, arguments: settings.arguments),
-                  builder: (_) => ProductPage(product: args, productId: productSlug),
-                );
-              }
-              return MaterialPageRoute(
-                settings: RouteSettings(name: settings.name, arguments: settings.arguments),
-                builder: (_) => ProductPage(productId: productSlug),
-              );
-            }
-
-            final id = rest;
-            return MaterialPageRoute(
-              settings: RouteSettings(name: settings.name, arguments: {'id': id}),
-              builder: (_) => const CollectionPage(),
-            );
-          }
-          return null;
-        },
+      child: MaterialApp.router(
+        title: 'Union Shop',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4d2963)),
+        ),
+        routerConfig: router,
       ),
     );
   }
@@ -123,4 +110,3 @@ class CartProvider extends InheritedNotifier<CartService> {
     return provider!.notifier!;
   }
 }
-

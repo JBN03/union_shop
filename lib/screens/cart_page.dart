@@ -15,12 +15,12 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
-   
-
+    final viewportHeight = MediaQuery.of(context).size.height;
+    
     return Focus(
       autofocus: true,
-      onKey: (node, event) {
-        if (event is RawKeyDownEvent &&
+      onKeyEvent: (node, event) {
+        if (event is KeyDownEvent &&
             event.logicalKey == LogicalKeyboardKey.backspace) {
           if (Navigator.canPop(context)) Navigator.pop(context);
           return KeyEventResult.handled;
@@ -28,26 +28,42 @@ class _CartPageState extends State<CartPage> {
         return KeyEventResult.ignored;
       },
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(72),
-          child: Header(
-            onLogoTap: () => Navigator.pushNamed(context, '/'),
-                onCart: () => Navigator.pushNamed(context, '/cart'),
-            onSearch: () {},
-            onAccount: () => Navigator.pushNamed(context, '/login'),
-            onMenu: () {},
+        body: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: viewportHeight),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Header(
+                      onLogoTap: () => Navigator.pushNamed(context, '/'),
+                      onCart: () {},
+                      onSearch: () {},
+                      onAccount: () => Navigator.pushNamed(context, '/login'),
+                      onMenu: () {},
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text('Your Cart', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    ),
+                    const CartItemsList(),
+                    const SizedBox(height: 16),
+                    const CartSummary(),
+                    const SizedBox(height: 32),
+                  ],
+                ),
+                const Footer(),
+              ],
+            ),
           ),
-        ),
-        body: const Column(
-          children: [
-            Expanded(child: CartItemsList()),
-            CartSummary(),
-            Footer(),
-          ],
         ),
       ),
     );
   }
-
 }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/widgets/product_card.dart';
@@ -61,7 +62,7 @@ class ProductSearchDelegate extends SearchDelegate<Product?> {
               subtitle: Text(p.price),
               onTap: () {
                 close(context, p);
-                Navigator.pushNamed(context, '/product/${p.id}', arguments: p);
+                context.push('/product/${p.id}');
               },
             );
           },

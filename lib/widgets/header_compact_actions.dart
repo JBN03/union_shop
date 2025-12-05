@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/services/cart_service.dart';
 
 class HeaderCompactActions extends StatelessWidget {
@@ -25,8 +26,11 @@ class HeaderCompactActions extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.person_outline, size: 20, color: Colors.grey),
           onPressed: () {
-            if (onAccount != null) onAccount!();
-            Navigator.pushNamed(context, '/login');
+            if (onAccount != null) {
+              onAccount!();
+            } else {
+              context.push('/login');
+            }
           },
           tooltip: 'Account',
         ),
@@ -40,9 +44,12 @@ class HeaderCompactActions extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.shopping_bag_outlined, size: 20, color: Colors.grey),
                   onPressed: () {
-                    if (onCart != null) onCart!();
-                    final current = ModalRoute.of(context)?.settings.name;
-                    if (current != '/cart') Navigator.pushNamed(context, '/cart');
+                    // If callback provided, use it; otherwise navigate internally
+                    if (onCart != null) {
+                      onCart!();
+                    } else {
+                      context.push('/cart');
+                    }
                   },
                   tooltip: 'Cart',
                 ),
@@ -72,16 +79,16 @@ class HeaderCompactActions extends StatelessWidget {
             if (onMenu != null) onMenu!();
             switch (v) {
               case 0:
-                Navigator.pushNamed(context, '/');
+                context.go('/');
                 break;
               case 1:
-                Navigator.pushNamed(context, '/collections');
+                context.push('/collections');
                 break;
               case 2:
-                Navigator.pushNamed(context, '/sale');
+                context.push('/sale');
                 break;
               case 3:
-                Navigator.pushNamed(context, '/about');
+                context.push('/about');
                 break;
             }
           },

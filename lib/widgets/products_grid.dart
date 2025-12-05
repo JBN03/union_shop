@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/widgets/product_card.dart';
 import 'package:union_shop/services/product_service.dart';
 import 'package:union_shop/models/product.dart' as model;
@@ -64,7 +65,7 @@ class ProductsGrid extends StatelessWidget {
                               originalPrice: product.originalPrice,
                               imageUrl: product.imageUrl,
                               onTap: () {
-                                Navigator.pushNamed(context, '/product/${product.id}', arguments: product);
+                                context.push('/product/${product.id}');
                               },
                             ),
                           );

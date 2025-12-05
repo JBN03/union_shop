@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/services/cart_service.dart';
 
 class CartSummary extends StatelessWidget {
@@ -69,10 +70,6 @@ class CartSummary extends StatelessWidget {
 
     cart.clear();
 
-    Navigator.pushNamed(context, '/checkout-success', arguments: {
-      'orderId': orderId,
-      'total': total,
-      'items': orderItems,
-    });
+    context.go('/checkout-success');
   }
 }

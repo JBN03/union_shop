@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/models/product.dart';
 
 class ProductCard extends StatelessWidget {
@@ -27,15 +28,7 @@ class ProductCard extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap ?? () {
         final id = productId ?? title.hashCode.toString();
-        final product = Product(
-          id: id,
-          title: title,
-          price: price,
-          imageUrl: imageUrl,
-          images: imageUrl.isNotEmpty ? [imageUrl] : const [],
-          description: '',
-        );
-        Navigator.pushNamed(context, '/product/$id', arguments: product);
+        context.push('/product/$id');
       },
         child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

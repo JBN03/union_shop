@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/services/cart_service.dart';
 import 'package:union_shop/models/cart_item.dart';
 
@@ -28,7 +29,7 @@ class _CartItemsListState extends State<CartItemsList> {
                   const Text('Your cart is empty', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 12),
                   ElevatedButton(
-                    onPressed: () => Navigator.pushNamed(context, '/collections'),
+                    onPressed: () => context.push('/collections'),
                     child: const Text('Browse Collections'),
                   ),
                 ],

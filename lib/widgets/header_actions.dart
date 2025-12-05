@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/services/cart_service.dart';
 
 class HeaderActions extends StatelessWidget {
@@ -24,8 +25,11 @@ class HeaderActions extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.person_outline),
           onPressed: () {
-            if (onAccount != null) onAccount!();
-            Navigator.pushNamed(context, '/login');
+            if (onAccount != null) {
+              onAccount!();
+            } else {
+              context.push('/login');
+            }
           },
           tooltip: 'Account',
         ),
@@ -35,10 +39,11 @@ class HeaderActions extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.shopping_bag_outlined),
               onPressed: () {
-                onCart?.call();
-                final current = ModalRoute.of(context)?.settings.name;
-                if (current != '/cart') {
-                  Navigator.pushNamed(context, '/cart');
+                // If callback provided, use it; otherwise navigate internally
+                if (onCart != null) {
+                  onCart!();
+                } else {
+                  context.push('/cart');
                 }
               },
               tooltip: 'Cart',

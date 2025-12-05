@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/models/collection.dart';
 import 'package:union_shop/widgets/collection_card.dart';
 
@@ -57,7 +58,7 @@ class CollectionsBody extends StatelessWidget {
                     return CollectionCard(
                       collection: c,
                       width: targetCardWidth,
-                      onTap: () => Navigator.pushNamed(context, '/collection/${c.id}', arguments: {'id': c.id, 'title': c.title}),
+                      onTap: () => context.push('/collection/${c.id}'),
                     );
                   },
                 ),

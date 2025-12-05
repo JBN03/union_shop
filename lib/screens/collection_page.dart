@@ -91,7 +91,10 @@ class _CollectionPageState extends State<CollectionPage> {
                         return const SizedBox(height: 240, child: Center(child: CircularProgressIndicator()));
                       }
                       if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-                      final products = snapshot.data ?? [];
+                      var products = snapshot.data ?? [];
+                      if (collectionId == 'new') {
+                        products = products.where((p) => p.id == 'pen').toList();
+                      }
 
                       return CollectionGrid(
                         products: products,

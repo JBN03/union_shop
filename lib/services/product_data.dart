@@ -23,7 +23,7 @@ final Map<String, List<Product>> productsByCollection = {
     Product(
       id: 'portsmouth-city-magnet',
       title: 'Portsmouth City Magnet',
-      price: '4.50',
+      price: '£4.50',
       imageUrl: 'https://i.ibb.co/FqDWKD2M/Gemini-Generated-Image-zfw8ogzfw8ogzfw8.png',
       description: 'Bring a bit of Portsmouth pride to your fridge, locker, or pinboard with our eye-catching Portsmouth City Magnet, featuring the artwork of renowned illustrator Julia Gash.',
     ),
@@ -59,19 +59,40 @@ final Map<String, List<Product>> productsByCollection = {
       ],
       description: 'Essential cotton t-shirt',
     ),
-  ],
-  // T-Shirts collection — placeholders for pagination/testing
-  'tshirts': List.generate(
-    12,
-    (i) => Product(
-      id: 'tshirt-placeholder-${i + 1}',
-      title: 'Placeholder Product ${i + 1}',
-      price: '',
-      imageUrl: '',
-      description: 'Placeholder product for pagination/testing',
+    Product(
+      id: 'pen',
+      title: 'Pen',
+      price: '£3.00',
+      imageUrl: 'https://i.ibb.co/rR1108fq/Gemini-Generated-Image-finisofinisofini.png',
+      description: 'Branded University of Portsmouth pen',
     ),
-  ),
-  // Hoodies collection — placeholders
+  ],
+  
+  'tshirts': [
+    Product(
+      id: 'small-logo-tshirt',
+      title: 'Small logo T-shirt',
+      price: '£8.00',
+      imageUrl: 'https://i.ibb.co/gbrPW1Ff/Gemini-Generated-Image-pnd6sppnd6sppnd6.png',
+      images: [
+        'https://i.ibb.co/gbrPW1Ff/Gemini-Generated-Image-pnd6sppnd6sppnd6.png',
+        'https://i.ibb.co/5Xqy3bWz/Gemini-Generated-Image-losrbxlosrbxlosr.png',
+        'https://i.ibb.co/Zymm1pg/Gemini-Generated-Image-60vyvm60vyvm60vy.png',
+      ],
+      description: 'Small logo T-shirt',
+    ),
+    ...List.generate(
+      11,
+      (i) => Product(
+        id: 'tshirt-placeholder-${i + 2}',
+        title: 'Placeholder Product ${i + 2}',
+        price: '',
+        imageUrl: '',
+        description: 'Placeholder product for pagination/testing',
+      ),
+    ),
+  ],
+  
   'hoodies': List.generate(
     12,
     (i) => Product(
@@ -82,7 +103,7 @@ final Map<String, List<Product>> productsByCollection = {
       description: 'Placeholder product for pagination/testing',
     ),
   ),
-  // Winter collection — placeholders
+  
   'winter': List.generate(
     12,
     (i) => Product(
@@ -93,7 +114,7 @@ final Map<String, List<Product>> productsByCollection = {
       description: 'Placeholder product for pagination/testing',
     ),
   ),
-  // Graduation collection — add 12 placeholder cards
+  
   'graduation': List.generate(
     12,
     (i) => Product(
@@ -104,7 +125,7 @@ final Map<String, List<Product>> productsByCollection = {
       description: 'Placeholder product for pagination/testing',
     ),
   ),
-  // Sale collection — placeholders (ensures pagination works)
+  
   'sale': List.generate(
     12,
     (i) => Product(

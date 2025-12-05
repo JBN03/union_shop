@@ -41,11 +41,12 @@ class ProductsGrid extends StatelessWidget {
                     future: ProductService.instance.getProductsForCollection(collectionId),
                     builder: (context, snapshot) {
                       final products = snapshot.data ?? [];
+                      final displayProducts = showHeader ? products : products.where((p) => p.id != 'pen').toList();
 
                       return GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: products.length,
+                        itemCount: displayProducts.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
                           crossAxisSpacing: spacing,
@@ -53,7 +54,7 @@ class ProductsGrid extends StatelessWidget {
                           childAspectRatio: childAspectRatio,
                         ),
                         itemBuilder: (context, index) {
-                          final model.Product product = products[index];
+                          final model.Product product = displayProducts[index];
                           return SizedBox(
                             height: targetCardHeight,
                             child: ProductCard(

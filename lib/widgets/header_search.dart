@@ -9,6 +9,7 @@ class HeaderSearchModel extends ChangeNotifier {
   final List<Product> products = [];
   Timer? _debounce;
 
+  @override
   void dispose() {
     _debounce?.cancel();
     controller.dispose();

@@ -32,8 +32,13 @@ class ProductDetailsView extends StatelessWidget {
       'portsmouth-city-magnet',
       'portsmouth-city-bookmark',
       'portsmouth-city-keyring',
+      'pen',
     };
-    final hideOptions = product != null && noOptionsIds.contains(product!.id);
+    final p = product;
+    final hideOptions = p != null && noOptionsIds.contains(p.id);
+    final colorOptions = p != null && p.id == 'small-logo-tshirt'
+      ? ['Grey', 'Blue', 'Red']
+      : ['Red', 'Blue', 'Green'];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,12 +73,8 @@ class ProductDetailsView extends StatelessWidget {
               Expanded(
                 child: DropdownButtonFormField<String>(
                   decoration: const InputDecoration(labelText: 'Color', border: OutlineInputBorder()),
-                  initialValue: selectedColor,
-                  items: const [
-                    DropdownMenuItem(value: 'Red', child: Text('Red')),
-                    DropdownMenuItem(value: 'Blue', child: Text('Blue')),
-                    DropdownMenuItem(value: 'Green', child: Text('Green')),
-                  ],
+                  initialValue: colorOptions.contains(selectedColor) ? selectedColor : null,
+                  items: colorOptions.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
                   onChanged: onColorChanged,
                 ),
               ),
@@ -83,7 +84,7 @@ class ProductDetailsView extends StatelessWidget {
         const Text('Description', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black)),
         const SizedBox(height: 8),
         Text(
-          product?.description ?? 'This is a placeholder description for the product. Students should replace this with real product information and implement proper data management.',
+          p?.description ?? 'This is a placeholder description for the product. Students should replace this with real product information and implement proper data management.',
           style: const TextStyle(fontSize: 16, color: Colors.grey, height: 1.5),
         ),
         const SizedBox(height: 20),

@@ -10,24 +10,22 @@ class PrintShackPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BodyWithFooter(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Header(
-                onLogoTap: () => Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false),
-                onAccount: () {},
-                onCart: () => Navigator.pushNamed(context, '/cart'),
-                onMenu: () {},
-              ),
-              const Padding(
-                padding: EdgeInsets.all(24.0),
-                child: PrintShackContent(),
-              ),
-            ],
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Header(
+              onLogoTap: () => Navigator.pushNamed(context, '/'),
+              onAccount: () {},
+              onCart: () => Navigator.pushNamed(context, '/cart'),
+              onMenu: () {},
+            ),
+            const Padding(
+              padding: EdgeInsets.all(24.0),
+              child: PrintShackContent(),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-  

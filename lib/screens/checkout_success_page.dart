@@ -57,7 +57,7 @@ class CheckoutSuccessPage extends StatelessWidget {
                   Padding(padding: const EdgeInsets.symmetric(vertical: 8.0), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Total', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)), Text('£${total.toStringAsFixed(2)}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700))])),
 
                   const SizedBox(height: 16),
-                  ElevatedButton(onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false), child: const Padding(padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0), child: Text('Continue Shopping'))),
+                  ElevatedButton(onPressed: () => Navigator.pushNamed(context, '/'), child: const Padding(padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0), child: Text('Continue Shopping'))),
                   const SizedBox(height: 24),
                   const Footer(),
                 ],

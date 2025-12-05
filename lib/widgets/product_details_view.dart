@@ -37,8 +37,9 @@ class ProductDetailsView extends StatelessWidget {
     final p = product;
     final hideOptions = p != null && noOptionsIds.contains(p.id);
     final colorOptions = p != null && p.id == 'small-logo-tshirt'
-      ? ['Grey', 'Blue', 'Red']
-      : ['Red', 'Blue', 'Green'];
+        ? ['Grey', 'Blue', 'Red', 'Purple']
+        : ['Red', 'Blue', 'Green', 'Purple'];
+    final sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,74 +53,158 @@ class ProductDetailsView extends StatelessWidget {
           product?.price ?? '£15.00',
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF4d2963)),
         ),
-        const SizedBox(height: 18),
-        if (!hideOptions)
-          Row(
+        const SizedBox(height: 24),
+
+        if (!hideOptions) ...[
+          _buildDropdown(
+            label: 'Colour',
+            value: colorOptions.contains(selectedColor) ? selectedColor : colorOptions.first,
+            items: colorOptions,
+            onChanged: onColorChanged,
+          ),
+          const SizedBox(height: 20),
+          _buildDropdown(
+            label: 'Size',
+            value: sizeOptions.contains(selectedSize) ? selectedSize : sizeOptions.first,
+            items: sizeOptions,
+            onChanged: onSizeChanged,
+          ),
+          const SizedBox(height: 20),
+        ],
+
+        const Text('Quantity', style: TextStyle(fontSize: 14, color: Colors.black87)),
+        const SizedBox(height: 8),
+        Container(
+          width: 100,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade400),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(labelText: 'Size', border: OutlineInputBorder()),
-                  initialValue: selectedSize,
-                  items: const [
-                    DropdownMenuItem(value: 'S', child: Text('S')),
-                    DropdownMenuItem(value: 'M', child: Text('M')),
-                    DropdownMenuItem(value: 'L', child: Text('L')),
-                    DropdownMenuItem(value: 'XL', child: Text('XL')),
-                  ],
-                  onChanged: onSizeChanged,
+              InkWell(
+                onTap: onDecrease,
+                child: const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Icon(Icons.remove, size: 16, color: Colors.black54),
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(labelText: 'Color', border: OutlineInputBorder()),
-                  initialValue: colorOptions.contains(selectedColor) ? selectedColor : null,
-                  items: colorOptions.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
-                  onChanged: onColorChanged,
+              Text(
+                '$quantity',
+                style: const TextStyle(fontSize: 16),
+              ),
+              InkWell(
+                onTap: onIncrease,
+                child: const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Icon(Icons.add, size: 16, color: Colors.black54),
                 ),
               ),
             ],
           ),
-        const SizedBox(height: 16),
+        ),
+        const SizedBox(height: 24),
+
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton(
+            onPressed: onAddToCart,
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              side: const BorderSide(color: Color(0xFF4d2963), width: 1.5),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            ),
+            child: const Text(
+              'ADD TO CART',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF4d2963),
+                letterSpacing: 1.2,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF5A31F4),
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Buy with ',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                ),
+                Text(
+                  'shop',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white.withOpacity(0.95),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 28),
         const Text('Description', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black)),
         const SizedBox(height: 8),
         Text(
-          p?.description ?? 'This is a placeholder description for the product. Students should replace this with real product information and implement proper data management.',
+          p?.description ?? 'This is a placeholder description for the product.',
           style: const TextStyle(fontSize: 16, color: Colors.grey, height: 1.5),
         ),
-        const SizedBox(height: 20),
-        Row(
-          children: [
-            const Text('Quantity', style: TextStyle(fontWeight: FontWeight.w600)),
-            const SizedBox(width: 12),
-            Container(
-              decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300), borderRadius: BorderRadius.circular(6)),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(icon: const Icon(Icons.remove, size: 18), padding: const EdgeInsets.all(8), onPressed: onDecrease),
-                  Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0), child: Text('$quantity', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600))),
-                  IconButton(icon: const Icon(Icons.add, size: 18), padding: const EdgeInsets.all(8), onPressed: onIncrease),
-                ],
-              ),
-            ),
-          ],
+      ],
+    );
+  }
+
+  Widget _buildDropdown({
+    required String label,
+    required String value,
+    required List<String> items,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '$label:  $value',
+          style: const TextStyle(fontSize: 14, color: Colors.black87),
         ),
-        const SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                onPressed: onAddToCart,
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF4d2963)),
-                child: Padding(padding: const EdgeInsets.symmetric(vertical: 14.0), child: Text('Add to cart${quantity > 1 ? ' ($quantity)' : ''}')),
+        const SizedBox(height: 8),
+        Container(
+          width: 280,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade400),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: ButtonTheme(
+              alignedDropdown: true,
+              child: DropdownButton<String>(
+                value: value,
+                isExpanded: true,
+                icon: const Icon(Icons.arrow_drop_down, color: Colors.black54),
+                style: const TextStyle(fontSize: 16, color: Colors.black87),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                items: items.map((item) => DropdownMenuItem(
+                  value: item,
+                  child: Text(item),
+                )).toList(),
+                onChanged: onChanged,
               ),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: OutlinedButton(onPressed: () {}, child: const Padding(padding: EdgeInsets.symmetric(vertical: 14.0), child: Text('Buy now'))),
-            ),
-          ],
+          ),
         ),
       ],
     );

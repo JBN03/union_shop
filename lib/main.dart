@@ -13,7 +13,7 @@ import 'package:union_shop/screens/cart_page.dart';
 import 'package:union_shop/screens/checkout_success_page.dart';
 import 'package:union_shop/services/cart_service.dart';
 
-/// Global router instance for navigation
+
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
   routes: [
@@ -36,6 +36,19 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/checkout-success',
       builder: (context, state) => const CheckoutSuccessPage(),
+    ),
+    GoRoute(
+      path: '/order-summary',
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return OrderSummaryPage(
+          orderId: extra['orderId'] as String? ?? '',
+          total: (extra['total'] as num?)?.toDouble() ?? 0.0,
+          items: (extra['items'] as List<dynamic>?)
+              ?.map((e) => Map<String, dynamic>.from(e as Map))
+              .toList() ?? [],
+        );
+      },
     ),
     GoRoute(
       path: '/collections',

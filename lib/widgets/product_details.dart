@@ -13,8 +13,8 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
-  String selectedSize = 'M';
-  String selectedColor = 'Red';
+  String selectedSize = 'XS';
+  String selectedColor = 'Purple';
   int quantity = 1;
 
   void _increase() => setState(() => quantity += 1);
@@ -36,8 +36,8 @@ class _ProductDetailsState extends State<ProductDetails> {
       selectedSize: selectedSize,
       selectedColor: selectedColor,
       quantity: quantity,
-      onSizeChanged: (v) => setState(() => selectedSize = v ?? 'M'),
-      onColorChanged: (v) => setState(() => selectedColor = v ?? 'Red'),
+      onSizeChanged: (v) => setState(() => selectedSize = v ?? 'XS'),
+      onColorChanged: (v) => setState(() => selectedColor = v ?? 'Purple'),
       onIncrease: _increase,
       onDecrease: _decrease,
       onAddToCart: _onAddToCart,

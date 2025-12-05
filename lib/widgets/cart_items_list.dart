@@ -3,9 +3,7 @@ import 'package:union_shop/services/cart_service.dart';
 import 'package:union_shop/models/cart_item.dart';
 
 class CartItemsList extends StatefulWidget {
-  final bool shrinkWrap;
-
-  const CartItemsList({super.key, this.shrinkWrap = false});
+  const CartItemsList({super.key});
 
   @override
   State<CartItemsList> createState() => _CartItemsListState();

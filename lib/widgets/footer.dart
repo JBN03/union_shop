@@ -1,81 +1,135 @@
 import 'package:flutter/material.dart';
 
-class Footer extends StatelessWidget {
+class Footer extends StatefulWidget {
   const Footer({super.key});
+
+  @override
+  State<Footer> createState() => _FooterState();
+}
+
+class _FooterState extends State<Footer> {
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       color: Colors.grey[50],
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
       child: LayoutBuilder(
         builder: (context, constraints) {
           final isNarrow = constraints.maxWidth < 600;
 
-          Widget linkColumn(String title, List<Widget> children) {
-            return Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
-                  const SizedBox(height: 8),
-                  ...children,
-                ],
-              ),
+          Widget sectionTitle(String text) => Text(text, style: const TextStyle(fontWeight: FontWeight.w700));
+
+          final openingLines = [
+            sectionTitle('Opening Hours'),
+            const SizedBox(height: 8),
+            const Text('❄️ Winter Break Closure Dates ❄️', style: TextStyle(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 6),
+            const Text('Closing 4pm 19/12/2025'),
+            const Text('Reopening 10am 05/01/2026'),
+            const Text('Last post date: 12pm on 18/12/2025'),
+            const SizedBox(height: 12),
+            const Divider(),
+            const SizedBox(height: 12),
+            const Text('(Term Time)', style: TextStyle(fontWeight: FontWeight.w600)),
+            const Text('Monday - Friday 10am - 4pm'),
+            const SizedBox(height: 6),
+            const Text('(Outside of Term Time / Consolidation Weeks)', style: TextStyle(fontWeight: FontWeight.w600)),
+            const Text('Monday - Friday 10am - 3pm'),
+            const SizedBox(height: 12),
+            const Text('Purchase online 24/7', style: TextStyle(fontWeight: FontWeight.w600)),
+          ];
+
+          final helpLines = [
+            sectionTitle('Help and Information'),
+            const SizedBox(height: 8),
+            // Plain text labels — avoid introducing routes that may not exist.
+            TextButton(onPressed: () {}, child: const Text('Search')),
+            TextButton(onPressed: () {}, child: const Text('Terms & Conditions of Sale Policy')),
+          ];
+
+          Widget latestOffers() {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                sectionTitle('Latest Offers'),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    // Limit width of the email field so it doesn't stretch too wide
+                    SizedBox(
+                      width: 220,
+                      child: TextField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                          hintText: 'Email address',
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: BorderSide(color: Colors.grey.shade400)),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    ElevatedButton(
+                      onPressed: () {
+                        final email = _emailController.text.trim();
+                        if (email.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter your email')));
+                          return;
+                        }
+                        // Placeholder behaviour: show confirmation. Integrate with backend as needed.
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Subscribed $email')));
+                        _emailController.clear();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4B2356),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      ),
+                      child: const Text('SUBSCRIBE', style: TextStyle(fontWeight: FontWeight.w700)),
+                    ),
+                  ],
+                ),
+              ],
             );
           }
 
-          final quickLinks = [
-            TextButton(onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false), child: const Text('Home')),
-            TextButton(onPressed: () => Navigator.pushNamed(context, '/collections'), child: const Text('Collections')),
-            TextButton(onPressed: () => Navigator.pushNamed(context, '/about'), child: const Text('About Us')),
-          ];
-
-          final customerLinks = [
-            TextButton(onPressed: () {}, child: const Text('Contact')),
-            TextButton(onPressed: () {}, child: const Text('FAQ')),
-            TextButton(onPressed: () {}, child: const Text('Shipping')),
-          ];
-
-          final contactInfo = [
-            const Text('Union Shop', style: TextStyle(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 6),
-            const Text('123 Example St.'),
-            const Text('City, Country'),
-            const SizedBox(height: 6),
-            const Text('Email: info@example.com'),
-            const Text('Phone: +44 1234 567890'),
-          ];
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              isNarrow
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ...quickLinks,
-                        const SizedBox(height: 12),
-                        ...customerLinks,
-                        const SizedBox(height: 12),
-                        ...contactInfo,
-                      ],
-                    )
-                  : Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        linkColumn('Quick Links', quickLinks),
-                        linkColumn('Customer', customerLinks),
-                        linkColumn('Contact', contactInfo.map((w) => Padding(padding: const EdgeInsets.only(bottom:6), child: w)).toList()),
-                      ],
+          return isNarrow
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...openingLines,
+                    const SizedBox(height: 14),
+                    ...helpLines,
+                    const SizedBox(height: 18),
+                    const Center(child: Text('© 2025 Union Shop — All rights reserved', style: TextStyle(color: Colors.grey))),
+                  ],
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: openingLines),
                     ),
-              const SizedBox(height: 20),
-              const Divider(),
-              const SizedBox(height: 12),
-              const Text('© 2025 Union Shop — All rights reserved', style: TextStyle(color: Colors.grey)),
-            ],
-          );
+                    const SizedBox(width: 32),
+                    Expanded(
+                      flex: 2,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: helpLines),
+                    ),
+                    const SizedBox(width: 32),
+                    Flexible(flex: 3, child: latestOffers()),
+                  ],
+                );
         },
       ),
     );

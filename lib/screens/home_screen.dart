@@ -8,38 +8,39 @@ import 'package:union_shop/widgets/products_grid.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  void navigateToHome(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-  }
-
-  void placeholderCallbackForButtons() {
-    
-  }
+  void placeholderCallbackForButtons() {}
 
   @override
   Widget build(BuildContext context) {
+    final viewportHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            
-            Header(
-              onLogoTap: () => navigateToHome(context),
-              onSearch: placeholderCallbackForButtons,
-              onAccount: placeholderCallbackForButtons,
-              onCart: placeholderCallbackForButtons,
-              onMenu: placeholderCallbackForButtons,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: viewportHeight),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Header(
+                      onLogoTap: () {},
+                      onSearch: placeholderCallbackForButtons,
+                      onAccount: () => Navigator.pushNamed(context, '/login'),
+                      onCart: () => Navigator.pushNamed(context, '/cart'),
+                      onMenu: placeholderCallbackForButtons,
+                    ),
+                    HomeHero(onBrowseCollections: () => Navigator.pushNamed(context, '/collections')),
+                    const ProductsGrid(showHeader: false),
+                    const SizedBox(height: 56),
+                  ],
+                ),
+                const Footer(),
+              ],
             ),
-
-            
-            HomeHero(onBrowseCollections: placeholderCallbackForButtons),
-
-            
-            const ProductsGrid(showHeader: false),
-          
-            const SizedBox(height: 56),
-            const Footer(),
-          ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/header.dart';
-import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/widgets/body_with_footer.dart';
 
 class AboutUsPage extends StatelessWidget {
   const AboutUsPage({super.key});
@@ -8,14 +8,15 @@ class AboutUsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: BodyWithFooter(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Header(
-              onLogoTap: () => Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false),
+              onLogoTap: () => Navigator.pushNamed(context, '/'),
               onSearch: () {},
               onAccount: () {},
-              onCart: () {},
+              onCart: () => Navigator.pushNamed(context, '/cart'),
               onMenu: () {},
             ),
             const Padding(
@@ -36,7 +37,6 @@ class AboutUsPage extends StatelessWidget {
                 ],
               ),
             ),
-            const Footer(),
           ],
         ),
       ),
